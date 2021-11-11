@@ -1,0 +1,178 @@
+[
+    {
+       "pk": 1,
+       "model": "questions.subject",
+       "fields": {
+          "name": "preliminaries"
+       }
+    },
+    {
+       "pk": 2,
+       "model": "questions.subject",
+       "fields": {
+          "name": "paradigms"
+       }
+    },
+    {
+       "pk": 3,
+       "model": "questions.subject",
+       "fields": {
+          "name": "html"
+       }
+    },
+    {
+       "pk": 4,
+       "model": "questions.subject",
+       "fields": {
+          "name": "css"
+       }
+    },
+    {
+       "pk": 5,
+       "model": "questions.subject",
+       "fields": {
+          "name": "ide"
+       }
+    },
+    {
+       "pk": 6,
+       "model": "questions.subject",
+       "fields": {
+          "name": "ux_and_design"
+       }
+    },
+    {
+       "pk": 7,
+       "model": "questions.subject",
+       "fields": {
+          "name": "mini-project"
+       }
+    },
+    {
+       "pk": 8,
+       "model": "questions.subject",
+       "fields": {
+          "name": "comparative_programming"
+       }
+    },
+    {
+       "pk": 9,
+       "model": "questions.subject",
+       "fields": {
+          "name": "javascript"
+       }
+    },
+    {
+       "pk": 10,
+       "model": "questions.subject",
+       "fields": {
+          "name": "agile_development"
+       }
+    },
+    {
+       "pk": 11,
+       "model": "questions.subject",
+       "fields": {
+          "name": "bootstrap"
+       }
+    },
+    {
+       "pk": 12,
+       "model": "questions.subject",
+       "fields": {
+          "name": "advanced_javascript"
+       }
+    },
+    {
+       "pk": 13,
+       "model": "questions.subject",
+       "fields": {
+          "name": "jquery"
+       }
+    },
+    {
+       "pk": 14,
+       "model": "questions.subject",
+       "fields": {
+          "name": "api"
+       }
+    },
+    {
+       "pk": 15,
+       "model": "questions.subject",
+       "fields": {
+          "name": "javascript_testing"
+       }
+    },
+    {
+       "pk": 16,
+       "model": "questions.subject",
+       "fields": {
+          "name": "python"
+       }
+    },
+    {
+       "pk": 17,
+       "model": "questions.subject",
+       "fields": {
+          "name": "flask"
+       }
+    },
+    {
+       "pk": 18,
+       "model": "questions.subject",
+       "fields": {
+          "name": "dbms"
+       }
+    },
+    {
+       "pk": 19,
+       "model": "questions.subject",
+       "fields": {
+          "name": "python_testing"
+       }
+    },
+    {
+       "pk": 20,
+       "model": "questions.subject",
+       "fields": {
+          "name": "django"
+       }
+    },
+    {
+       "pk": 21,
+       "model": "questions.subject",
+       "fields": {
+          "name": "ecommerce"
+       }
+    },
+    {
+       "pk": 22,
+       "model": "questions.subject",
+       "fields": {
+          "name": "seo"
+       }
+    },
+    {
+       "pk": 23,
+       "model": "questions.subject",
+       "fields": {
+          "name": "marketing"
+       }
+    },
+    {
+       "pk": 24,
+       "model": "questions.subject",
+       "fields": {
+          "name": "general_mentoring"
+       }
+    },
+    {
+       "pk": 25,
+       "model": "questions.subject",
+       "fields": {
+          "name": "not_applicable"
+       }
+    }
+ ]
+ 

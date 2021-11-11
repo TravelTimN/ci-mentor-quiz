@@ -1,0 +1,206 @@
+[
+    {
+       "pk": 1,
+       "model": "questions.module",
+       "fields": {
+          "name": "programme_preliminaries"
+       }
+    },
+    {
+       "pk": 2,
+       "model": "questions.module",
+       "fields": {
+          "name": "programming_paradigms"
+       }
+    },
+    {
+       "pk": 3,
+       "model": "questions.module",
+       "fields": {
+          "name": "html_essentials"
+       }
+    },
+    {
+       "pk": 4,
+       "model": "questions.module",
+       "fields": {
+          "name": "css_essentials"
+       }
+    },
+    {
+       "pk": 5,
+       "model": "questions.module",
+       "fields": {
+          "name": "ide_and_deployment_essentials"
+       }
+    },
+    {
+       "pk": 6,
+       "model": "questions.module",
+       "fields": {
+          "name": "user_experience_essentials"
+       }
+    },
+    {
+       "pk": 7,
+       "model": "questions.module",
+       "fields": {
+          "name": "love_running"
+       }
+    },
+    {
+       "pk": 8,
+       "model": "questions.module",
+       "fields": {
+          "name": "comparative_programming_language_essentials"
+       }
+    },
+    {
+       "pk": 9,
+       "model": "questions.module",
+       "fields": {
+          "name": "javascript_essentials"
+       }
+    },
+    {
+       "pk": 10,
+       "model": "questions.module",
+       "fields": {
+          "name": "love_maths"
+       }
+    },
+    {
+       "pk": 11,
+       "model": "questions.module",
+       "fields": {
+          "name": "introduction_to_design_thinking"
+       }
+    },
+    {
+       "pk": 12,
+       "model": "questions.module",
+       "fields": {
+          "name": "principles_of_agile_development"
+       }
+    },
+    {
+       "pk": 13,
+       "model": "questions.module",
+       "fields": {
+          "name": "building_with_bootstrap"
+       }
+    },
+    {
+       "pk": 14,
+       "model": "questions.module",
+       "fields": {
+          "name": "bootstrap_resume_part_1"
+       }
+    },
+    {
+       "pk": 15,
+       "model": "questions.module",
+       "fields": {
+          "name": "advanced_javascript_concepts"
+       }
+    },
+    {
+       "pk": 16,
+       "model": "questions.module",
+       "fields": {
+          "name": "introduction_to_jquery"
+       }
+    },
+    {
+       "pk": 17,
+       "model": "questions.module",
+       "fields": {
+          "name": "introduction_to_apis"
+       }
+    },
+    {
+       "pk": 18,
+       "model": "questions.module",
+       "fields": {
+          "name": "javascript_testing_with_jest"
+       }
+    },
+    {
+       "pk": 19,
+       "model": "questions.module",
+       "fields": {
+          "name": "bootstrap_resume_part_2"
+       }
+    },
+    {
+       "pk": 20,
+       "model": "questions.module",
+       "fields": {
+          "name": "introduction_to_flask"
+       }
+    },
+    {
+       "pk": 21,
+       "model": "questions.module",
+       "fields": {
+          "name": "database_management_systems"
+       }
+    },
+    {
+       "pk": 22,
+       "model": "questions.module",
+       "fields": {
+          "name": "python_testing"
+       }
+    },
+    {
+       "pk": 23,
+       "model": "questions.module",
+       "fields": {
+          "name": "full_stack_frameworks"
+       }
+    },
+    {
+       "pk": 24,
+       "model": "questions.module",
+       "fields": {
+          "name": "ecommerce_application_types"
+       }
+    },
+    {
+       "pk": 25,
+       "model": "questions.module",
+       "fields": {
+          "name": "building_an_ecommerce_platform"
+       }
+    },
+    {
+       "pk": 26,
+       "model": "questions.module",
+       "fields": {
+          "name": "introduction_to_search_engine_optimization"
+       }
+    },
+    {
+       "pk": 27,
+       "model": "questions.module",
+       "fields": {
+          "name": "web_marketing"
+       }
+    },
+    {
+       "pk": 28,
+       "model": "questions.module",
+       "fields": {
+          "name": "general_mentoring"
+       }
+    },
+    {
+       "pk": 29,
+       "model": "questions.module",
+       "fields": {
+          "name": "not_applicable"
+       }
+    }
+ ]
+ 
