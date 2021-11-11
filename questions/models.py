@@ -34,6 +34,12 @@ class Question(models.Model):
     opt3 = models.CharField(max_length=50, blank=True)
     opt4 = models.CharField(max_length=50, blank=True)
     opt5 = models.CharField(max_length=50, blank=True)
-    answer = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
-    subject = models.ForeignKey("Subject", null=True, blank=True, on_delete=models.SET_NULL)
-    module = models.ForeignKey("Module", null=True, blank=True, on_delete=models.SET_NULL)
+    answer = models.IntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(5)])
+    subject = models.ForeignKey(
+        "Subject", null=True, blank=True, on_delete=models.SET_NULL)
+    module = models.ForeignKey(
+        "Module", null=True, blank=True, on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return f"{self.pk}: {self.question}"
