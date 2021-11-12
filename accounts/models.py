@@ -10,21 +10,11 @@ class UserProfile(models.Model):
     mentor information and quiz history
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=25, unique=True, blank=False)
-    is_admin = models.BooleanField(default=False, blank=False)
     taken_quiz = models.BooleanField(default=False, blank=False)
     date_joined = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ["user"]
+
     def __str__(self):
-        return self.user.username
-
-
-@receiver(post_save, sender=User)
-def create_or_update_user_profile(sender, instance, created, **kwargs):
-    """
-    Create or update the user profile
-    """
-    if created:
-        UserProfile.objects.create(user=instance)
-    # Existing users: just save the profile
-    instance.userprofile.save()
+        return self.user.first_name
