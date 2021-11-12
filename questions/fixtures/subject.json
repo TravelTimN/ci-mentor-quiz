@@ -3,175 +3,175 @@
        "pk": 1,
        "model": "questions.subject",
        "fields": {
-          "name": "preliminaries"
+          "name": "not_applicable"
        }
     },
     {
        "pk": 2,
        "model": "questions.subject",
        "fields": {
-          "name": "paradigms"
+          "name": "general_mentoring"
        }
     },
     {
        "pk": 3,
        "model": "questions.subject",
        "fields": {
-          "name": "html"
+          "name": "mini-project"
        }
     },
     {
        "pk": 4,
        "model": "questions.subject",
        "fields": {
-          "name": "css"
+          "name": "agile_development"
        }
     },
     {
        "pk": 5,
        "model": "questions.subject",
        "fields": {
-          "name": "ide"
+          "name": "api"
        }
     },
     {
        "pk": 6,
        "model": "questions.subject",
        "fields": {
-          "name": "ux_and_design"
+          "name": "bootstrap"
        }
     },
     {
        "pk": 7,
        "model": "questions.subject",
        "fields": {
-          "name": "mini-project"
+          "name": "comparative_programming"
        }
     },
     {
        "pk": 8,
        "model": "questions.subject",
        "fields": {
-          "name": "comparative_programming"
+          "name": "css"
        }
     },
     {
        "pk": 9,
        "model": "questions.subject",
        "fields": {
-          "name": "javascript"
+          "name": "dbms"
        }
     },
     {
        "pk": 10,
        "model": "questions.subject",
        "fields": {
-          "name": "agile_development"
+          "name": "django"
        }
     },
     {
        "pk": 11,
        "model": "questions.subject",
        "fields": {
-          "name": "bootstrap"
+          "name": "ecommerce"
        }
     },
     {
        "pk": 12,
        "model": "questions.subject",
        "fields": {
-          "name": "advanced_javascript"
+          "name": "flask"
        }
     },
     {
        "pk": 13,
        "model": "questions.subject",
        "fields": {
-          "name": "jquery"
+          "name": "html"
        }
     },
     {
        "pk": 14,
        "model": "questions.subject",
        "fields": {
-          "name": "api"
+          "name": "ide"
        }
     },
     {
        "pk": 15,
        "model": "questions.subject",
        "fields": {
-          "name": "javascript_testing"
+          "name": "javascript"
        }
     },
     {
        "pk": 16,
        "model": "questions.subject",
        "fields": {
-          "name": "python"
+          "name": "javascript_testing"
        }
     },
     {
        "pk": 17,
        "model": "questions.subject",
        "fields": {
-          "name": "flask"
+          "name": "jquery"
        }
     },
     {
        "pk": 18,
        "model": "questions.subject",
        "fields": {
-          "name": "dbms"
+          "name": "marketing"
        }
     },
     {
        "pk": 19,
        "model": "questions.subject",
        "fields": {
-          "name": "python_testing"
+          "name": "paradigms"
        }
     },
     {
        "pk": 20,
        "model": "questions.subject",
        "fields": {
-          "name": "django"
+          "name": "preliminaries"
        }
     },
     {
        "pk": 21,
        "model": "questions.subject",
        "fields": {
-          "name": "ecommerce"
+          "name": "python"
        }
     },
     {
        "pk": 22,
        "model": "questions.subject",
        "fields": {
-          "name": "seo"
+          "name": "python_testing"
        }
     },
     {
        "pk": 23,
        "model": "questions.subject",
        "fields": {
-          "name": "marketing"
+          "name": "seo"
        }
     },
     {
        "pk": 24,
        "model": "questions.subject",
        "fields": {
-          "name": "general_mentoring"
+          "name": "specialisations"
        }
     },
     {
        "pk": 25,
        "model": "questions.subject",
        "fields": {
-          "name": "not_applicable"
+          "name": "ux_and_design"
        }
     }
  ]
