@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
+from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 
 
@@ -11,10 +11,31 @@ class UserProfile(models.Model):
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     taken_quiz = models.BooleanField(default=False, blank=False)
-    date_joined = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ["user"]
+        ordering = ["user__username"]
 
     def __str__(self):
-        return self.user.first_name
+        return self.user.username
+
+
+@receiver(pre_save, sender=User)
+def update_username_from_name(sender, instance, **kwargs):
+    """
+    Signal to use the first+last names as the mentor's username
+    Strips-out any non-alphanumeric characters in names (\'\s\- etc)
+    This happens "pre_save".
+    """
+    username = instance.first_name + instance.last_name
+    instance.username = "".join(x for x in username if x.isalnum()).lower()
+
+
+@receiver(post_save, sender=User)
+def create_or_update_user_profile(sender, instance, created, **kwargs):
+    """
+    Signal to create or update the mentor profile
+    This happens "post_save".
+    """
+    if created:
+        UserProfile.objects.create(user=instance)
+    instance.userprofile.save()
