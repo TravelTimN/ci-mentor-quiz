@@ -107,9 +107,8 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_SESSION_REMEMBER = False
 ACCOUNT_UNIQUE_EMAIL = True
 LOGIN_REDIRECT_URL = "/"
-LOGOUT_REDIRECT_URL = "/accounts/login/"  # TODO: this doesn't work
+ACCOUNT_LOGOUT_REDIRECT_URL = "/accounts/login/"
 ACCOUNT_LOGOUT_ON_GET = True  # avoid allauth signout confirmation page
-ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 100  # TODO: remove this (testing)
 ACCOUNT_FORMS = {
     "login": "accounts.forms.CustomLoginForm",
     "signup": "accounts.forms.CustomSignupForm",
