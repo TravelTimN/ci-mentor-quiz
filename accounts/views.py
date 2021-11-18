@@ -1,27 +1,30 @@
-from django.shortcuts import render, redirect
-# from django.contrib import messages
-# from .forms import CustomLoginForm, CustomSignupForm
+from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from .models import UserProfile
+from .forms import UserProfileForm
 
 
-# def register(request):
-#     if request.method == "POST":
-#         reg_form = UserRegistrationForm(request.POST)
+@login_required
+def profile(request, username):
+    """ Display the user's profile. """
+    user_profile = get_object_or_404(UserProfile, user=request.user)
 
-#         # Ensure form validations are met
-#         if reg_form.is_valid():
-#             user = reg_form.save()
-#             auth.login(request, user)
-#             messages.success(request, 'You are now registered & logged in.')
-#             return redirect('index')
+    if request.method == "POST":
+        form = UserProfileForm(request.POST, instance=user_profile)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Profile successfully updated")
+        else:
+            messages.error(
+                request,
+                ("Update failed. Please ensure the form is valid."))
+    else:
+        form = UserProfileForm(instance=user_profile)
 
-#     elif request.user.is_authenticated:
-#         messages.error(request, 'You are logged in already!')
-#         return redirect(request, 'index')
-#     else:
-#         reg_form = UserRegistrationForm()
+    template = "accounts/profile.html"
+    context = {
+        "form": form,
+    }
 
-#     context = {
-#         'register_page': 'active',
-#         'form': reg_form
-#     }
-#     return render(request, 'accounts/register.html', context)
+    return render(request, template, context)

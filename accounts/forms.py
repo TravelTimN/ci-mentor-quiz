@@ -1,5 +1,4 @@
 from django import forms
-from django.contrib.auth.models import User
 from .models import UserProfile
 from allauth.account.forms import LoginForm, SignupForm
 
@@ -64,3 +63,12 @@ class CustomLoginForm(LoginForm):
             {"class": "form-control",
              "placeholder": "Password"},
         )
+
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        exclude = ("taken_quiz",)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
