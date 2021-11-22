@@ -13,19 +13,19 @@
 				{% csrf_token %}
 
 				<fieldset class="card">
-					<legend class="card-header">{% trans "Login" %}</legend>
+					<legend class="card-header bg-p-grey text-t-grey">{% trans "Login" %}</legend>
 
 					<div class="card-body">
 
 						<!-- email field -->
 						<div class="input-group mb-3">
-							<span class="input-group-text"><i class="fas fa-at"></i></span>
+							<span class="input-group-text bg-s-grey"><i class="fas fa-at"></i></span>
 							{{ form.login }}
 						</div>
 
 						<!-- password field -->
 						<div class="input-group mb-3">
-							<span class="input-group-text"><i class="fas fa-lock"></i></span>
+							<span class="input-group-text bg-s-grey"><i class="fas fa-lock"></i></span>
 							{{ form.password }}
 						</div>
 
@@ -46,23 +46,23 @@
 						{% endif %}
 					</div>
 
-				</fieldset>
-
-				<div class="card-footer">
-					<div class="row">
-						<div class="col">
-							<!-- submit -->
-							<button class="btn-ci" type="submit">{% trans "Login" %}</button>
-						</div>
-						<div class="col text-end my-auto">
-							<!-- user has no profile yet -->
-							{% blocktrans %}
-								New Here?<br>
-								<a href="{{ signup_url }}">Register</a>
-							{% endblocktrans %}
+					<div class="card-footer bg-p-grey text-t-grey">
+						<div class="row">
+							<div class="col">
+								<!-- submit -->
+								<button class="btn-ci" type="submit">{% trans "Login" %}</button>
+							</div>
+							<div class="col text-end my-auto">
+								<!-- user has no profile yet -->
+								{% blocktrans %}
+									New Here?<br>
+									<a href="{{ signup_url }}" class="white-link">Register</a>
+								{% endblocktrans %}
+							</div>
 						</div>
 					</div>
-				</div>
+
+				</fieldset>
 
 			</form>
 

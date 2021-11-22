@@ -6,11 +6,11 @@
         <div class="container-sm">
             <!-- logo -->
             <a href="{% url 'home' %}" class="navbar-brand w-50 align-middle me-auto">
-                <img src="{% static 'img/logo.png' %}" alt="CI Logo" class="ci-logo responsive-img">
+                <img src="{% static 'img/logo.png' %}" alt="CI Logo" class="ci-logo responsive-img me-3">
                 Mentor Quiz
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#moblile-nav">
-                <span class="navbar-toggler-icon"></span>
+            <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#moblile-nav">
+                <i class="fas fa-bars"></i>
             </button>
             <div class="navbar-collapse collapse w-100" id="moblile-nav">
                 <ul class="nav navbar-nav ms-auto w-100 justify-content-end">
@@ -20,7 +20,7 @@
                     <!-- account links -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropdown-account" role="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">Account</a>
+                            data-mdb-toggle="dropdown" aria-expanded="false">Account</a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-account">
                             {% if request.user.is_authenticated %}
                                 <!-- user is logged-in -->

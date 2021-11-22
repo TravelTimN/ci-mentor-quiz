@@ -14,7 +14,7 @@
 				{% csrf_token %}
 
 				<fieldset class="card">
-					<legend class="card-header">{% trans "Register" %}</legend>
+					<legend class="card-header bg-p-grey text-t-grey">{% trans "Register" %}</legend>
 
 					<div class="card-body">
 
@@ -22,7 +22,7 @@
 							<!-- first name field -->
 							<div class="col-xs-12 col-md-6">
 								<div class="input-group mb-3">
-									<span class="input-group-text"><i class="fas fa-user"></i></span>
+									<span class="input-group-text bg-s-grey"><i class="fas fa-user"></i></span>
 									{{ form.first_name }}
 								</div>
 							</div>
@@ -30,7 +30,7 @@
 							<!-- last name field -->
 							<div class="col-xs-12 col-md-6">
 								<div class="input-group mb-3">
-									<span class="input-group-text"><i class="fas fa-user"></i></span>
+									<span class="input-group-text bg-s-grey"><i class="fas fa-user"></i></span>
 									{{ form.last_name }}
 								</div>
 							</div>
@@ -38,19 +38,19 @@
 
 						<!-- email field -->
 						<div class="input-group mb-3">
-							<span class="input-group-text"><i class="fas fa-at"></i></span>
+							<span class="input-group-text bg-s-grey"><i class="fas fa-at"></i></span>
 							{{ form.email }}
 						</div>
 
 						<!-- password field -->
 						<div class="input-group mb-3">
-							<span class="input-group-text"><i class="fas fa-lock"></i></span>
+							<span class="input-group-text bg-s-grey"><i class="fas fa-lock"></i></span>
 							{{ form.password1 }}
 						</div>
 
                         <!-- password confirmation field -->
                         <div class="input-group mb-3">
-                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            <span class="input-group-text bg-s-grey"><i class="fas fa-lock"></i></span>
                             {{ form.password2 }}
                         </div>
 
@@ -71,23 +71,23 @@
 						{% endif %}
 					</div>
 
-				</fieldset>
-
-				<div class="card-footer">
-					<div class="row">
-						<div class="col">
-							<!-- submit -->
-							<button class="btn-ci" type="submit">{% trans "Register" %}</button>
-						</div>
-						<div class="col text-end my-auto">
-							<!-- user has no profile yet -->
-							{% blocktrans %}
-								Already Registered?<br>
-								<a href="{{ login_url }}">Login</a>
-							{% endblocktrans %}
+					<div class="card-footer bg-p-grey text-t-grey">
+						<div class="row">
+							<div class="col">
+								<!-- submit -->
+								<button class="btn-ci" type="submit">{% trans "Register" %}</button>
+							</div>
+							<div class="col text-end my-auto">
+								<!-- user has no profile yet -->
+								{% blocktrans %}
+									Already Registered?<br>
+									<a href="{{ login_url }}" class="white-link">Login</a>
+								{% endblocktrans %}
+							</div>
 						</div>
 					</div>
-				</div>
+
+				</fieldset>
 
 			</form>
 
