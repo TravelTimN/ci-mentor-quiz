@@ -110,8 +110,19 @@ a, a:hover {
 }
 
 /* FLASH MESSAGES / ALERTS */
+#alerts {
+    display: grid;
+    position: absolute;
+    top: 76px;
+    width: 100%;
+}
 .alert {
+    height: 76px;
+    width: 100%;
+    z-index: 999;
     margin-bottom: 0;
+    box-shadow: 0 2px 9px 0 rgba(var(--black), 0.2);
+    transition: all 0.3s ease-in-out;
 }
 
 .alert h3 {
@@ -122,6 +133,13 @@ a, a:hover {
 .alert-dismissible .btn-close {
     margin: 0;
     padding: 1.6rem 1rem;
+}
+
+.alert-slide {
+    opacity: 0;
+    transition: all 1s ease-in-out;
+    transform: translate3d(0, -20em, 0);
+    overflow: hidden;
 }
 
 /* NAVBAR */
