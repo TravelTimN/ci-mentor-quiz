@@ -1,6 +1,7 @@
 from django import forms
-from .models import UserProfile
+from django.contrib.auth.models import User
 from allauth.account.forms import LoginForm, SignupForm
+from .models import Profile
 
 
 class CustomSignupForm(SignupForm):
@@ -26,7 +27,11 @@ class CustomSignupForm(SignupForm):
     )
 
     class Meta:
-        model = UserProfile
+        """
+        ModelSerializer for displaying
+        'all' fields on the admin dashboard
+        """
+        model = Profile
         fields = ["__all__"]
 
     def __init__(self, *args, **kwargs):
@@ -65,10 +70,27 @@ class CustomLoginForm(LoginForm):
         )
 
 
-class UserProfileForm(forms.ModelForm):
+class UserUpdateForm(forms.ModelForm):
     class Meta:
-        model = UserProfile
+        """
+        Instance of Django's User Model users to edit their profile,
+        and which fields to include/exclude
+        """
+        model = User
+        fields = ["first_name", "last_name", "email", "username"]
+        help_texts = {
+            "email": None,
+            "username": None,
+        }
+
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+
+
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Profile
         exclude = ("taken_quiz",)
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
