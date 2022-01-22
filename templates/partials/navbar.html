@@ -15,7 +15,7 @@
             <div class="navbar-collapse collapse w-100" id="moblile-nav">
                 <ul class="nav navbar-nav ms-auto w-100 justify-content-end">
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}">Home</a>
+                        <a class="nav-link orange-link" href="{% url 'home' %}">Home</a>
                     </li>
                     <!-- account links -->
                     <li class="nav-item dropdown">
@@ -24,7 +24,7 @@
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-account">
                             {% if request.user.is_authenticated %}
                                 <!-- user is logged-in -->
-                                <li><a class="dropdown-item {% if request.path == '/users/profile' %}active{% endif %}" href="{% url 'profile' request.user %}">My Profile</a></li>
+                                <li><a class="dropdown-item" href="{% url 'profile' request.user %}">My Profile</a></li>
                                 <li><a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a></li>
                                 {% if request.user.is_superuser %}
                                     <!-- user is also a superuser -->
@@ -33,8 +33,8 @@
                                 {% endif %}
                             {% else %}
                                 <!-- user is not logged-in -->
-                                <li><a class="dropdown-item {% if request.path == '/users/new' %}active{% endif %}" href="{% url 'account_signup' %}">Register</a></li>
-                                <li><a class="dropdown-item {% if request.path == '/session/new' %}active{% endif %}" href="{% url 'account_login' %}">Login</a></li>
+                                <li><a class="dropdown-item" href="{% url 'account_signup' %}">Register</a></li>
+                                <li><a class="dropdown-item" href="{% url 'account_login' %}">Login</a></li>
                             {% endif %}
                         </ul>
                     </li>
