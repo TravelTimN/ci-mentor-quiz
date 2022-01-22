@@ -4,16 +4,19 @@ from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 
 
-
-class UserProfile(models.Model):
+class Profile(models.Model):
     """
     A user profile model for maintaining
     mentor information and quiz history
     """
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
     taken_quiz = models.BooleanField(default=False, blank=False)
 
     class Meta:
+        """
+        Sort all users in the admin dashboard
+        by their usernames, alphabetically
+        """
         ordering = ["user__username"]
 
     def __str__(self):
@@ -39,6 +42,6 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
     """
     # New users: create a new instance of a profile
     if created:
-        UserProfile.objects.create(user=instance)
+        Profile.objects.create(user=instance)
     # Existing users: just save the profile
-    instance.userprofile.save()
+    instance.profile.save()
