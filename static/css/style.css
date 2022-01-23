@@ -121,7 +121,7 @@ a, a:hover {
     height: 76px;
     width: 100%;
     z-index: 999;
-    margin-bottom: 0;
+    margin-bottom: 2px;
     box-shadow: 0 2px 9px 0 rgba(var(--black), 0.2);
     transition: all 0.3s ease-in-out;
 }
@@ -178,6 +178,26 @@ nav .nav-item {
 .navbar-light .navbar-toggler {
     color: rgba(var(--p-orange), 1);
     border-color: rgba(var(--p-orange), 1);
+}
+
+/* OVERLAY */
+aside#overlay {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 888;
+    opacity: 1;
+    visibility: visible;
+    backdrop-filter: blur(3px);
+    transition: all 0.2s ease-in-out;
+    background-color: rgba(var(--black), 0.75);
+}
+
+aside#overlay.hide {
+    opacity: 0;
+    visibility: hidden;
 }
 
 /* MAIN */
@@ -292,3 +312,9 @@ footer .fas:hover {
 
 /* bootstrap breakpoint: xx-large */
 @media only screen and (min-width: 1400px) {}
+
+/* GLOBAL '.hide' CLASS */
+.hide {
+    opacity: 0;
+    visibility: hidden;
+}
