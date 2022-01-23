@@ -11,6 +11,25 @@ document.addEventListener("DOMContentLoaded", function () {
 // update copyright year
 document.getElementById("year").innerText = new Date().getFullYear();
 
+// show navbar menu on hover instead of default "click" events
+let navDropdown = document.querySelector(".dropdown");
+let navDropdownToggle = document.querySelector(".dropdown-toggle");
+let navDropdownMenu = document.querySelector(".dropdown-menu");
+navDropdown.addEventListener("mouseenter", function() {
+    navDropdownToggle.classList.add("show");
+    navDropdownMenu.classList.add("show");
+    // required for bootstrap styles to function 100%
+    navDropdownToggle.setAttribute("aria-expanded", "true");
+    navDropdownMenu.setAttribute("data-bs-popper", "none");
+});
+navDropdown.addEventListener("mouseleave", function() {
+    navDropdownToggle.classList.remove("show");
+    navDropdownMenu.classList.remove("show");
+    // must be removed for bootstrap to fully function
+    navDropdownToggle.setAttribute("aria-expanded", "false");
+    navDropdownMenu.removeAttribute("data-bs-popper");
+});
+
 // auto-hide alerts
 const alerts = document.querySelectorAll("aside.alert");
 if (alerts.length > 0) {
