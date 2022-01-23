@@ -17,6 +17,11 @@
                     <li class="nav-item">
                         <a class="nav-link orange-link" href="{% url 'home' %}">Home</a>
                     </li>
+                    {% if request.user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link orange-link" href="">Quiz</a>
+                        </li>
+                    {% endif %}
                     <!-- account links -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropdown-account" role="button"
