@@ -109,13 +109,14 @@ a, a:hover {
     transform: translate(-50%, -50%);
 }
 
-/* FLASH MESSAGES / ALERTS */
+/* FLASH MESSAGES + ALERTS */
 #alerts {
     display: grid;
     position: absolute;
     top: 76px;
     width: 100%;
 }
+
 .alert {
     height: 76px;
     width: 100%;
@@ -163,6 +164,11 @@ nav .nav-item {
 
 .dropdown-item {
     width: unset;
+}
+
+.dropdown-menu[data-bs-popper] {
+    /* accounts for tiny gap on hover between link/menu */
+    top: 98%;
 }
 
 .ci-logo {
