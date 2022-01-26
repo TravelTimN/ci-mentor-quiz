@@ -22,7 +22,7 @@
 							<!-- first name field -->
 							<div class="col-xs-12 col-md-6">
 								<div class="input-group mb-3">
-									<span class="input-group-text bg-s-grey"><i class="fas fa-user"></i></span>
+									<span class="input-group-text bg-s-grey"><i class="fas fa-user fa-fw"></i></span>
 									{{ form.first_name }}
 								</div>
 							</div>
@@ -30,7 +30,7 @@
 							<!-- last name field -->
 							<div class="col-xs-12 col-md-6">
 								<div class="input-group mb-3">
-									<span class="input-group-text bg-s-grey"><i class="fas fa-user"></i></span>
+									<span class="input-group-text bg-s-grey"><i class="fas fa-user fa-fw"></i></span>
 									{{ form.last_name }}
 								</div>
 							</div>
@@ -38,20 +38,32 @@
 
 						<!-- email field -->
 						<div class="input-group mb-3">
-							<span class="input-group-text bg-s-grey"><i class="fas fa-at"></i></span>
+							<span class="input-group-text bg-s-grey"><i class="fas fa-at fa-fw"></i></span>
 							{{ form.email }}
 						</div>
 
 						<!-- password field -->
 						<div class="input-group mb-3">
-							<span class="input-group-text bg-s-grey"><i class="fas fa-lock"></i></span>
+							<span class="input-group-text bg-s-grey"><i class="fas fa-lock fa-fw"></i></span>
 							{{ form.password1 }}
 						</div>
 
                         <!-- password confirmation field -->
                         <div class="input-group mb-3">
-                            <span class="input-group-text bg-s-grey"><i class="fas fa-lock"></i></span>
+                            <span class="input-group-text bg-s-grey"><i class="fas fa-lock fa-fw"></i></span>
                             {{ form.password2 }}
+                        </div>
+
+                        <!-- mentor_type field -->
+                        <div class="input-group mb-3" id="mentor_type_group">
+                            <span class="input-group-text bg-s-grey"><i class="fas fa-code"></i></span>
+							{{ form.mentor_type }}
+							<!-- {% for type in form.mentor_type %}
+							<div class="form-check">
+								{{ type.tag }}
+								<label class="form-check-label" for="{{ type.id_for_label }}">{{ type.choice_label }}</label>
+							</div>
+							{% endfor %} -->
                         </div>
 
 						<!-- hidden redirect field (if applicable) -->
@@ -81,7 +93,7 @@
 								<!-- user has no profile yet -->
 								{% blocktrans %}
 									Already Registered?<br>
-									<a href="{{ login_url }}" class="white-link">Login</a>
+									<a href="{{ login_url }}" class="white-link fw-bold">Login</a>
 								{% endblocktrans %}
 							</div>
 						</div>
