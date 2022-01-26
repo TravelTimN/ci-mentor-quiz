@@ -11,7 +11,6 @@ class CustomSignupForm(SignupForm):
     """
     first_name = forms.CharField(
         required=True,
-        label="",
         widget=forms.TextInput(attrs={
             "class": "form-control",
             "placeholder": "First Name"
@@ -19,11 +18,15 @@ class CustomSignupForm(SignupForm):
     )
     last_name = forms.CharField(
         required=True,
-        label="",
         widget=forms.TextInput(attrs={
             "class": "form-control",
             "placeholder": "Last Name"
         })
+    )
+    mentor_type = forms.ChoiceField(
+        required=True,
+        choices=Profile.MENTOR_TYPE,
+        widget=forms.RadioSelect()
     )
 
     class Meta:
@@ -96,5 +99,5 @@ class CustomLoginForm(LoginForm):
 #         model = Profile
 #         exclude = ("taken_quiz",)
 
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
