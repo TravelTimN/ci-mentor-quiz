@@ -53,6 +53,16 @@ class CustomSignupForm(SignupForm):
              "placeholder": "Confirm Password"},
         )
 
+        # set first_name to be autofocs on page load
+        self.fields["first_name"].widget.attrs["autofocus"] = True
+
+    # override the profile's "mentor_type" field on registration
+    def save(self, request):
+        user = super(CustomSignupForm, self).save(request)
+        user.profile.mentor_type = self.cleaned_data["mentor_type"]
+        user.save()
+        return user
+
 
 class CustomLoginForm(LoginForm):
     """
