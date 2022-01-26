@@ -16,6 +16,11 @@
                 <p>First Name: <strong>{{ request.user.first_name }}</strong></p>
                 <p>Last Name: <strong>{{ request.user.last_name }}</strong></p>
                 <p>Email: <strong>{{ request.user.email }}</strong></p>
+                <!-- temporary fields for testing -->
+                <hr>
+                <p>Taken Quiz?: <strong>{{ request.user.profile.taken_quiz }}</strong></p>
+                <p>Mentor Type: <strong>{{ request.user.profile.mentor_type }}</strong></p>
+                <!-- end temporary testing -->
                 <hr>
             </div>
         </div>
