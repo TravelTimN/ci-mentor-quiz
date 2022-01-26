@@ -9,8 +9,15 @@ class Profile(models.Model):
     A user profile model for maintaining
     mentor information and quiz history
     """
+    # mentor type choices
+    MENTOR_TYPE = [
+        ("is_mentor", "I am a Code Institute Mentor"),
+        ("is_not_mentor", "I want to be a Code Institute Mentor"),
+    ]
+
     user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
     taken_quiz = models.BooleanField(default=False, blank=False)
+    mentor_type = models.CharField(choices=MENTOR_TYPE, max_length=40)
 
     class Meta:
         """
