@@ -27,7 +27,7 @@ INSTALLED_APPS = [
     "home",
     "questions",
     "quizzes",
-    "results",
+    "submissions",
 ]
 
 MIDDLEWARE = [
