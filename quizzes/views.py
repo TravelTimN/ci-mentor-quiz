@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.models import User
+from django.http import JsonResponse
 from .models import Quiz
 
 
@@ -12,3 +13,14 @@ def quiz_info(request):
 def take_quiz(request, pk):
     quiz = Quiz.objects.get(pk=pk)
     return render(request, "quizzes/quiz.html", {"quiz": quiz})
+
+
+def quiz_data(request, pk):
+    quiz = Quiz.objects.get(pk=pk)
+    questions = []
+    for question in quiz.get_questions():
+        choices = []
+        for choice in question.get_choices():
+            choices.append(choice.choice)
+        questions.append({"question": str(question), "choices": choices, "type": question.type})
+    return JsonResponse({"data": questions, })
