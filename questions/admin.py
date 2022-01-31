@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Question, Choice
+from .models import Question, Choice, Module, Subject
 
 
 class ChoiceInline(admin.TabularInline):
@@ -8,8 +8,8 @@ class ChoiceInline(admin.TabularInline):
 
 class QuestionAdmin(admin.ModelAdmin):
     inlines = [ChoiceInline]
-    list_display = ("question", "module", "subject", "type")  # table view
-    list_filter = ("type", "subject", "module",)  # sidebar filter
+    list_display = ("question", "quiz", "module", "subject", "type")  # table view
+    list_filter = ("quiz", "type", "subject", "module",)  # sidebar filter
     search_fields = ["question", "module", "subject", "type"]  # search box
 
 
@@ -19,3 +19,5 @@ class ChoiceAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Question, QuestionAdmin)
+admin.site.register(Module)
+admin.site.register(Subject)
