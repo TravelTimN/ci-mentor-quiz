@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<hr>
+
+Details about the quiz... TBD?
+
+<hr>
+
+{% if user.profile.taken_quiz %}
+    <!-- user has taken quiz already -->
+    You have already taken this quiz.
+{% else %}
+    <!-- user has not taken quiz yet -->
+    {% for quiz in quizzes %}
+        <!-- loop all quizzes to get 'quiz.pk' -->
+        {% if user.profile.mentor_type == "is_mentor" and quiz.name == "current_mentor" %}
+            <!-- user is a current mentor -->
+            <a href="{% url 'take_quiz' quiz.pk %}">Take Quiz</a>
+        {% elif user.profile.mentor_type == "is_not_mentor" and quiz.name == "potential_mentor" %}
+            <!-- user wants to become a mentor -->
+            <a href="{% url 'take_quiz' quiz.pk %}">Take Quiz</a>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+<hr>
+
+{% endblock %}
