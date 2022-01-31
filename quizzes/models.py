@@ -14,7 +14,7 @@ class Quiz(models.Model):
         return str(self.name)
 
     def get_questions(self):
-        return self.question_set.all()
+        return self.question_set.all()[:self.max_count]
 
     class Meta:
         verbose_name_plural = "Quizzes"
