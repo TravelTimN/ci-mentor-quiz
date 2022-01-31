@@ -38,140 +38,210 @@
        "pk": 6,
        "model": "questions.subject",
        "fields": {
-          "name": "bootstrap"
+          "name": "aws"
        }
     },
     {
        "pk": 7,
        "model": "questions.subject",
        "fields": {
-          "name": "comparative_programming"
+          "name": "bootstrap"
        }
     },
     {
        "pk": 8,
        "model": "questions.subject",
        "fields": {
-          "name": "css"
+          "name": "comparative_programming"
        }
     },
     {
        "pk": 9,
        "model": "questions.subject",
        "fields": {
-          "name": "dbms"
+          "name": "css"
        }
     },
     {
        "pk": 10,
        "model": "questions.subject",
        "fields": {
-          "name": "django"
+          "name": "dbms"
        }
     },
     {
        "pk": 11,
        "model": "questions.subject",
        "fields": {
-          "name": "ecommerce"
+          "name": "deployment"
        }
     },
     {
        "pk": 12,
        "model": "questions.subject",
        "fields": {
-          "name": "flask"
+          "name": "documentation"
        }
     },
     {
        "pk": 13,
        "model": "questions.subject",
        "fields": {
-          "name": "html"
+          "name": "django"
        }
     },
     {
        "pk": 14,
        "model": "questions.subject",
        "fields": {
-          "name": "ide"
+          "name": "ecommerce"
        }
     },
     {
        "pk": 15,
        "model": "questions.subject",
        "fields": {
-          "name": "javascript"
+          "name": "flask"
        }
     },
     {
        "pk": 16,
        "model": "questions.subject",
        "fields": {
-          "name": "javascript_testing"
+          "name": "github"
        }
     },
     {
        "pk": 17,
        "model": "questions.subject",
        "fields": {
-          "name": "jquery"
+          "name": "gitpod"
        }
     },
     {
        "pk": 18,
        "model": "questions.subject",
        "fields": {
-          "name": "marketing"
+          "name": "heroku"
        }
     },
     {
        "pk": 19,
        "model": "questions.subject",
        "fields": {
-          "name": "paradigms"
+          "name": "html"
        }
     },
     {
        "pk": 20,
        "model": "questions.subject",
        "fields": {
-          "name": "preliminaries"
+          "name": "ide"
        }
     },
     {
        "pk": 21,
        "model": "questions.subject",
        "fields": {
-          "name": "python"
+          "name": "javascript"
        }
     },
     {
        "pk": 22,
        "model": "questions.subject",
        "fields": {
-          "name": "python_testing"
+          "name": "javascript_testing"
        }
     },
     {
        "pk": 23,
        "model": "questions.subject",
        "fields": {
-          "name": "seo"
+          "name": "jquery"
        }
     },
     {
        "pk": 24,
        "model": "questions.subject",
        "fields": {
-          "name": "specialisations"
+          "name": "lms"
        }
     },
     {
        "pk": 25,
        "model": "questions.subject",
        "fields": {
+          "name": "marketing"
+       }
+    },
+    {
+       "pk": 26,
+       "model": "questions.subject",
+       "fields": {
+          "name": "paradigms"
+       }
+    },
+    {
+       "pk": 27,
+       "model": "questions.subject",
+       "fields": {
+          "name": "preliminaries"
+       }
+    },
+    {
+       "pk": 28,
+       "model": "questions.subject",
+       "fields": {
+          "name": "python"
+       }
+    },
+    {
+       "pk": 29,
+       "model": "questions.subject",
+       "fields": {
+          "name": "python_testing"
+       }
+    },
+    {
+       "pk": 30,
+       "model": "questions.subject",
+       "fields": {
+          "name": "seo"
+       }
+    },
+    {
+       "pk": 31,
+       "model": "questions.subject",
+       "fields": {
+          "name": "specialisations"
+       }
+    },
+    {
+       "pk": 32,
+       "model": "questions.subject",
+       "fields": {
+          "name": "stripe"
+       }
+    },
+    {
+       "pk": 33,
+       "model": "questions.subject",
+       "fields": {
           "name": "ux_and_design"
+       }
+    },
+    {
+       "pk": 34,
+       "model": "questions.subject",
+       "fields": {
+          "name": "version_control"
+       }
+    },
+    {
+       "pk": 35,
+       "model": "questions.subject",
+       "fields": {
+          "name": "zapier"
        }
     }
  ]
