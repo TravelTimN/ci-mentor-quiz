@@ -73,130 +73,158 @@
        "pk": 11,
        "model": "questions.module",
        "fields": {
-          "name": "introduction_to_design_thinking"
+          "name": "python_essentials"
        }
     },
     {
        "pk": 12,
        "model": "questions.module",
        "fields": {
-          "name": "principles_of_agile_development"
+          "name": "introduction_to_automation"
        }
     },
     {
        "pk": 13,
        "model": "questions.module",
        "fields": {
-          "name": "building_with_bootstrap"
+          "name": "love_sandwiches"
        }
     },
     {
        "pk": 14,
        "model": "questions.module",
        "fields": {
-          "name": "bootstrap_resume_part_1"
+          "name": "introduction_to_design_thinking"
        }
     },
     {
        "pk": 15,
        "model": "questions.module",
        "fields": {
-          "name": "advanced_javascript_concepts"
+          "name": "principles_of_agile_development"
        }
     },
     {
        "pk": 16,
        "model": "questions.module",
        "fields": {
-          "name": "introduction_to_jquery"
+          "name": "building_with_bootstrap"
        }
     },
     {
        "pk": 17,
        "model": "questions.module",
        "fields": {
-          "name": "introduction_to_apis"
+          "name": "bootstrap_resume_part_1"
        }
     },
     {
        "pk": 18,
        "model": "questions.module",
        "fields": {
-          "name": "javascript_testing_with_jest"
+          "name": "advanced_javascript_concepts"
        }
     },
     {
        "pk": 19,
        "model": "questions.module",
        "fields": {
-          "name": "bootstrap_resume_part_2"
+          "name": "introduction_to_jquery"
        }
     },
     {
        "pk": 20,
        "model": "questions.module",
        "fields": {
-          "name": "introduction_to_flask"
+          "name": "introduction_to_apis"
        }
     },
     {
        "pk": 21,
        "model": "questions.module",
        "fields": {
-          "name": "database_management_systems"
+          "name": "javascript_testing_with_jest"
        }
     },
     {
        "pk": 22,
        "model": "questions.module",
        "fields": {
-          "name": "python_testing"
+          "name": "bootstrap_resume_part_2"
        }
     },
     {
        "pk": 23,
        "model": "questions.module",
        "fields": {
-          "name": "full_stack_frameworks"
+          "name": "introduction_to_flask"
        }
     },
     {
        "pk": 24,
        "model": "questions.module",
        "fields": {
-          "name": "ecommerce_application_types"
+          "name": "database_management_systems"
        }
     },
     {
        "pk": 25,
        "model": "questions.module",
        "fields": {
-          "name": "building_an_ecommerce_platform"
+          "name": "python_testing"
        }
     },
     {
        "pk": 26,
        "model": "questions.module",
        "fields": {
-          "name": "introduction_to_search_engine_optimization"
+          "name": "full_stack_frameworks"
        }
     },
     {
        "pk": 27,
        "model": "questions.module",
        "fields": {
-          "name": "web_marketing"
+          "name": "ecommerce_application_types"
        }
     },
     {
        "pk": 28,
        "model": "questions.module",
        "fields": {
-          "name": "general_mentoring"
+          "name": "building_an_ecommerce_platform"
        }
     },
     {
        "pk": 29,
+       "model": "questions.module",
+       "fields": {
+          "name": "introduction_to_search_engine_optimization"
+       }
+    },
+    {
+       "pk": 30,
+       "model": "questions.module",
+       "fields": {
+          "name": "web_marketing"
+       }
+    },
+    {
+       "pk": 31,
+       "model": "questions.module",
+       "fields": {
+          "name": "careers"
+       }
+    },
+    {
+       "pk": 32,
+       "model": "questions.module",
+       "fields": {
+          "name": "general_mentoring"
+       }
+    },
+    {
+       "pk": 33,
        "model": "questions.module",
        "fields": {
           "name": "not_applicable"
