@@ -1,8 +1,20 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
 
 <!-- https://stackoverflow.com/a/4321512 -->
 {{ quiz.get_name_display }}
 
+<form id="quiz-form">
+    {% csrf_token %}
+    <div id="quiz-container"></div>
+    <button type="submit" id="quiz-submit-btn" class="btn-ci">Submit</button>
+</form>
+
+{% endblock %}
+
+
+{% block js %}
+<script src="{% static 'js/quiz.js' %}"></script>
 {% endblock %}
