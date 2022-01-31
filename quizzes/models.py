@@ -1,3 +1,4 @@
+import random
 from django.db import models
 
 
@@ -14,7 +15,13 @@ class Quiz(models.Model):
         return str(self.name)
 
     def get_questions(self):
-        return self.question_set.all()[:self.max_count]
+        if self.pk != 2:
+            # shuffle quiz unless it's potential_mentor_quiz
+            questions = list(self.question_set.all())
+            random.shuffle(questions)
+            return questions[:self.max_count]
+        else:
+            return self.question_set.all()[:self.max_count]
 
     class Meta:
         verbose_name_plural = "Quizzes"
