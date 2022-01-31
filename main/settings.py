@@ -108,8 +108,8 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_SESSION_REMEMBER = False
 ACCOUNT_UNIQUE_EMAIL = True
-LOGIN_REDIRECT_URL = "/account/"
-ACCOUNT_LOGOUT_REDIRECT_URL = "/accounts/login/"
+LOGIN_REDIRECT_URL = "/profile/"
+ACCOUNT_LOGOUT_REDIRECT_URL = "/auth/login/"
 ACCOUNT_LOGOUT_ON_GET = True  # avoid allauth signout confirmation page
 ACCOUNT_FORMS = {
     "login": "accounts.forms.CustomLoginForm",
