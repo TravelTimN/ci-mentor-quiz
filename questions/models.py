@@ -22,9 +22,11 @@ class Subject(models.Model):
 class Question(models.Model):
     # question types (multiple choice, true/false, short-answer)
     QUESTION_TYPE = [
-        ("multi", "Multiple Choice"),
-        ("bool", "True or False"),
-        ("short", "Short Answer"),
+        ("number", "Integer"),
+        ("checkbox", "Multiple Choice"),
+        ("textarea", "Short Answer"),
+        ("radio", "True or False"),
+        ("url", "URL"),
     ]
     question = models.CharField(max_length=200, blank=False)
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
@@ -33,10 +35,10 @@ class Question(models.Model):
     type = models.CharField(choices=QUESTION_TYPE, max_length=10)
 
     def __str__(self):
-        return f"{self.pk}: {self.question}"
+        return self.question
 
     def get_choices(self):
-        return self.answer_set.all()
+        return self.choice_set.all()
 
 
 class Choice(models.Model):
