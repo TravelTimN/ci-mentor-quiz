@@ -8,7 +8,7 @@ class Module(models.Model):
     name = models.CharField(max_length=100, blank=False)
 
     def __str__(self):
-        return self.name
+        return self.name.replace("_", " ")
 
 
 class Subject(models.Model):
@@ -16,7 +16,7 @@ class Subject(models.Model):
     name = models.CharField(max_length=100, blank=False)
 
     def __str__(self):
-        return self.name
+        return self.name.replace("_", " ")
 
 
 class Question(models.Model):
