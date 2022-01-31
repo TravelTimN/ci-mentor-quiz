@@ -1,10 +1,12 @@
 {% if messages %}
-    {% for msg in messages %}
-        <!-- all django message tags mirror bootstrap, except error/danger -->
-        <aside class="alert {% if msg.tags == 'error' %}alert-danger{% else %}alert-{{ msg.tags }}{% endif %} alert-dismissible text-center" role="alert">
-            <h3>{{ msg }}</h3>
-            <!-- TODO: remove 'alert-dismissible' if no longer including btn-close below -->
-            <!-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> -->
-        </aside>
-    {% endfor %}
+    <section id="alerts">
+        {% for msg in messages %}
+            <!-- all django message tags mirror bootstrap, except error/danger -->
+            <aside class="alert {% if msg.tags == 'error' %}alert-danger{% else %}alert-{{ msg.tags }}{% endif %} alert-dismissible text-center" role="alert">
+                <h3>{{ msg }}</h3>
+                <!-- TODO: remove 'alert-dismissible' if no longer including btn-close below -->
+                <!-- <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button> -->
+            </aside>
+        {% endfor %}
+    </section>
 {% endif %}
