@@ -6,11 +6,18 @@
 <!-- https://stackoverflow.com/a/4321512 -->
 {{ quiz.get_name_display }}
 
-<form id="quiz-form">
+<br>
+
+<button id="quiz-start-btn" class="btn-ci">Start Quiz</button>
+
+<form id="quiz-form" class="hide full">
     {% csrf_token %}
     <div id="quiz-container"></div>
+    <hr>
     <button type="submit" id="quiz-submit-btn" class="btn-ci">Submit</button>
 </form>
+
+<span id="thank-you" class="hide full">Thank You for submitting your Quiz!</span>
 
 {% endblock %}
 
