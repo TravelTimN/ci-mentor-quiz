@@ -8,64 +8,65 @@ fetch(`${dataUrl}data/`)
     .then(response => response.json())
     .then(data => {
         // console.log(data);
-        let counter = 1;
 
         Object.entries(data).forEach(entry => {
             const [, value] = entry;
             Object.entries(value).forEach(item => {
                 const [, val] = item;
+                // display the "Question"
                 quizContainer.innerHTML += `
                     <hr>
                     <p>${val.question}</p>
                 `;
-                val.choices.forEach(choice => {
+                // loop through the question "Choices"
+                val.choices.forEach((choice, i) => {
+                    i++;
                     switch (val.type) {
                         case "radio":
                             quizContainer.innerHTML += `
                                 <p>
-                                <input type="radio" id="${counter}-${val.type}" name="${val.question.replace(/[^a-zA-Z]/g, '')}" class="choice" value="${choice}" required>
-                                <label for="${counter}-${val.type}" class="">${choice}</label>
+                                <input type="radio" id="q${val.id}-${i}" name="q${val.id}" class="choice" value="${choice}" required>
+                                <label for="q${val.id}-${i}" class="">${choice}</label>
                                 </p>
                             `;
                             break;
                         case "checkbox":
                             quizContainer.innerHTML += `
                                 <p>
-                                <input type="checkbox" id="${counter}-${val.type}" name="${val.question.replace(/[^a-zA-Z]/g, '')}" class="choice" value="${choice}">
-                                <label for="${counter}-${val.type}" class=""> - ${choice}</label>
+                                <input type="checkbox" id="q${val.id}-${i}" name="q${val.id}" class="choice" value="${choice}">
+                                <label for="q${val.id}-${i}" class=""> - ${choice}</label>
                                 </p>
                             `;
                             break;
                         case "textarea":
                             quizContainer.innerHTML += `
                                 <p>
-                                <textarea id="${counter}-${val.type}" name="${val.question.replace(/[^a-zA-Z]/g, '')}" class="choice" required></textarea>
+                                <textarea id="q${val.id}-${i}" name="q${val.id}" class="choice" required></textarea>
                                 </p>
                             `;
                             break;
                         case "number":
                             quizContainer.innerHTML += `
                                 <p>
-                                <input type="number" id="${counter}-${val.type}" name="${val.question.replace(/[^a-zA-Z]/g, '')}" class="choice" required>
+                                <input type="number" id="q${val.id}-${i}" name="q${val.id}" class="choice" required>
                                 </p>
                             `;
                             break;
                         case "url":
                             quizContainer.innerHTML += `
                                 <p>
-                                <input type="url" id="${counter}-${val.type}" name="${val.question.replace(/[^a-zA-Z]/g, '')}" class="choice" required>
+                                <input type="url" id="q${val.id}-${i}" name="q${val.id}" class="choice" required>
                                 </p>
                             `;
                             break;
                         default:
                             quizContainer.innerHTML += `
                                 <p>
-                                <input type="text" id="${counter}-${val.type}" name="${val.question.replace(/[^a-zA-Z]/g, '')}" class="choice" required>
+                                <input type="text" id="q${val.id}-${i}" name="q${val.id}" class="choice" required>
                                 </p>
                             `;
                             break;
                     }
-                    counter++;
                 });
             });
         });
