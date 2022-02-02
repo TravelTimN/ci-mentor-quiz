@@ -38,6 +38,7 @@ fetch(`${dataUrl}data/`)
                     <hr>
                     <p>${val.question}</p>
                 `;
+                // TODO: possibly shuffle the various choices? how will this affect comparing answers from DB choices?
                 // loop through the question "Choices"
                 val.choices.forEach((choice, i) => {
                     i++;
@@ -168,7 +169,9 @@ function saveQuizResults() {
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data); // JsonResponse({}) from views.py
+            // console.log(data); // JsonResponse({}) from views.py
+            const results = data.results;
+            console.log(results);
         })
         .catch(error => {
             console.log(error);
