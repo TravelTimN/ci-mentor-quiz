@@ -13,7 +13,7 @@ class Submission(models.Model):
     original_response = models.TextField(null=False, blank=False, default="")
 
     def __str__(self):
-        return f"[ {self.user} ] - {self.quiz.name} ({self.taken.strftime('%A %d %B, %Y @ %H:%M').lower()})"  # noqa
+        return self.quiz.name
 
 
 class Response(models.Model):
