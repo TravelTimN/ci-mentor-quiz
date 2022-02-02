@@ -80,7 +80,6 @@ a, a:hover {
     transition: all .3s ease-in-out;
     border-radius: 4px;
     font-weight: bold;
-    height: 100%;
     padding: 0 20px;
 }
 
@@ -339,8 +338,12 @@ footer .fas:hover {
 /* bootstrap breakpoint: xx-large */
 @media only screen and (min-width: 1400px) {}
 
-/* GLOBAL '.hide' CLASS */
+/* GLOBAL 'hide' CLASSES */
 .hide {
     opacity: 0;
     visibility: hidden;
+}
+
+.hide.full {
+    display: none;
 }
