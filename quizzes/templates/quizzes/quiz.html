@@ -10,9 +10,46 @@
 
 <button id="quiz-start-btn" class="btn-ci">Start Quiz</button>
 
-<form id="quiz-form" class="hide full">
+<form id="quiz-form" class="hide full" method="POST" action="{% url 'submit_quiz' quiz.id %}">
     {% csrf_token %}
-    <div id="quiz-container"></div>
+    <input type="hidden" id="duration" name="duration" value="0">
+    <div id="quiz-container">
+
+        {% for question in questions %}
+            <hr>
+            <p>{{ question.question }}</p>
+            {% for choice in question.choices %}
+                {% if question.type == "radio" %}
+                    <p>
+                        <input type="radio" id="q{{ question.id }}-{{ forloop.counter }}" name="q{{ question.id }}" class="choice" value="{{ choice }}" required>
+                        <label for="q{{ question.id }}-{{ forloop.counter }}" class="">{{ choice }}</label>
+                    </p>
+                {% elif question.type == "checkbox" %}
+                    <p>
+                        <input type="checkbox" id="q{{ question.id }}-{{ forloop.counter }}" name="q{{ question.id }}" class="choice" value="{{ choice }}">
+                        <label for="q{{ question.id }}-{{ forloop.counter }}" class=""> - {{ choice }}</label>
+                    </p>
+                {% elif question.type == "textarea" %}
+                    <p>
+                        <textarea id="q{{ question.id }}-{{ forloop.counter }}" name="q{{ question.id }}" class="choice" required></textarea>
+                    </p>
+                {% elif question.type == "number" %}
+                    <p>
+                        <input type="number" id="q{{ question.id }}-{{ forloop.counter }}" name="q{{ question.id }}" min="1" max="99" class="choice" required>
+                    </p>
+                {% elif question.type == "url" %}
+                    <p>
+                        <input type="url" id="q{{ question.id }}-{{ forloop.counter }}" name="q{{ question.id }}" class="choice" required>
+                    </p>
+                {% else %}
+                    <p>
+                        <input type="text" id="q{{ question.id }}-{{ forloop.counter }}" name="q{{ question.id }}" class="choice" required>
+                    </p>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+
+    </div>
     <hr>
     <button type="submit" id="quiz-submit-btn" class="btn-ci">Submit</button>
 </form>
@@ -23,5 +60,5 @@
 
 
 {% block js %}
-<script src="{% static 'js/quiz.js' %}"></script>
+    <script src="{% static 'js/quiz.js' %}"></script>
 {% endblock %}
