@@ -10,7 +10,14 @@ Details about the quiz... TBD?
 
 {% if user.profile.taken_quiz %}
     <!-- user has taken quiz already -->
-    You have already taken this quiz.
+    {% if user.profile.mentor_type != "is_not_mentor" %}
+        You have already taken this quiz.<br>
+        Would you like to take the test again?<br>
+        <a href="{% url 'take_quiz' quiz_id %}" class="btn-ci">Yes</a>
+    {% else %}
+        Thank You!<br>
+        The Code Institute Mentoring team will be in contact with you soon!
+    {% endif %}
 {% else %}
     <!-- user has not taken quiz yet -->
     <a href="{% url 'take_quiz' quiz_id %}" class="btn-ci">Take Quiz</a>
