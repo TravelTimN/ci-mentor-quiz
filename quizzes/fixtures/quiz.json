@@ -1,0 +1,19 @@
+[
+    {
+       "pk": 1,
+       "model": "quizzes.quiz",
+       "fields": {
+          "name": "is_mentor",
+          "max_count": 20
+       }
+    },
+    {
+       "pk": 2,
+       "model": "quizzes.quiz",
+       "fields": {
+          "name": "is_not_mentor",
+          "max_count": 50
+       }
+    }
+ ]
+ 
