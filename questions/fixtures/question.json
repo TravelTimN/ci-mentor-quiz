@@ -7,7 +7,7 @@
         "quiz": 2,
         "module": 32,
         "subject": 2,
-        "type": "textarea"
+        "type": "number"
       }
     },
     {
