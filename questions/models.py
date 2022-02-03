@@ -7,6 +7,12 @@ class Module(models.Model):
     # LMS module selection
     name = models.CharField(max_length=100, blank=False)
 
+    class Meta:
+        """
+        sort by id
+        """
+        ordering = ["id"]
+
     def __str__(self):
         return self.name.replace("_", " ")
 
@@ -14,6 +20,12 @@ class Module(models.Model):
 class Subject(models.Model):
     # course subject (HTML, JS, Flask, Django, etc.)
     name = models.CharField(max_length=100, blank=False)
+
+    class Meta:
+        """
+        sort by id
+        """
+        ordering = ["id"]
 
     def __str__(self):
         return self.name.replace("_", " ")
@@ -33,6 +45,12 @@ class Question(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     type = models.CharField(choices=QUESTION_TYPE, max_length=10)
+
+    class Meta:
+        """
+        sort by id
+        """
+        ordering = ["id"]
 
     def __str__(self):
         return self.question
