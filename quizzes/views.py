@@ -125,4 +125,9 @@ def save_quiz_results(request, pk):
     for result in results:
         Response.objects.create(submission=submission, answer=result)
 
+    # update the user's profile to show they've taken the quiz
+    user_profile = get_object_or_404(User, username=request.user)
+    user_profile.profile.taken_quiz = True
+    user_profile.save()
+
     return JsonResponse({"results": results})
