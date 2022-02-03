@@ -1,6 +1,6 @@
 import json
 from types import SimpleNamespace
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -12,12 +12,15 @@ from submissions.models import Submission, Response
 @login_required
 def quiz_info(request):
     user = get_object_or_404(User, username=request.user)
-    quizzes = Quiz.objects.all()
+    get_quiz = Quiz.objects.filter(
+        name=user.profile.mentor_type).values_list("id", flat=True)[:1]
+    for quiz_id in get_quiz:
+        quiz_id = quiz_id
 
     template = "quizzes/info.html"
     context = {
         "user": user,
-        "quizzes": quizzes,
+        "quiz_id": quiz_id,
     }
 
     return render(request, template, context)
@@ -25,7 +28,16 @@ def quiz_info(request):
 
 @login_required
 def take_quiz(request, pk):
-    quiz = Quiz.objects.get(pk=pk)
+    user = get_object_or_404(User, username=request.user)
+    get_quiz = Quiz.objects.filter(
+        name=user.profile.mentor_type).values_list("id", flat=True)[:1]
+    for quiz_id in get_quiz:
+        if quiz_id != pk:
+            # user trying to brute-force to another quiz URL
+            return redirect(take_quiz, quiz_id)
+        else:
+            # user accessing correct quiz URL
+            quiz = Quiz.objects.get(pk=pk)
 
     template = "quizzes/quiz.html"
     context = {
