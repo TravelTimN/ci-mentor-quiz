@@ -1,9 +1,10 @@
 import json
 from types import SimpleNamespace
 from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from .models import Quiz
 from questions.models import Question, Choice
 from submissions.models import Submission, Response
@@ -49,6 +50,13 @@ def take_quiz(request, pk):
 
 @login_required
 def quiz_data(request, pk):
+    # TODO: trying to restrice users from getting to /quiz/#/data/ URL
+    # TODO: however, this also restrices the fetch promise to get the quiz questions
+    # if not request.user.is_superuser:
+    #     messages.error(request, "Invalid credentials for this page")
+    #     return HttpResponseRedirect(request.META.get("HTTP_REFERER", "/"))
+
+    # user is authorized to view question data
     quiz = Quiz.objects.get(pk=pk)
     questions = []
     for question in quiz.get_questions():
@@ -142,5 +150,7 @@ def save_quiz_results(request, pk):
     user_profile = get_object_or_404(User, username=request.user)
     user_profile.profile.taken_quiz = True
     user_profile.save()
+
+    messages.success(request, "Data successfully submitted!")
 
     return JsonResponse({"results": results})
