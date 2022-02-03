@@ -2,13 +2,14 @@ import json
 from types import SimpleNamespace
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from .models import Quiz
 from questions.models import Question, Choice
 from submissions.models import Submission, Response
 
 
-# TODO: add login required decorator
+@login_required
 def quiz_info(request):
     user = get_object_or_404(User, username=request.user)
     quizzes = Quiz.objects.all()
@@ -22,7 +23,7 @@ def quiz_info(request):
     return render(request, template, context)
 
 
-# TODO: add login required decorator
+@login_required
 def take_quiz(request, pk):
     quiz = Quiz.objects.get(pk=pk)
 
@@ -34,7 +35,7 @@ def take_quiz(request, pk):
     return render(request, template, context)
 
 
-# TODO: add login required decorator
+@login_required
 def quiz_data(request, pk):
     quiz = Quiz.objects.get(pk=pk)
     questions = []
@@ -51,7 +52,7 @@ def quiz_data(request, pk):
     return JsonResponse({"data": questions, })
 
 
-# TODO: add login required decorator
+@login_required
 def save_quiz_results(request, pk):
 
     quiz = Quiz.objects.get(pk=pk)
