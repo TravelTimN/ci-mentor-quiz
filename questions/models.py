@@ -32,12 +32,13 @@ class Subject(models.Model):
 
 
 class Question(models.Model):
-    # question types (multiple choice, true/false, short-answer)
+    # multi-choice, input, integer, true/false, short answer, url
     QUESTION_TYPE = [
-        ("number", "Integer"),
-        ("checkbox", "Multiple Choice"),
-        ("textarea", "Short Answer"),
-        ("radio", "True or False"),
+        ("checkbox", "Checkbox"),
+        ("text", "Input"),
+        ("number", "Number"),
+        ("radio", "Radio"),
+        ("textarea", "Textarea"),
         ("url", "URL"),
     ]
     question = models.CharField(max_length=200, blank=False)
