@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
 
@@ -11,18 +12,26 @@ Details about the quiz... TBD?
 {% if user.profile.taken_quiz %}
     <!-- user has taken quiz already -->
     {% if user.profile.mentor_type != "is_not_mentor" %}
+        <!-- user-type is current mentor / can take quiz again -->
         You have already taken this quiz.<br>
         Would you like to take the test again?<br>
-        <a href="{% url 'take_quiz' quiz_id %}" class="btn-ci">Yes</a>
+        <button id="btn-take-quiz" class="btn-ci" data-quiz="{{ quiz_id }}">Yes</button>
     {% else %}
+        <!-- user-type is potential mentor / cannot resubmit quiz answers -->
         Thank You!<br>
         The Code Institute Mentoring team will be in contact with you soon!
     {% endif %}
 {% else %}
     <!-- user has not taken quiz yet -->
-    <a href="{% url 'take_quiz' quiz_id %}" class="btn-ci">Take Quiz</a>
+    <button id="btn-take-quiz" class="btn-ci" data-quiz="{{ quiz_id }}">Take Quiz</button>
 {% endif %}
 
 <hr>
 
+{% endblock %}
+
+
+{% block js %}
+    <!-- scripts only for the quiz-info page -->
+    <script src="{% static 'js/info.js' %}"></script>
 {% endblock %}
