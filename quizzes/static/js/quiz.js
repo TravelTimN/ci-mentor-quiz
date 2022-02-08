@@ -1,27 +1,80 @@
 /* jshint esversion: 8 */
 
-const dataUrl = window.location.href;
+// const dataUrl = window.location.href;
 const quizStartBtn = document.getElementById("quiz-start-btn");
 const quizSubmitBtn = document.getElementById("quiz-submit-btn");
 const quizForm = document.getElementById("quiz-form");
-const csrfToken = document.getElementsByName("csrfmiddlewaretoken");
+// const csrfToken = document.getElementsByName("csrfmiddlewaretoken");
 const duration = document.getElementById("duration");
-let quizContainer = document.getElementById("quiz-container");
+// let quizContainer = document.getElementById("quiz-container");
 let time = 0;
 let timeInterval;
 
 
-quizStartBtn.addEventListener("click", function() {
-    this.classList.add("hide", "full");
-    quizForm.classList.remove("hide");
-    
+function setTime() {
+    // increment the quiz timer
+    ++time;
+    duration.value = time;
+}
+
+
+// start the quiz and the timer
+quizStartBtn.addEventListener("click", function () {
+    document.getElementById("quiz-start-row").classList.add("hide", "full");
+    quizForm.classList.remove("hide", "full");
+
     timeInterval = setInterval(setTime, 1000);
 });
 
 
-function setTime() {
-  ++time;
-  duration.value = time;
+// grab the next question in sequence
+const nextBtns = document.querySelectorAll("[id^='next-btn-']");
+nextBtns.forEach(btn => {
+    btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        let btnNum = this.id.replace("next-btn-", "");
+        // only proceed if validated properly
+        if (validateQuestion(btnNum)) {
+            getNextBtn(btnNum);
+        }
+    });
+});
+
+
+// validate the final question of the quiz using the submit-btn dataset
+quizSubmitBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    let btnNum = this.dataset.submit;
+    // only proceed if validated properly
+    if (validateQuestion(btnNum)) {
+        quizForm.submit();
+    }
+});
+
+
+function validateQuestion(btnNum) {
+    // check if user input an answer in order to proceed
+    let dataValidator = document.querySelector(`[data-validator="${btnNum}"]`);
+
+    if (dataValidator.checkValidity()) {
+        return true
+    } else {
+        document.getElementById(`error-handler-${btnNum}`).innerHTML = "* this question is required";
+    }
+}
+
+
+function getNextBtn(btnNum) {
+    // hide the current question's card-set and next-btn
+    let getCard = document.getElementById(`card-set-${btnNum}`);
+    getCard.classList.add("hide", "full");
+    document.getElementById(`card-next-btn-${btnNum}`).classList.add("hide", "full");
+
+    // un-hide the next question's card-set and next-btn
+    let nextNum = parseInt(btnNum) + 1;
+    let getNextCard = document.getElementById(`card-set-${nextNum}`);
+    getNextCard.classList.remove("hide", "full");
+    document.getElementById(`card-next-btn-${nextNum}`).classList.remove("hide", "full");
 }
 
 
