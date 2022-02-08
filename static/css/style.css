@@ -81,6 +81,7 @@ a, a:hover {
     border-radius: 4px;
     font-weight: bold;
     padding: 0 20px;
+    line-height: 2;
 }
 
 .btn-ci:hover {
