@@ -35,8 +35,7 @@
                         {% for choice in question.choices|shuffle %}
                             {% if question.type == "checkbox" %}
                                 <!-- checkboxes -->
-                                <!-- TODO: https://stackoverflow.com/questions/22238368/how-can-i-require-at-least-one-checkbox-be-checked-before-a-form-can-be-submitte -->
-                                <div class="input-group mb-3">
+                                <div class="input-group mb-3 checkbox-validation">
                                     <div class="input-group-text">
                                         <input class="form-check-input mt-0" type="checkbox" id="q{{ question.id }}-{{ forloop.counter }}" name="q{{ question.id }}" data-validator="{{ forloop.parentloop.counter }}" class="choice" value="{{ choice }}" required>
                                     </div>

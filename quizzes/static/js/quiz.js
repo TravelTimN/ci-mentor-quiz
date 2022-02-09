@@ -27,6 +27,36 @@ quizStartBtn.addEventListener("click", function () {
 });
 
 
+// confirm if any 'clicked' checkbox is :checked, then remove sibling 'required' attributes
+let checkboxes = document.querySelectorAll(".checkbox-validation input[type=checkbox]");
+checkboxes.forEach(checkbox => {
+    // click event listener
+    checkbox.addEventListener("click", function() {
+        let checkboxQnum = this.dataset.validator;
+        // grab only 'this' sibling's checkboxes
+        let checkboxSiblings = document.querySelectorAll(`[data-validator="${checkboxQnum}"]`);
+        let checkboxChoices = [];
+        // loop each sibling - push true/false to array if :checked or not
+        checkboxSiblings.forEach(sibling => {
+            checkboxChoices.push(sibling.checked);
+        });
+        if (checkboxChoices.includes(true)) {
+            // does array contain 'true' at all?
+            checkboxSiblings.forEach(sibling => {
+                // remove all sibling's 'required' attributes
+                sibling.required = false;
+            });
+        } else {
+            // array does not contain any instance of 'true'
+            checkboxSiblings.forEach(sibling => {
+                // loop sibling and add 'required' attributes to all
+                sibling.required = true;
+            });
+        }
+    });
+});
+
+
 // grab the next question in sequence
 const nextBtns = document.querySelectorAll("[id^='next-btn-']");
 nextBtns.forEach(btn => {
