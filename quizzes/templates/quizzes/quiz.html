@@ -22,7 +22,8 @@
 
                 <!-- cycle through all questions -->
                 {% for question in questions %}
-                <fieldset id="card-set-{{ forloop.counter }}" class="card {% if not forloop.first %}hide full{% endif %} shadow">
+                <fieldset id="card-set-{{ forloop.counter }}{% if forloop.last %}-last{% endif %}"
+                    class="card shadow {% if not forloop.first %}hide full{% endif %}">
 
                     <!-- display the question -->
                     <legend class="card-header bg-p-grey text-t-grey">
