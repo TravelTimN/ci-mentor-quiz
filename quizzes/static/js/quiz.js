@@ -27,6 +27,16 @@ quizStartBtn.addEventListener("click", function () {
 });
 
 
+// (fixes GitHub Issue #4) - prevent the "Enter" key from submitting the form
+let lastQuestion = document.querySelector("[id^='card-set-'][id$='-last'] .choice");
+quizForm.addEventListener("keypress", (e) => {
+    // https://stackoverflow.com/a/47266106
+    if (document.activeElement == lastQuestion && e.key == "Enter") {
+        e.preventDefault();
+    }
+});
+
+
 // confirm if any 'clicked' checkbox is :checked, then remove sibling 'required' attributes
 let checkboxes = document.querySelectorAll(".checkbox-validation input[type=checkbox]");
 checkboxes.forEach(checkbox => {
@@ -89,6 +99,7 @@ function validateQuestion(btnNum) {
     if (dataValidator.checkValidity()) {
         return true
     } else {
+        dataValidator?.focus(); // set autofocus back onto the element
         document.getElementById(`error-handler-${btnNum}`).innerHTML = "* this question is required";
     }
 }
@@ -97,14 +108,19 @@ function validateQuestion(btnNum) {
 function getNextBtn(btnNum) {
     // hide the current question's card-set and next-btn
     let getCard = document.getElementById(`card-set-${btnNum}`);
-    getCard.classList.add("hide", "full");
+    getCard?.classList.add("hide", "full");
     document.getElementById(`card-next-btn-${btnNum}`).classList.add("hide", "full");
 
     // un-hide the next question's card-set and next-btn
     let nextNum = parseInt(btnNum) + 1;
-    let getNextCard = document.getElementById(`card-set-${nextNum}`);
-    getNextCard.classList.remove("hide", "full");
-    document.getElementById(`card-next-btn-${nextNum}`).classList.remove("hide", "full");
+    let getNextCard = document.querySelector(`[id^='card-set-${nextNum}'`);
+    getNextCard?.classList.remove("hide", "full");
+    let cardNextBtn = document.getElementById(`card-next-btn-${nextNum}`);
+    cardNextBtn?.classList.remove("hide", "full");
+
+    // autofocus the next textarea if applicable
+    let getNextInput = getNextCard.querySelector("textarea");
+    getNextInput?.focus();
 }
 
 
