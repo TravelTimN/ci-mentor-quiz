@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from quizzes.models import Quiz
+from questions.models import Question
 
 
 class Submission(models.Model):
@@ -10,16 +11,18 @@ class Submission(models.Model):
         Quiz, on_delete=models.CASCADE, null=False, blank=False)
     duration = models.CharField(null=False, blank=False, max_length=10)
     taken = models.DateTimeField(auto_now_add=True, null=False, blank=False)
-    original_response = models.TextField(null=False, blank=False, default="")
+    original_response = models.JSONField(null=False, blank=False)
 
     def __str__(self):
         return self.quiz.name
 
 
 class Response(models.Model):
-    # primarily for potential mentor inputs (fill-in-the-blank)
     submission = models.ForeignKey(Submission, on_delete=models.CASCADE)
-    answer = models.TextField(null=False, blank=False, default="")
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    is_correct = models.BooleanField(default=False)
+    correct_answer = models.CharField(null=False, max_length=999, default="")
+    user_answer = models.CharField(null=False, max_length=9999, default="")
 
     def __str__(self):
-        return self.answer
+        return f"User: {self.submission.user} | QID: {self.question} | Correct: {self.is_correct}"
