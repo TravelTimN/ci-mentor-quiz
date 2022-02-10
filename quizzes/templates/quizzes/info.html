@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load custom_filters %}
 
 {% block content %}
 
@@ -27,6 +28,44 @@ Details about the quiz... TBD?
 {% endif %}
 
 <hr>
+
+{% if user.profile.taken_quiz %}
+    {% for submission in user_submissions %}
+        <div class="accordion" id="accordion-{{ forloop.counter }}">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="accordion-header-{{ forloop.counter }}">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-collapse-{{ forloop.counter }}"
+                        aria-expanded="false" aria-controls="accordion-collapse-{{ forloop.counter }}">
+                        Quiz Attempt #{{ forloop.counter }} - {{ submission.taken }}
+                    </button>
+                </h2>
+                <div id="accordion-collapse-{{ forloop.counter }}" class="accordion-collapse collapse" aria-labelledby="accordion-header-{{ forloop.counter }}"
+                    data-bs-parent="#accordion-{{ forloop.counter }}">
+                    <div class="accordion-body">
+
+                        <!-- start collapsible body content -->
+                        {% for response in user_responses %}
+                            {% if response.submission.id == submission.id %}
+                                <div class="list-group">
+                                    <div class="list-group-item list-group-item-action list-group-item-{% if response.is_correct %}success{% else %}danger{% endif %}">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h5 class="mb-1">{{ response.question }}</h5>
+                                            <small class="text-muted">{{ response.question.subject }}</small>
+                                        </div>
+                                        <p class="mb-1">You've Answered: {{ response.user_answer|safe|linebreaksbr|replace:"['|"|replace:"']|"|replace:"', '|, " }}</p>
+                                        <small class="text-muted">{% if response.is_correct == True %}Correct{% else %}Incorrect{% endif %}</small>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    {% endfor %}
+{% endif %}
 
 {% endblock %}
 
