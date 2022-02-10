@@ -15,21 +15,24 @@ class SubmissionAdmin(admin.ModelAdmin):
 
 @admin.register(Response)
 class ResponseAdmin(admin.ModelAdmin):
-    list_display = ("id", "user", "taken", "quiz", "answer")  # table view
+    list_display = ("id", "user", "taken", "quiz", "correct")  # table view
 
     @admin.display()
     # @admin.display() decorator allow list_display to use ForeignKeys
-    def id(self, obj):
-        return obj.submission.pk
+    def id(self, response):
+        return response.question.pk
 
-    def user(self, obj):
-        return obj.submission.user
+    def user(self, response):
+        return response.submission.user
 
-    def taken(self, obj):
-        return obj.submission.taken
+    def taken(self, response):
+        return response.submission.taken
 
-    def quiz(self, obj):
-        return obj.submission.quiz.name
+    def quiz(self, response):
+        return response.submission.quiz.name
+
+    def correct(self, response):
+        return response.is_correct
 
 
 admin.site.register(Submission, SubmissionAdmin)
