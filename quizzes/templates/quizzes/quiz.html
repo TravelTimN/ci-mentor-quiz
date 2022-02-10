@@ -31,50 +31,19 @@
                         {{ question.question }}
                     </legend>
 
-                    <!-- custom '|shuffle' tag to shuffle the various choices -->
+                    <!-- cycle through each of the question's choices -->
                     <div class="card-body">
-                        {% for choice in question.choices|shuffle %}
-                            {% if question.type == "checkbox" %}
-                                <!-- checkboxes -->
-                                <div class="input-group mb-3 checkbox-validation">
-                                    <div class="input-group-text">
-                                        <input class="form-check-input mt-0" type="checkbox" id="q{{ question.id }}-{{ forloop.counter }}" name="q{{ question.id }}" data-validator="{{ forloop.parentloop.counter }}" class="choice" value="{{ choice }}" required>
-                                    </div>
-                                    <label for="q{{ question.id }}-{{ forloop.counter }}" class="form-control bg-light">{{ choice }}</label>
-                                </div>
-                            {% elif question.type == "number" %}
-                                <!-- numbers -->
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text bg-s-grey"><i class="fas fa-clock fa-fw"></i></span>
-                                    <input type="number" class="form-control choice" id="q{{ question.id }}-{{ forloop.counter }}" name="q{{ question.id }}" min="1" max="99" data-validator="{{ forloop.parentloop.counter }}" required>
-                                </div>
-                            {% elif question.type == "radio" %}
-                                <!-- radio buttons -->
-                                <div class="input-group mb-3">
-                                    <div class="input-group-text">
-                                        <input class="form-check-input mt-0 choice" type="radio" id="q{{ question.id }}-{{ forloop.counter }}" name="q{{ question.id }}" data-validator="{{ forloop.parentloop.counter }}" value="{{ choice }}" required>
-                                    </div>
-                                    <label for="q{{ question.id }}-{{ forloop.counter }}" class="form-control bg-light">{{ choice }}</label>
-                                </div>
-                            {% elif question.type == "textarea" %}
-                                <!-- textareas -->
-                                <div class="mb-3">
-                                    <textarea class="form-control" id="q{{ question.id }}-{{ forloop.counter }}" name="q{{ question.id }}" data-validator="{{ forloop.parentloop.counter }}" rows="5" required></textarea>
-                                </div>
-                            {% elif question.type == "url" %}
-                                <!-- urls -->
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text bg-s-grey"><i class="fas fa-code fa-fw"></i></span>
-                                    <input type="url" class="form-control choice" id="q{{ question.id }}-{{ forloop.counter }}" name="q{{ question.id }}" data-validator="{{ forloop.parentloop.counter }}" required>
-                                </div>
-                            {% else %}
-                                <!-- default / text -->
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text bg-s-grey"><i class="fas fa-align-left fa-fw"></i></span>
-                                    <input type="text" class="form-control choice" id="q{{ question.id }}-{{ forloop.counter }}" name="q{{ question.id }}" data-validator="{{ forloop.parentloop.counter }}" required>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
+                        {% if quiz.name == "is_not_mentor" %}
+                            <!-- do NOT shuffle the choices (primarily for mentor availability question) -->
+                            {% for choice in question.choices %}
+                                {% include "quizzes/partials/choices.html" %}
+                            {% endfor %}
+                        {% else %}
+                            <!-- custom '|shuffle' tag to shuffle the various choices -->
+                            {% for choice in question.choices|shuffle %}
+                                {% include "quizzes/partials/choices.html" %}
+                            {% endfor %}
+                        {% endif %}
 
                         <!-- error handling -->
                         <span id="error-handler-{{ forloop.counter }}" class="text-danger d-flex justify-content-center"></span>
