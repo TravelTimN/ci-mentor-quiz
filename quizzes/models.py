@@ -15,8 +15,8 @@ class Quiz(models.Model):
         return str(self.name)
 
     def get_questions(self):
-        if self.pk != 2:
-            # shuffle quiz unless it's potential_mentor_quiz
+        if self.name != "is_not_mentor":
+            # shuffle quiz unless it's is_not_mentor quiz
             questions = list(self.question_set.all())
             random.shuffle(questions)
             return questions[:self.max_count]
