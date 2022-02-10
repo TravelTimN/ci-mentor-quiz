@@ -15,13 +15,17 @@ def quiz_info(request):
     user = get_object_or_404(User, username=request.user)
     get_quiz = Quiz.objects.filter(
         name=user.profile.mentor_type).values_list("id", flat=True)[:1]
-    for quiz_id in get_quiz:
-        quiz_id = quiz_id
+    for q_id in get_quiz:
+        quiz_id = q_id
+    user_submissions = Submission.objects.filter(user=request.user)
+    user_responses = Response.objects.filter(submission__in=user_submissions)
 
     template = "quizzes/info.html"
     context = {
         "user": user,
         "quiz_id": quiz_id,
+        "user_submissions": user_submissions,
+        "user_responses": user_responses,
     }
 
     return render(request, template, context)
@@ -91,48 +95,41 @@ def submit_quiz_results(request, pk):
             else:
                 # build questions list with user's responses
                 key = key.replace("q", "")
-                current_question = Question.objects.get(id=key)
+                current_question = Question.objects.get(pk=key)
                 questions.append({
                     "id": key,
                     "question": current_question,
-                    "user_answer": sorted(value),
+                    "user_answer": value,
                 })
 
         for question in questions:
             # https://docs.python.org/3/library/types.html#types.SimpleNamespace
             # SimpleNamespace allows the use of dot-notation
             q = SimpleNamespace(**question)
-            if q.user_answer != "":  # only if user's value is not empty
-                question_choices = Choice.objects.filter(question=q.question)
-                choices = []  # resets with each loop intentionally
-                # loop through the DB question's possible choices
-                for choice in question_choices:
-                    # if the choice is marked 'correct_answer', append to choices
-                    if choice.correct_answer:
-                        choices.append(choice.choice)
-                correct_answer = sorted(choices)  # set the correct_answer
-                # check if the user's answer is equal to the correct choices
-                if sorted(q.user_answer) == sorted(choices):
-                    is_correct = "True"
-                elif choices == ["na"]:
-                    # handle 'is_not_mentor' default "na" choice-value
-                    is_correct = "True"
-                else:
-                    # correct_answer = choices
-                    is_correct = "False"
-                # build a dict with the user's answers + the correct answers
-                results.append({
-                    "id": q.id,
-                    "question": q.question.question,
-                    "is_correct": is_correct,
-                    "correct_answer": correct_answer,
-                    "user_answers": q.user_answer,
-                })
+            question_choices = Choice.objects.filter(question=q.question)
+            choices = []  # resets with each loop intentionally
+            # loop through the DB question's possible choices
+            for choice in question_choices:
+                # if the choice is marked 'correct_answer', append to choices
+                if choice.correct_answer:
+                    choices.append(choice.choice)
+            correct_answer = sorted(choices)  # set the correct_answer
+            # check if the user's answer is equal to the correct choices
+            if sorted(q.user_answer) == sorted(choices):
+                is_correct = "True"
+            elif quiz.name == "is_not_mentor":
+                # handle 'is_not_mentor' as always True
+                is_correct = "True"
             else:
-                # user's answer was blank/null/empty
-                results.append({
-                    str(question): "User did not submit an answer"
-                })
+                is_correct = "False"
+            # build a dict with the user's answers + the correct answers
+            results.append({
+                "id": q.id,
+                "question": q.question.question,
+                "is_correct": is_correct,
+                "correct_answer": correct_answer,
+                "user_answers": q.user_answer,
+            })
 
         # create new instance of Submission
         submission = Submission.objects.create(
@@ -144,7 +141,13 @@ def submit_quiz_results(request, pk):
 
         # create individual instances of Response for the Submission
         for result in results:
-            Response.objects.create(submission=submission, answer=result)
+            Response.objects.create(
+                submission=submission,
+                question=Question.objects.get(pk=result["id"]),
+                is_correct=result["is_correct"],
+                correct_answer=result["correct_answer"],
+                user_answer=result["user_answers"]
+            )
 
         # update the user's profile to show they've taken the quiz
         user_profile = get_object_or_404(User, username=request.user)
