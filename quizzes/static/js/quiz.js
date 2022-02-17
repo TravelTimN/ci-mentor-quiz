@@ -7,23 +7,37 @@ const quizForm = document.getElementById("quiz-form");
 // const csrfToken = document.getElementsByName("csrfmiddlewaretoken");
 const duration = document.getElementById("duration");
 // let quizContainer = document.getElementById("quiz-container");
-let time = 0;
-let timeInterval;
+let durationTime = 0;
+let durationInterval;
+let timeTaken = 0;
+let timeTakenInterval;
 
 
-function setTime() {
-    // increment the quiz timer
-    ++time;
-    duration.value = time;
+function setDurationTime() {
+    // increment the quiz duration timer
+    ++durationTime;
+    duration.value = durationTime;
 }
 
 
-// start the quiz and the timer
-quizStartBtn.addEventListener("click", function () {
+function setTimeTaken(qID) {
+    // increment the specific question time taken
+    ++timeTaken;
+    let currentQuestionTimeTaken = document.querySelector(`[id^='time_taken-${qID}']`);
+    currentQuestionTimeTaken.value = timeTaken;
+}
+
+
+// start the quiz and the timers
+quizStartBtn.addEventListener("click", function() {
     document.getElementById("quiz-start-row").classList.add("hide", "full");
     quizForm.classList.remove("hide", "full");
 
-    timeInterval = setInterval(setTime, 1000);
+    // start the duration interval (total length of quiz)
+    durationInterval = setInterval(setDurationTime, 1000);
+    // grab first question's ID, and start individual question timer
+    let firstQuestionId = document.querySelector("[id^='card-set-1'] input").name.replace("time_taken-", "");
+    timeTakenInterval = setInterval(function() {setTimeTaken(firstQuestionId)}, 1000);
 });
 
 
@@ -106,6 +120,10 @@ function validateQuestion(btnNum) {
 
 
 function getNextBtn(btnNum) {
+    // clear previous question time_taken interval and reset back to 0
+    clearInterval(timeTakenInterval);
+    timeTaken = 0;
+
     // hide the current question's card-set and next-btn
     let getCard = document.getElementById(`card-set-${btnNum}`);
     getCard?.classList.add("hide", "full");
@@ -117,6 +135,10 @@ function getNextBtn(btnNum) {
     getNextCard?.classList.remove("hide", "full");
     let cardNextBtn = document.getElementById(`card-next-btn-${nextNum}`);
     cardNextBtn?.classList.remove("hide", "full");
+
+    // start the time_taken interval counter
+    let getQuestionId = document.querySelector(`[id^='card-set-${nextNum}'] input`).name.replace("time_taken-", "");
+    timeTakenInterval = setInterval(function() {setTimeTaken(getQuestionId)}, 1000);
 
     // autofocus the next textarea if applicable
     let getNextInput = getNextCard.querySelector("textarea");
