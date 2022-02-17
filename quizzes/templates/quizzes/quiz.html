@@ -18,12 +18,17 @@
         <div class="col-sm-12 col-md-10 offset-md-1 col-lg-6 offset-lg-3">
             <form id="quiz-form" class="hide full" method="POST" action="{% url 'submit_quiz' quiz.id %}">
                 {% csrf_token %}
+                <!-- track total duration of entire quiz -->
                 <input type="hidden" id="duration" name="duration" value="0">
 
                 <!-- cycle through all questions -->
                 {% for question in questions %}
+
                 <fieldset id="card-set-{{ forloop.counter }}{% if forloop.last %}-last{% endif %}"
                     class="card shadow {% if not forloop.first %}hide full{% endif %}">
+
+                    <!-- track duration of each individual question -->
+                    <input type="hidden" id="time_taken-{{ question.id }}" name="time_taken-{{ question.id }}" value="0">
 
                     <!-- display the question -->
                     <legend class="card-header bg-p-grey text-t-grey">
