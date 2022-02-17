@@ -9,7 +9,7 @@ class Submission(models.Model):
         User, on_delete=models.CASCADE, null=False, blank=False)
     quiz = models.ForeignKey(
         Quiz, on_delete=models.CASCADE, null=False, blank=False)
-    duration = models.CharField(null=False, blank=False, max_length=10)
+    duration = models.IntegerField(null=False, blank=False, default="0")
     taken = models.DateTimeField(auto_now_add=True, null=False, blank=False)
     original_response = models.JSONField(null=False, blank=False)
 
@@ -23,6 +23,7 @@ class Response(models.Model):
     is_correct = models.BooleanField(default=False)
     correct_answer = models.CharField(null=False, max_length=999, default="")
     user_answer = models.CharField(null=False, max_length=9999, default="")
+    time_taken = models.IntegerField(null=False, blank=False, default="0")
 
     def __str__(self):
         return f"User: {self.submission.user} | QID: {self.question} | Correct: {self.is_correct}"
