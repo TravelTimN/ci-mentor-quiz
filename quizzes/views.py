@@ -87,12 +87,15 @@ def submit_quiz_results(request, pk):
         data.pop("csrfmiddlewaretoken")
         questions = []
         duration = 0
+        time_taken = 0
 
         for key, value in data.items():
             # ignore "duration" for obtaining each question
             if key == "duration":
                 duration = "".join(value)
-            else:
+            elif key.startswith("time_taken-"):
+                time_taken = "".join(value)
+            elif key.startswith("q"):
                 # build questions list with user's responses
                 key = key.replace("q", "")
                 current_question = Question.objects.get(pk=key)
@@ -100,6 +103,7 @@ def submit_quiz_results(request, pk):
                     "id": key,
                     "question": current_question,
                     "user_answer": value,
+                    "time_taken": time_taken
                 })
 
         for question in questions:
@@ -129,6 +133,7 @@ def submit_quiz_results(request, pk):
                 "is_correct": is_correct,
                 "correct_answer": correct_answer,
                 "user_answers": q.user_answer,
+                "time_taken": q.time_taken,
             })
 
         # create new instance of Submission
@@ -146,7 +151,8 @@ def submit_quiz_results(request, pk):
                 question=Question.objects.get(pk=result["id"]),
                 is_correct=result["is_correct"],
                 correct_answer=result["correct_answer"],
-                user_answer=result["user_answers"]
+                user_answer=result["user_answers"],
+                time_taken=result["time_taken"],
             )
 
         # update the user's profile to show they've taken the quiz
