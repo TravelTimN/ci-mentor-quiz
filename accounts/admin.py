@@ -6,4 +6,4 @@ from .models import Profile
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ("user", "taken_quiz", "mentor_type")  # table view
     list_filter = ("taken_quiz", "mentor_type",)  # sidebar filter
-    search_fields = ["user", "taken_quiz", "mentor_type"]  # search box
+    search_fields = ["user__username", "user__email",]  # search box
