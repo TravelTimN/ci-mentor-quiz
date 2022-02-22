@@ -6,6 +6,6 @@
 
 - [Tim Nelson](https://github.com/TravelTimN)
 
-## Contributors
+## Credits
 
-- 
+- [Pexels](https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg) background image.
