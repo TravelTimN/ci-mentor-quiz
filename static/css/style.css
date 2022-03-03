@@ -266,6 +266,11 @@ ul#id_mentor_type li {
     background-size: cover;
 }
 
+.auth-form {
+    width: 95%;
+    margin: 1em auto;
+}
+
 /* FOOTER */
 footer {
     text-align: center;
@@ -306,10 +311,17 @@ footer .fas:hover {
         margin: 0 1em;
         padding: 0;
     }
+
+    .auth-form {
+        width: 75%;
+    }
 }
 
 /* bootstrap breakpoint: medium */
 @media only screen and (min-width: 768px) {
+    .auth-form {
+        width: 95%;
+    }
 
     a.orange-link {
         color: rgba(var(--p-orange), 1);
@@ -339,7 +351,11 @@ footer .fas:hover {
 }
 
 /* bootstrap breakpoint: large */
-@media only screen and (min-width: 992px) {}
+@media only screen and (min-width: 992px) {
+    .auth-form {
+        width: 85%;
+    }
+}
 
 /* bootstrap breakpoint: x-large */
 @media only screen and (min-width: 1200px) {}
