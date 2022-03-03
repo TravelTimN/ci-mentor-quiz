@@ -12,6 +12,7 @@ class Submission(models.Model):
     duration = models.IntegerField(null=False, blank=False, default="0")
     taken = models.DateTimeField(auto_now_add=True, null=False, blank=False)
     original_response = models.JSONField(null=False, blank=False)
+    percent_correct = models.IntegerField(null=False, blank=False, default="0")
 
     def __str__(self):
         return self.quiz.name
