@@ -13,19 +13,25 @@ from submissions.models import Submission, Response
 @login_required
 def quiz_info(request):
     user = get_object_or_404(User, username=request.user)
-    get_quiz = Quiz.objects.filter(
-        name=user.profile.mentor_type).values_list("id", flat=True)[:1]
-    for q_id in get_quiz:
-        quiz_id = q_id
+    # get the ID of this user's specific quiz-type
+    quiz_id = Quiz.objects.filter(
+        name=user.profile.mentor_type).values_list("id", flat=True)[:1][0]
+    # filter previous quiz submissions by user
     user_submissions = Submission.objects.filter(user=request.user)
-    user_responses = Response.objects.filter(submission__in=user_submissions)
+    results = []
+    for submission in user_submissions:
+        responses = Response.objects.filter(submission=submission.id)
+        results.append({
+            "quiz": submission,
+            "answers": responses,
+            "percentage": submission.percent_correct
+        })
 
     template = "quizzes/info.html"
     context = {
         "user": user,
         "quiz_id": quiz_id,
-        "user_submissions": user_submissions,
-        "user_responses": user_responses,
+        "results": results
     }
 
     return render(request, template, context)
@@ -80,6 +86,7 @@ def submit_quiz_results(request, pk):
         results = []
         correct_answer = None
         is_correct = "False"
+        total_correct = 0
 
         # convert POST results into dictionary of lists
         data = dict(request.POST.lists())
@@ -121,9 +128,11 @@ def submit_quiz_results(request, pk):
             # check if the user's answer is equal to the correct choices
             if sorted(q.user_answer) == sorted(choices):
                 is_correct = "True"
+                total_correct += 1
             elif quiz.name == "is_not_mentor":
                 # handle 'is_not_mentor' as always True
                 is_correct = "True"
+                total_correct += 1
             else:
                 is_correct = "False"
             # build a dict with the user's answers + the correct answers
@@ -136,12 +145,17 @@ def submit_quiz_results(request, pk):
                 "time_taken": q.time_taken,
             })
 
+        # calculate percentage of questions answered correctly
+        questions_answered = len(questions)
+        percent_correct = round((total_correct / questions_answered) * 100)
+
         # create new instance of Submission
         submission = Submission.objects.create(
             user=user,
             quiz=quiz,
             duration=duration,
-            original_response=results
+            original_response=results,
+            percent_correct=percent_correct
         )
 
         # create individual instances of Response for the Submission
