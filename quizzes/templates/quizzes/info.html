@@ -4,68 +4,118 @@
 
 {% block content %}
 
-<hr>
+<div class="container-lg my-5">
+    <!-- TODO: info about the quiz? -->
+    <div class="row">
+        <div class="col-12">
+            Details about the quiz... TBD?
+        </div>
+    </div>
 
-Details about the quiz... TBD?
+    <hr>
 
-<hr>
-
-{% if user.profile.taken_quiz %}
-    <!-- user has taken quiz already -->
-    {% if user.profile.mentor_type != "is_not_mentor" %}
-        <!-- user-type is current mentor / can take quiz again -->
-        You have already taken this quiz.<br>
-        Would you like to take the test again?<br>
-        <button id="btn-take-quiz" class="btn-ci" data-quiz="{{ quiz_id }}">Yes</button>
+    <!-- take quiz button, or "thanks" (non mentors) -->
+    {% if user.profile.taken_quiz %}
+        <!-- user has taken quiz already -->
+        {% if user.profile.mentor_type != "is_not_mentor" %}
+            <!-- user-type is current mentor / can take quiz again -->
+            You have already taken this quiz.<br>
+            Would you like to take the test again?<br><br>
+            <button id="btn-take-quiz" class="btn-ci" data-quiz="{{ quiz_id }}">Yes</button>
+        {% else %}
+            <!-- user-type is potential mentor / cannot resubmit quiz answers -->
+            Thank You!<br>
+            The Code Institute Mentoring team will be in contact with you soon!
+        {% endif %}
     {% else %}
-        <!-- user-type is potential mentor / cannot resubmit quiz answers -->
-        Thank You!<br>
-        The Code Institute Mentoring team will be in contact with you soon!
+        <!-- user has not taken quiz yet -->
+        <button id="btn-take-quiz" class="btn-ci" data-quiz="{{ quiz_id }}">Take Quiz</button>
     {% endif %}
-{% else %}
-    <!-- user has not taken quiz yet -->
-    <button id="btn-take-quiz" class="btn-ci" data-quiz="{{ quiz_id }}">Take Quiz</button>
-{% endif %}
 
-<hr>
+    <hr>
 
-{% if user.profile.taken_quiz %}
-    <!-- loop over each quiz attemp -->
-    {% for result in results %}
-        <div class="accordion" id="accordion-{{ forloop.counter }}">
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="accordion-header-{{ forloop.counter }}">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-collapse-{{ forloop.counter }}"
-                        aria-expanded="false" aria-controls="accordion-collapse-{{ forloop.counter }}">
-                        Quiz Attempt #{{ forloop.counter }} - {{ result.quiz.taken }}
-                    </button>
-                </h2>
-                <div id="accordion-collapse-{{ forloop.counter }}" class="accordion-collapse collapse" aria-labelledby="accordion-header-{{ forloop.counter }}"
-                    data-bs-parent="#accordion-{{ forloop.counter }}">
-                    <div class="accordion-body">
+    <div class="row">
+        <div class="col-12">
+            <!-- display table of quiz attempts if user has taken quiz, and if not prospective mentor -->
+            {% if user.profile.taken_quiz and user.profile.mentor_type != "is_not_mentor" %}
+                <table class="table table-striped text-center">
+                    <thead class="bg-p-grey text-t-grey align-middle">
+                        <tr>
+                            <th scope="col">Date<br>Time</th>
+                            {% if user.is_superuser %}
+                                <th scope="col">Username</th>
+                                <th scope="col">Duration<br><small>(h:m:s)</small></th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Correct<br>Answers</th>
+                            {% endif %}
+                            <th scope="col">Accuracy</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for result in results %}
+                        <tr>
+                            <td>
+                                {{ result.quiz.taken|date:"d M y"|upper }}<br>
+                                <small class="text-muted">{{ result.quiz.taken|date:"H:i A" }}</small>
+                            </td>
+                            {% if user.is_superuser %}
+                                <td>{{ user }}</td>
+                                <td>{{ result.duration }}</td>
+                                <td>{{ result.quiz }}</td>
+                                <td>
+                                    {{ result.correct }}<br>
+                                    <small class="text-muted">out of {{ result.questions }}</small>
+                                </td>
+                            {% endif %}
+                            <td>{{ result.percentage }}%</td>
+                            <td><button class="btn-ci">Results</button></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
 
-                        <!-- start collapsible body content -->
-                        {% for answer in result.answers %}
-                            <div class="list-group">
-                                <div class="list-group-item list-group-item-action list-group-item-{% if answer.is_correct %}success{% else %}danger{% endif %}">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h5 class="mb-1">{{ answer.question }}</h5>
-                                        <small class="text-muted">{{ answer.question.subject }}</small>
-                                    </div>
-                                    <!-- custom django templatetag: |replace"foo|bar" -->
-                                    <p class="mb-1">You've Answered: {{ answer.user_answer|safe|linebreaksbr|replace:"[|"|replace:"]|"|replace:"'|" }}</p>
-                                    <small class="text-muted">{% if answer.is_correct == True %}Correct{% else %}Incorrect{% endif %}</small>
+                <hr><hr>
+
+                <!-- loop over each quiz attemp -->
+                {% for result in results %}
+                    <div class="accordion" id="accordion-{{ forloop.counter }}">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="accordion-header-{{ forloop.counter }}">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-collapse-{{ forloop.counter }}"
+                                    aria-expanded="false" aria-controls="accordion-collapse-{{ forloop.counter }}">
+                                    Quiz Attempt #{{ forloop.counter }} - {{ result.quiz.taken }}
+                                </button>
+                            </h2>
+                            <div id="accordion-collapse-{{ forloop.counter }}" class="accordion-collapse collapse" aria-labelledby="accordion-header-{{ forloop.counter }}"
+                                data-bs-parent="#accordion-{{ forloop.counter }}">
+                                <div class="accordion-body">
+
+                                    <!-- start collapsible body content -->
+                                    {% for answer in result.answers %}
+                                        <div class="list-group">
+                                            <div class="list-group-item list-group-item-action list-group-item-{% if answer.is_correct %}success{% else %}danger{% endif %}">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h5 class="mb-1">{{ answer.question }}</h5>
+                                                    <small class="text-muted">{{ answer.question.subject }}</small>
+                                                </div>
+                                                <!-- custom django templatetag: |replace"foo|bar" -->
+                                                <p class="mb-1">You've Answered: {{ answer.user_answer|safe|linebreaksbr|replace:"[|"|replace:"]|"|replace:"'|" }}</p>
+                                                <small class="text-muted">{% if answer.is_correct == True %}Correct{% else %}Incorrect{% endif %}</small>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+
                                 </div>
                             </div>
-                        {% endfor %}
-
+                        </div>
                     </div>
-                </div>
-            </div>
+                    
+                {% endfor %}
+            {% endif %}
         </div>
-        
-    {% endfor %}
-{% endif %}
+    </div>
+</div>
 
 {% endblock %}
 
