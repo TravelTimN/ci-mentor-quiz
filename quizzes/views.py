@@ -1,3 +1,4 @@
+import datetime
 import json
 from types import SimpleNamespace
 from django.shortcuts import get_object_or_404, redirect, render
@@ -21,10 +22,15 @@ def quiz_info(request):
     results = []
     for submission in user_submissions:
         responses = Response.objects.filter(submission=submission.id)
+        correct = responses.filter(is_correct="True").count()
+        duration = str(datetime.timedelta(seconds=submission.duration))
         results.append({
             "quiz": submission,
             "answers": responses,
-            "percentage": submission.percent_correct
+            "correct": correct,
+            "questions": responses.count(),
+            "percentage": submission.percent_correct,
+            "duration": duration
         })
 
     template = "quizzes/info.html"
