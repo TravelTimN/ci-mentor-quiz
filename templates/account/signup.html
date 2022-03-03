@@ -2,25 +2,25 @@
 {% load i18n %}
 {% block content %}
 
+<div class="container-fluid h-100">
+	<div class="row h-100">
+		<!-- left-side welcome content -->
+		<div class="col-12 col-md-6 d-flex align-items-center justify-content-center">
 
-<div class="container mt-5">
-	<div class="row">
-		<div class="col-sm-12 col-md-10 offset-md-1 col-lg-7 offset-lg-2">
-
-			<!-- login form -->
-			<form method="POST" action="{% url 'account_signup' %}">
+			<!-- register form -->
+			<form method="POST" action="{% url 'account_signup' %}" class="auth-form">
 
 				<!-- CSRF Token -->
 				{% csrf_token %}
 
 				<fieldset class="card">
-					<legend class="card-header bg-p-grey text-t-grey">{% trans "Register" %}</legend>
+					<legend class="card-header bg-p-grey text-t-grey text-center">{% trans "Register" %}</legend>
 
 					<div class="card-body">
 
 						<div class="row">
 							<!-- first name field -->
-							<div class="col-xs-12 col-md-6">
+							<div class="col-xs-12 col-lg-6">
 								<div class="input-group mb-3">
 									<span class="input-group-text bg-s-grey"><i class="fas fa-user fa-fw"></i></span>
 									{{ form.first_name }}
@@ -28,7 +28,7 @@
 							</div>
 
 							<!-- last name field -->
-							<div class="col-xs-12 col-md-6">
+							<div class="col-xs-12 col-lg-6">
 								<div class="input-group mb-3">
 									<span class="input-group-text bg-s-grey"><i class="fas fa-user fa-fw"></i></span>
 									{{ form.last_name }}
@@ -48,15 +48,15 @@
 							{{ form.password1 }}
 						</div>
 
-                        <!-- password confirmation field -->
-                        <div class="input-group mb-3">
-                            <span class="input-group-text bg-s-grey"><i class="fas fa-lock fa-fw"></i></span>
-                            {{ form.password2 }}
-                        </div>
+						<!-- password confirmation field -->
+						<div class="input-group mb-3">
+							<span class="input-group-text bg-s-grey"><i class="fas fa-lock fa-fw"></i></span>
+							{{ form.password2 }}
+						</div>
 
-                        <!-- mentor_type field -->
-                        <div class="input-group mb-3" id="mentor_type_group">
-                            <span class="input-group-text bg-s-grey"><i class="fas fa-code"></i></span>
+						<!-- mentor_type field -->
+						<div class="input-group mb-3" id="mentor_type_group">
+							<span class="input-group-text bg-s-grey"><i class="fas fa-code"></i></span>
 							{{ form.mentor_type }}
 
 							<!-- the following is more for Django4+, -->
@@ -64,13 +64,13 @@
 							<!-- will require re-styling the CSS if used -->
 
 							<!-- {% for type in form.mentor_type %} -->
-							<!-- <div class="form-check"> -->
-								<!-- {{ type.tag }} -->
-								<!-- <label class="form-check-label" for="{{ type.id_for_label }}">{{ type.choice_label }}</label> -->
-							<!-- </div> -->
+								<!-- <div class="form-check"> -->
+									<!-- {{ type.tag }} -->
+									<!-- <label class="form-check-label" for="{{ type.id_for_label }}">{{ type.choice_label }}</label> -->
+								<!-- </div> -->
 							<!-- {% endfor %} -->
 
-                        </div>
+						</div>
 
 						<!-- hidden redirect field (if applicable) -->
 						{% if redirect_field_value %}
@@ -81,9 +81,9 @@
 						{% if form.non_field_errors %}
 							<div class="alert alert-danger">
 								<ul>
-								{% for error in form.non_field_errors %}
-									<li>{{ error }}</li>
-								{% endfor %}
+									{% for error in form.non_field_errors %}
+										<li>{{ error }}</li>
+									{% endfor %}
 								</ul>
 							</div>
 						{% endif %}
@@ -108,8 +108,10 @@
 				</fieldset>
 
 			</form>
-
 		</div>
+
+		<!-- right-side background image -->
+		<div class="col-12 col-md-6 d-none d-md-flex" id="img-home-page"></div>
 	</div>
 </div>
 
