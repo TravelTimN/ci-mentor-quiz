@@ -18,7 +18,10 @@ def quiz_info(request):
     quiz_id = Quiz.objects.filter(
         name=user.profile.mentor_type).values_list("id", flat=True)[:1][0]
     # filter previous quiz submissions by user
-    user_submissions = Submission.objects.filter(user=request.user)
+    if request.user.is_superuser:
+        user_submissions = Submission.objects.all()
+    else:
+        user_submissions = Submission.objects.filter(user=request.user)
     results = []
     for submission in user_submissions:
         responses = Response.objects.filter(submission=submission.id)
