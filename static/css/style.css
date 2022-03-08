@@ -279,10 +279,6 @@ footer {
     background-color: rgba(var(--p-grey), 1);
 }
 
-footer .row {
-    margin: 15px 0;
-}
-
 footer a {
     color: rgba(var(--s-grey), 1);
 }
@@ -293,6 +289,7 @@ footer .fas {
     margin: 0 20px;
     vertical-align: middle;
     color: rgba(var(--s-grey), 1);
+    text-shadow: 2px 2px 2px rgba(var(--black), 0.5);
     transition: all 0.4s ease-in-out;
 }
 
