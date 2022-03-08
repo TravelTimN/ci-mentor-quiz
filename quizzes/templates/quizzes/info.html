@@ -38,12 +38,12 @@
         <div class="col-12">
             <!-- display table of quiz attempts if user has taken quiz, and if not prospective mentor -->
             {% if user.profile.taken_quiz and user.profile.mentor_type != "is_not_mentor" %}
-                <table class="table table-striped text-center">
+                <table class="table text-center align-middle">
                     <thead class="bg-p-grey text-t-grey align-middle">
                         <tr>
-                            <th scope="col">Date<br>Time</th>
+                            <th scope="col">Date<br><small>Time</small></th>
                             {% if user.is_superuser %}
-                                <th scope="col">Username</th>
+                                <th scope="col">User</th>
                                 <th scope="col">Duration<br><small>(h:m:s)</small></th>
                                 <th scope="col">Type</th>
                                 <th scope="col">Correct<br>Answers</th>
@@ -54,13 +54,13 @@
                     </thead>
                     <tbody>
                         {% for result in results %}
-                        <tr>
+                        <tr class="{% if result.percentage >= 90 %}table-info{% elif result.percentage >= 80 %}table-primary{% elif result.percentage >= 70 %}table-warning{% else %}table-danger{% endif %}">
                             <td>
                                 {{ result.quiz.taken|date:"d M y"|upper }}<br>
                                 <small class="text-muted">{{ result.quiz.taken|date:"H:i A" }}</small>
                             </td>
                             {% if user.is_superuser %}
-                                <td>{{ user }}</td>
+                                <td>{{ result.quiz.user }}</td>
                                 <td>{{ result.duration }}</td>
                                 <td>{{ result.quiz }}</td>
                                 <td>
@@ -68,50 +68,76 @@
                                     <small class="text-muted">out of {{ result.questions }}</small>
                                 </td>
                             {% endif %}
-                            <td>{{ result.percentage }}%</td>
-                            <td><button class="btn-ci">Results</button></td>
+                            <td>
+                                {{ result.percentage }}%<br>
+                                <small class="text-muted">
+                                    {% if result.percentage >= 90 %}
+                                        distinction
+                                    {% elif result.percentage >= 80 %}
+                                        merit
+                                    {% elif result.percentage >= 70 %}
+                                        pass
+                                    {% else %}
+                                        fail
+                                    {% endif %}
+                                </small>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-ci" data-bs-toggle="modal" data-bs-target="#modal-results-{{ forloop.counter }}">
+                                    Results
+                                </button>
+                            </td>
                         </tr>
+                        <!-- results modals (must be inside of forloop) -->
+                        <aside class="modal fade" id="modal-results-{{ forloop.counter }}" tabindex="-1" aria-labelledby="modal-results-label-{{ forloop.counter }}" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modal-results-label-{{ forloop.counter }}">
+                                            {{ result.quiz.user }} |
+                                            <small class="text-muted">
+                                                {{ result.quiz.taken|date:"dMy"|upper }}
+                                                {% if result.percentage >= 90 %}
+                                                    <span class="text-info">(distinction)</span>
+                                                {% elif result.percentage >= 80 %}
+                                                    <span class="text-primary">(merit)</span>
+                                                {% elif result.percentage >= 70 %}
+                                                    <span class="text-warning">(pass)</span>
+                                                {% else %}
+                                                    <span class="text-danger">(fail)</span>
+                                                {% endif %}
+                                            </small>
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- start collapsible body content -->
+                                        {% for answer in result.answers %}
+                                            <div class="list-group">
+                                                <div class="list-group-item list-group-item-action list-group-item-{% if answer.is_correct %}success{% else %}danger{% endif %}">
+                                                    <div class="d-flex w-100 justify-content-between">
+                                                        <h6 class="mb-1 pr-3">Q: {{ answer.question }}</h6>
+                                                        <small class="text-muted">{{ answer.question.subject }}</small>
+                                                    </div>
+                                                    <!-- custom django templatetag: |replace"foo|bar" -->
+                                                    <p class="mb-1">User Answer:<br>
+                                                        {{ answer.user_answer|safe|linebreaksbr|replace:"['|"|replace:"']|"|replace:"', '|, " }}
+                                                    </p>
+                                                    <small class="text-muted">Time Taken: {{ answer.time_taken }} seconds</small>
+                                                    <small class="text-muted"> / Result: {% if answer.is_correct == True %}Correct{% else %}Incorrect{% endif %}</small>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </aside>
                         {% endfor %}
                     </tbody>
                 </table>
-
-                <hr><hr>
-
-                <!-- loop over each quiz attemp -->
-                {% for result in results %}
-                    <div class="accordion" id="accordion-{{ forloop.counter }}">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="accordion-header-{{ forloop.counter }}">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#accordion-collapse-{{ forloop.counter }}"
-                                    aria-expanded="false" aria-controls="accordion-collapse-{{ forloop.counter }}">
-                                    Quiz Attempt #{{ forloop.counter }} - {{ result.quiz.taken }}
-                                </button>
-                            </h2>
-                            <div id="accordion-collapse-{{ forloop.counter }}" class="accordion-collapse collapse" aria-labelledby="accordion-header-{{ forloop.counter }}"
-                                data-bs-parent="#accordion-{{ forloop.counter }}">
-                                <div class="accordion-body">
-
-                                    <!-- start collapsible body content -->
-                                    {% for answer in result.answers %}
-                                        <div class="list-group">
-                                            <div class="list-group-item list-group-item-action list-group-item-{% if answer.is_correct %}success{% else %}danger{% endif %}">
-                                                <div class="d-flex w-100 justify-content-between">
-                                                    <h5 class="mb-1">{{ answer.question }}</h5>
-                                                    <small class="text-muted">{{ answer.question.subject }}</small>
-                                                </div>
-                                                <!-- custom django templatetag: |replace"foo|bar" -->
-                                                <p class="mb-1">You've Answered: {{ answer.user_answer|safe|linebreaksbr|replace:"[|"|replace:"]|"|replace:"'|" }}</p>
-                                                <small class="text-muted">{% if answer.is_correct == True %}Correct{% else %}Incorrect{% endif %}</small>
-                                            </div>
-                                        </div>
-                                    {% endfor %}
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                {% endfor %}
             {% endif %}
         </div>
     </div>
