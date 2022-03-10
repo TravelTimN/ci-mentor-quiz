@@ -32,9 +32,10 @@ navDropdown.addEventListener("mouseleave", function() {
 
 // auto-hide alerts
 const alerts = document.querySelectorAll("aside.alert");
+let overlay = document.getElementById("overlay");
 if (alerts.length > 0) {
     // only if any alerts found on DOM
-    document.getElementById("overlay").classList.remove("hide");
+    overlay?.classList.remove("hide");
     for (let i = 0; i < alerts.length; i++) {
         setTimeout(() => {
             // start after 2500ms
@@ -48,7 +49,7 @@ if (alerts.length > 0) {
             }, i * 100);
             // remove the overlay background
             setTimeout(() => {
-                document.getElementById("overlay").classList.add("hide");
+                overlay?.classList.add("hide");
             }, 500);
         }, 2500);
     }
