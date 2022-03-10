@@ -1,28 +1,156 @@
 {% extends "base.html" %}
 {% load static %}
+{% load custom_filters %}
 
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <hr>
-                <h2 class="my-4 text-p-orange">{{ request.user.first_name }} {{ request.user.last_name }}</h2>
-                <hr>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <p>Username: <strong>{{ request.user }}</strong></p>
-                <p>First Name: <strong>{{ request.user.first_name }}</strong></p>
-                <p>Last Name: <strong>{{ request.user.last_name }}</strong></p>
-                <p>Email: <strong>{{ request.user.email }}</strong></p>
-                <!-- temporary fields for testing -->
-                <hr>
-                <p>Taken Quiz?: <strong>{{ request.user.profile.taken_quiz }}</strong></p>
-                <p>Mentor Type: <strong>{{ request.user.profile.mentor_type }}</strong></p>
-                <!-- end temporary testing -->
-                <hr>
-            </div>
+<div class="container-lg my-5">
+    <div class="row">
+        <div class="col">
+            <hr>
+            <h2 class="my-4 text-p-orange">{{ request.user.first_name }} {{ request.user.last_name }}</h2>
+            <hr>
         </div>
     </div>
+    <div class="row">
+        <div class="col">
+            <p>Username: <strong>{{ request.user }}</strong></p>
+            <p>First Name: <strong>{{ request.user.first_name }}</strong></p>
+            <p>Last Name: <strong>{{ request.user.last_name }}</strong></p>
+            <p>Email: <strong>{{ request.user.email }}</strong></p>
+            <hr>
+            <!-- take quiz button, or "thanks" (non mentors) -->
+            {% if user.profile.taken_quiz %}
+                <!-- user has taken quiz already -->
+                {% if user.profile.mentor_type != "is_not_mentor" %}
+                    <!-- user-type is current mentor / can take quiz again -->
+                    You have already taken this quiz.<br>
+                    Would you like to take the test again?<br><br>
+                    <button id="btn-take-quiz" class="btn-ci" data-quiz="{{ quiz_id }}">Yes</button>
+                {% else %}
+                    <!-- user-type is potential mentor / cannot resubmit quiz answers -->
+                    Thank You!<br>
+                    The Code Institute Mentoring team will be in contact with you soon!
+                {% endif %}
+            {% else %}
+                <!-- user has not taken quiz yet -->
+                <button id="btn-take-quiz" class="btn-ci" data-quiz="{{ quiz_id }}">Take Quiz</button>
+            {% endif %}
+            <hr>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <!-- display table of quiz attempts if user has taken quiz, and if not prospective mentor -->
+            {% if user.profile.taken_quiz and user.profile.mentor_type != "is_not_mentor" %}
+                <table class="table text-center align-middle">
+                    <thead class="bg-p-grey text-t-grey align-middle">
+                        <tr>
+                            <th scope="col">Date<br><small>Time</small></th>
+                            {% if user.is_superuser %}
+                                <th scope="col">User</th>
+                                <th scope="col">Duration<br><small>(h:m:s)</small></th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Correct<br>Answers</th>
+                            {% endif %}
+                            <th scope="col">Accuracy</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for result in results %}
+                        <tr class="{% if result.percentage >= 90 %}table-info{% elif result.percentage >= 80 %}table-primary{% elif result.percentage >= 70 %}table-warning{% else %}table-danger{% endif %}">
+                            <td>
+                                {{ result.quiz.taken|date:"d M y"|upper }}<br>
+                                <small class="text-muted">{{ result.quiz.taken|date:"H:i A" }}</small>
+                            </td>
+                            {% if user.is_superuser %}
+                                <td>{{ result.quiz.user }}</td>
+                                <td>{{ result.duration }}</td>
+                                <td>{{ result.quiz }}</td>
+                                <td>
+                                    {{ result.correct }}<br>
+                                    <small class="text-muted">out of {{ result.questions }}</small>
+                                </td>
+                            {% endif %}
+                            <td>
+                                {{ result.percentage }}%<br>
+                                <small class="text-muted">
+                                    {% if result.percentage >= 90 %}
+                                        distinction
+                                    {% elif result.percentage >= 80 %}
+                                        merit
+                                    {% elif result.percentage >= 70 %}
+                                        pass
+                                    {% else %}
+                                        fail
+                                    {% endif %}
+                                </small>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-ci" data-bs-toggle="modal" data-bs-target="#modal-results-{{ forloop.counter }}">
+                                    Results
+                                </button>
+                            </td>
+                        </tr>
+                        <!-- results modals (must be inside of forloop) -->
+                        <aside class="modal fade" id="modal-results-{{ forloop.counter }}" tabindex="-1" aria-labelledby="modal-results-label-{{ forloop.counter }}" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modal-results-label-{{ forloop.counter }}">
+                                            {{ result.quiz.user }} |
+                                            <small class="text-muted">
+                                                {{ result.quiz.taken|date:"dMy"|upper }}
+                                                {% if result.percentage >= 90 %}
+                                                    <span class="text-info">(distinction)</span>
+                                                {% elif result.percentage >= 80 %}
+                                                    <span class="text-primary">(merit)</span>
+                                                {% elif result.percentage >= 70 %}
+                                                    <span class="text-warning">(pass)</span>
+                                                {% else %}
+                                                    <span class="text-danger">(fail)</span>
+                                                {% endif %}
+                                            </small>
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- start collapsible body content -->
+                                        {% for answer in result.answers %}
+                                            <div class="list-group">
+                                                <div class="list-group-item list-group-item-action list-group-item-{% if answer.is_correct %}success{% else %}danger{% endif %}">
+                                                    <div class="d-flex w-100 justify-content-between">
+                                                        <h6 class="mb-1 pr-3">Q: {{ answer.question }}</h6>
+                                                        <small class="text-muted">{{ answer.question.subject }}</small>
+                                                    </div>
+                                                    <!-- custom django templatetag: |replace"foo|bar" -->
+                                                    <p class="mb-1">User Answer:<br>
+                                                        {{ answer.user_answer|safe|linebreaksbr|replace:"['|"|replace:"']|"|replace:"', '|, " }}
+                                                    </p>
+                                                    <small class="text-muted">Time Taken: {{ answer.time_taken }} seconds</small>
+                                                    <small class="text-muted"> / Result: {% if answer.is_correct == True %}Correct{% else %}Incorrect{% endif %}</small>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </aside>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block js %}
+    <!-- scripts only for the button to take the quiz -->
+    <script src="{% static 'js/profile.js' %}"></script>
 {% endblock %}
