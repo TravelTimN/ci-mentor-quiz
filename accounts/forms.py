@@ -81,33 +81,3 @@ class CustomLoginForm(LoginForm):
             {"class": "form-control",
              "placeholder": "Password"},
         )
-
-
-# class UserUpdateForm(forms.ModelForm):
-#     class Meta:
-#         """
-#         Instance of Django's User Model for users to edit their profile,
-#         and which fields to include/exclude
-#         """
-#         model = User
-#         fields = ["first_name", "last_name", "email", "username"]
-#         help_texts = {
-#             "email": None,
-#             "username": None,
-#         }
-
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-
-
-# class ProfileUpdateForm(forms.ModelForm):
-#     class Meta:
-#         """
-#         Instance of custom Profile Model for users to edit their profile,
-#         and which fields to include/exclude
-#         """
-#         model = Profile
-#         exclude = ("taken_quiz",)
-
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
