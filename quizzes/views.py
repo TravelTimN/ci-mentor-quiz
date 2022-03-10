@@ -1,49 +1,19 @@
-import datetime
 import json
 from types import SimpleNamespace
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import get_object_or_404, redirect, render, reverse
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse, HttpResponseRedirect
+# from django.http import JsonResponse, HttpResponseRedirect
 from .models import Quiz
 from questions.models import Question, Choice
 from submissions.models import Submission, Response
 
 
 @login_required
-def quiz_info(request):
-    user = get_object_or_404(User, username=request.user)
-    # get the ID of this user's specific quiz-type
-    quiz_id = Quiz.objects.filter(
-        name=user.profile.mentor_type).values_list("id", flat=True)[:1][0]
-    # filter previous quiz submissions by user
-    if request.user.is_superuser:
-        user_submissions = Submission.objects.all()
-    else:
-        user_submissions = Submission.objects.filter(user=request.user)
-    results = []
-    for submission in user_submissions:
-        responses = Response.objects.filter(submission=submission.id)
-        correct = responses.filter(is_correct="True").count()
-        duration = str(datetime.timedelta(seconds=submission.duration))
-        results.append({
-            "quiz": submission,
-            "answers": responses,
-            "correct": correct,
-            "questions": responses.count(),
-            "percentage": submission.percent_correct,
-            "duration": duration
-        })
-
-    template = "quizzes/info.html"
-    context = {
-        "user": user,
-        "quiz_id": quiz_id,
-        "results": results
-    }
-
-    return render(request, template, context)
+def quiz(request):
+    """ Redirect user from /quiz/ to their profile """
+    return redirect(reverse("profile"))
 
 
 @login_required
@@ -51,8 +21,8 @@ def take_quiz(request, pk):
     user = get_object_or_404(User, username=request.user)
     # check if non-mentor trying to take quiz again, and redirect if so
     if user.profile.mentor_type == "is_not_mentor" and user.profile.taken_quiz:
-        messages.success(request, "You have already submitted a quiz")
-        return redirect(quiz_info)
+        messages.success(request, "You have already submitted your responses.")
+        return redirect(reverse("profile"))
 
     # user is mentor and can take the quiz again
     get_quiz = Quiz.objects.filter(
@@ -88,7 +58,6 @@ def take_quiz(request, pk):
 @login_required
 def submit_quiz_results(request, pk):
     if request.method == "POST":
-        messages.success(request, "Quiz submitted!")
 
         quiz = Quiz.objects.get(pk=pk)
         user = request.user
@@ -183,7 +152,8 @@ def submit_quiz_results(request, pk):
         user_profile.profile.taken_quiz = True
         user_profile.save()
 
-        return redirect(quiz_info)
+        messages.success(request, "Your responses have been submitted!")
+        return redirect(reverse("profile"))
 
     else:
         return redirect(take_quiz, pk)
