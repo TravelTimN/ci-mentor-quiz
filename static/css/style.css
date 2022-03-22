@@ -202,6 +202,13 @@ aside#overlay.hide {
     visibility: hidden;
 }
 
+/* MODALS */
+.modal {
+    backdrop-filter: blur(3px);
+    transition: all 0.2s ease-in-out;
+    background-color: rgba(var(--black), 0.25);
+}
+
 /* MAIN */
 main {
     flex: 1 0 auto;
