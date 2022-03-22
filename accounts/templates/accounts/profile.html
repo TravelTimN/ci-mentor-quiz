@@ -43,7 +43,7 @@
         <div class="col-12">
             <!-- display table of quiz attempts if user has taken quiz, and if not prospective mentor -->
             {% if user.profile.taken_quiz and user.profile.mentor_type != "is_not_mentor" %}
-                <table class="table text-center align-middle">
+                <table class="table table-striped text-center align-middle">
                     <thead class="bg-p-grey text-t-grey align-middle">
                         <tr>
                             <th scope="col">Date<br><small>Time</small></th>
@@ -68,9 +68,9 @@
                     </thead>
                     <tbody>
                         {% for result in results %}
-                        <tr class="{% if result.percentage >= 90 %}table-info{% elif result.percentage >= 80 %}table-primary{% elif result.percentage >= 70 %}table-warning{% else %}table-danger{% endif %} result-row">
+                        <tr class="result-row">
                             <td>
-                                {{ result.quiz.taken|date:"d M y"|upper }}<br>
+                                {{ result.quiz.taken|date:"d M Y"|upper }}<br>
                                 <small class="text-muted">{{ result.quiz.taken|date:"H:i A" }}</small>
                             </td>
                             {% if user.is_superuser %}
@@ -83,7 +83,9 @@
                                 </td>
                             {% endif %}
                             <td>
-                                {{ result.percentage }}%<br>
+                                <span class="fw-bold {% if result.percentage >= 90 %}text-success{% elif result.percentage >= 80 %}text-primary{% elif result.percentage >= 70 %}text-warning{% else %}text-danger{% endif %}">
+                                    {{ result.percentage }}%<br>
+                                </span>
                                 <small class="text-muted">
                                     {% if result.percentage >= 90 %}
                                         distinction
@@ -110,9 +112,9 @@
                                         <h5 class="modal-title" id="modal-results-label-{{ forloop.counter }}">
                                             {{ result.quiz.user }} |
                                             <small class="text-muted">
-                                                {{ result.quiz.taken|date:"dMy"|upper }}
+                                                {{ result.quiz.taken|date:"dMY"|upper }}
                                                 {% if result.percentage >= 90 %}
-                                                    <span class="text-info">(distinction)</span>
+                                                    <span class="text-success">(distinction)</span>
                                                 {% elif result.percentage >= 80 %}
                                                     <span class="text-primary">(merit)</span>
                                                 {% elif result.percentage >= 70 %}
@@ -127,18 +129,22 @@
                                     <div class="modal-body">
                                         <!-- start collapsible body content -->
                                         {% for answer in result.answers %}
+                                            <!-- TODO: convert this to a table perhaps? -->
                                             <div class="list-group">
-                                                <div class="list-group-item list-group-item-action list-group-item-{% if answer.is_correct %}success{% else %}danger{% endif %}">
+                                                <div class="list-group-item list-group-item-{% if answer.is_correct %}success{% else %}danger{% endif %}">
                                                     <div class="d-flex w-100 justify-content-between">
                                                         <h6 class="mb-1 pr-3">Q: {{ answer.question }}</h6>
                                                         <small class="text-muted">{{ answer.question.subject }}</small>
                                                     </div>
                                                     <!-- custom django templatetag: |replace"foo|bar" -->
                                                     <p class="mb-1">User Answer:<br>
+                                                        <!-- TODO: fix \r and \n to actually display a proper linebreak -->
                                                         {{ answer.user_answer|safe|linebreaksbr|replace:"['|"|replace:"']|"|replace:"', '|, " }}
                                                     </p>
-                                                    <small class="text-muted">Time Taken: {{ answer.time_taken }} seconds</small>
-                                                    <small class="text-muted"> / Result: {% if answer.is_correct == True %}Correct{% else %}Incorrect{% endif %}</small>
+                                                    {% if user.is_superuser %}
+                                                        <small class="text-muted">Time Taken: {{ answer.time_taken }} second{{ answer.time_taken|pluralize }} / </small>
+                                                    {% endif %}
+                                                    <small class="text-muted">Result: {% if answer.is_correct == True %}Correct{% else %}Incorrect{% endif %}</small>
                                                 </div>
                                             </div>
                                         {% endfor %}
