@@ -54,12 +54,21 @@
                                 <th scope="col">Correct<br>Answers</th>
                             {% endif %}
                             <th scope="col">Accuracy</th>
-                            <th scope="col"></th>
+                            <th scope="col" style="width: 15%">
+                                {% if user.is_superuser %}
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="filter" placeholder="Filter" aria-label="Filter" aria-describedby="filter_label">
+                                        <label class="input-group-text btn-ci px-2" id="filter_label">
+                                            <i class="fas fa-search" id="filter-icon"></i>
+                                        </label>
+                                    </div>
+                                {% endif %}
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for result in results %}
-                        <tr class="{% if result.percentage >= 90 %}table-info{% elif result.percentage >= 80 %}table-primary{% elif result.percentage >= 70 %}table-warning{% else %}table-danger{% endif %}">
+                        <tr class="{% if result.percentage >= 90 %}table-info{% elif result.percentage >= 80 %}table-primary{% elif result.percentage >= 70 %}table-warning{% else %}table-danger{% endif %} result-row">
                             <td>
                                 {{ result.quiz.taken|date:"d M y"|upper }}<br>
                                 <small class="text-muted">{{ result.quiz.taken|date:"H:i A" }}</small>
@@ -151,6 +160,48 @@
 
 
 {% block js %}
+    <script>
+        // grab the filter input box
+        const filterInput = document.getElementById("filter");
+
+        const filterResults = (e) => {
+            // find all table rows
+            let resultRows = document.querySelectorAll(".result-row");
+            // grab current value
+            let filterData = filterInput.value;
+            resultRows.forEach(row => {
+                // immediately hide each row
+                row.classList.add("hide", "full");
+                if (row.innerText.includes(filterData)) {
+                    // show the row(s) if the data includes user's query
+                    row.classList.remove("hide", "full");
+                }
+            });
+
+            // update icon and allow full reset of results
+            const filterIcon = document.getElementById("filter-icon");
+            filterIcon.classList.remove("fa-search");
+            filterIcon.classList.add("fa-undo-alt");
+            if (filterData == "") {
+                // change font awesome icon
+                filterIcon.classList.remove("fa-undo-alt");
+                filterIcon.classList.add("fa-search");
+            } else {
+                // allow full reset back to all results
+                const filterLabel = document.getElementById("filter_label");
+                filterLabel.addEventListener("click", function() {
+                    // clear the input, put focus on input, and re-trigger filter results
+                    filterInput.value = "";
+                    filterInput.focus();
+                    filterResults();
+                });
+            }
+        }
+
+        // trigger function call on 'keyup'
+        filterInput.addEventListener("keyup", filterResults);
+    </script>
+
     <!-- scripts only for the button to take the quiz -->
     <script src="{% static 'js/profile.js' %}"></script>
 {% endblock %}
