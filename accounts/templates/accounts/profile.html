@@ -51,8 +51,8 @@
                                 <th scope="col">User</th>
                                 <th scope="col">Duration<br><small>(h:m:s)</small></th>
                                 <th scope="col">Type</th>
-                                <th scope="col">Correct<br>Answers</th>
                             {% endif %}
+                            <th scope="col">Correct<br>Answers</th>
                             <th scope="col">Accuracy</th>
                             <th scope="col" style="width: 15%">
                                 {% if user.is_superuser %}
@@ -77,11 +77,11 @@
                                 <td>{{ result.quiz.user }}</td>
                                 <td>{{ result.duration }}</td>
                                 <td>{{ result.quiz }}</td>
-                                <td>
-                                    {{ result.correct }}<br>
-                                    <small class="text-muted">out of {{ result.questions }}</small>
-                                </td>
                             {% endif %}
+                            <td>
+                                {{ result.correct }}<br>
+                                <small class="text-muted">out of {{ result.questions }}</small>
+                            </td>
                             <td>
                                 <span class="fw-bold {% if result.percentage >= 90 %}text-success{% elif result.percentage >= 80 %}text-primary{% elif result.percentage >= 70 %}text-warning{% else %}text-danger{% endif %}">
                                     {{ result.percentage }}%<br>
@@ -140,6 +140,7 @@
                                                     <p class="mb-1">User Answer:<br>
                                                         <!-- TODO: fix \r and \n to actually display a proper linebreak -->
                                                         {{ answer.user_answer|safe|linebreaksbr|replace:"['|"|replace:"']|"|replace:"', '|, " }}
+                                                        <!-- {{ answer.user_answer|safe|linebreaksbr|cut:"['"|cut:"']" }} -->
                                                     </p>
                                                     {% if user.is_superuser %}
                                                         <small class="text-muted">Time Taken: {{ answer.time_taken }} second{{ answer.time_taken|pluralize }} / </small>
@@ -155,6 +156,11 @@
                                 </div>
                             </div>
                         </aside>
+                        {% empty %}
+                        <!-- only display if no quiz results are found -->
+                        <tr>
+                            <td colspan="7"><h3>No Quiz Results Found</h3></td>
+                        </tr>
                         {% endfor %}
                     </tbody>
                 </table>
