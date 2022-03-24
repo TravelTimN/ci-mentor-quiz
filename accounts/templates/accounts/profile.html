@@ -4,169 +4,229 @@
 
 {% block content %}
 <div class="container-lg my-5">
+
     <div class="row">
-        <div class="col">
-            <hr>
-            <h2 class="my-4 text-p-orange">{{ request.user.first_name }} {{ request.user.last_name }}</h2>
-            <hr>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <p>Username: <strong>{{ request.user }}</strong></p>
-            <p>First Name: <strong>{{ request.user.first_name }}</strong></p>
-            <p>Last Name: <strong>{{ request.user.last_name }}</strong></p>
-            <p>Email: <strong>{{ request.user.email }}</strong></p>
-            <hr>
-            <!-- take quiz button, or "thanks" (non mentors) -->
-            {% if user.profile.taken_quiz %}
-                <!-- user has taken quiz already -->
-                {% if user.profile.mentor_type != "is_not_mentor" %}
-                    <!-- user-type is current mentor / can take quiz again -->
-                    You have already taken this quiz.<br>
-                    Would you like to take the test again?<br><br>
-                    <button id="btn-take-quiz" class="btn-ci" data-quiz="{{ quiz_id }}">Yes</button>
-                {% else %}
-                    <!-- user-type is potential mentor / cannot resubmit quiz answers -->
-                    Thank You!<br>
-                    The Code Institute Mentoring team will be in contact with you soon!
-                {% endif %}
-            {% else %}
-                <!-- user has not taken quiz yet -->
-                <button id="btn-take-quiz" class="btn-ci" data-quiz="{{ quiz_id }}">Take Quiz</button>
-            {% endif %}
-            <hr>
+        <div class="col-xs-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2">
+            <div class="card mb-3 shadow" id="profile-card">
+                <div class="row g-0">
+                    <div class="col-md-4 text-white text-center d-flex flex-column justify-content-center" id="bg-profile">
+                        <h2 class="my-4">
+                            <i class="fas fa-user-circle"></i>
+                        </h2>
+                        <h4>
+                            {{ request.user.first_name }}
+                            <br>
+                            {{ request.user.last_name }}
+                        </h4>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body p-4">
+                            <h5 class="card-title text-p-orange">
+                                {{ request.user }}
+                                {% if user.is_superuser %}<small class="text-muted">[ superuser ]</small>{% endif %}
+                            </h5>
+                            <hr>
+                            <div class="row card-text">
+                                <div class="col-sm-12 col-md-6">
+                                    <strong>First Name</strong>
+                                    <br>
+                                    {{ request.user.first_name }}
+                                </div>
+                                <div class="col-sm-12 col-md-6">
+                                    <strong>Last Name</strong>
+                                    <br>
+                                    {{ request.user.last_name }}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row card-text">
+                                <div class="col">
+                                    <strong>Email Address</strong>
+                                    <br>
+                                    {{ request.user.email }}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row card-text">
+                                <div class="col">
+                                    <strong>
+                                        Account Type
+                                    </strong>
+                                    <br>
+                                    {% if user.profile.mentor_type == "is_mentor" %}
+                                        Mentor
+                                    {% elif user.profile.mentor_type == "is_not_mentor" %}
+                                        Prospective Mentor
+                                    {% else %}
+                                        Unknown
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer p-4">
+                            <strong>Quiz Attempt</strong>
+                            <br>
+                            <!-- take quiz button, or "thanks" (non mentors) -->
+                            {% if user.profile.taken_quiz %}
+                                <!-- user has taken quiz already -->
+                                {% if user.profile.mentor_type != "is_not_mentor" %}
+                                    <!-- user-type is current mentor / can take quiz again -->
+                                    You have already taken this quiz.
+                                    Check your results below!
+                                    You can take the quiz as many times as you'd like.
+                                    <br><br>
+                                    <button id="btn-take-quiz" class="btn-ci" data-quiz="{{ quiz_id }}">Take Quiz</button>
+                                {% else %}
+                                    <!-- user-type is potential mentor / cannot resubmit quiz answers -->
+                                    Thank You for submitting your responses!
+                                    The Code Institute Mentoring team will be in contact with you soon!
+                                {% endif %}
+                            {% else %}
+                                <!-- user has not taken quiz yet -->
+                                Welcome!
+                                When you're ready to begin, click the button to proceed to the quiz.
+                                <br><br>
+                                <button id="btn-take-quiz" class="btn-ci" data-quiz="{{ quiz_id }}">Take Quiz</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
+
+    <!-- display table of quiz attempts if user has taken quiz, and if not prospective mentor -->
+    {% if user.profile.taken_quiz and user.profile.mentor_type != "is_not_mentor" %}
+
+    <br><hr><br>
+
     <div class="row">
         <div class="col-12">
-            <!-- display table of quiz attempts if user has taken quiz, and if not prospective mentor -->
-            {% if user.profile.taken_quiz and user.profile.mentor_type != "is_not_mentor" %}
-                <table class="table table-striped text-center align-middle">
-                    <thead class="bg-p-grey text-t-grey align-middle">
-                        <tr>
-                            <th scope="col">Date<br><small>Time</small></th>
+            <table class="table table-striped text-center align-middle">
+                <thead class="bg-p-grey text-t-grey align-middle">
+                    <tr>
+                        <th scope="col">Date<br><small>Time</small></th>
+                        {% if user.is_superuser %}
+                            <th scope="col">User</th>
+                            <th scope="col">Duration<br><small>(h:m:s)</small></th>
+                            <th scope="col">Type</th>
+                        {% endif %}
+                        <th scope="col">Correct<br>Answers</th>
+                        <th scope="col">Accuracy</th>
+                        <th scope="col" style="width: 15%">
                             {% if user.is_superuser %}
-                                <th scope="col">User</th>
-                                <th scope="col">Duration<br><small>(h:m:s)</small></th>
-                                <th scope="col">Type</th>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="filter" placeholder="Filter" aria-label="Filter" aria-describedby="filter_label">
+                                    <label class="input-group-text btn-ci px-2" id="filter_label">
+                                        <i class="fas fa-search" id="filter-icon"></i>
+                                    </label>
+                                </div>
                             {% endif %}
-                            <th scope="col">Correct<br>Answers</th>
-                            <th scope="col">Accuracy</th>
-                            <th scope="col" style="width: 15%">
-                                {% if user.is_superuser %}
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="filter" placeholder="Filter" aria-label="Filter" aria-describedby="filter_label">
-                                        <label class="input-group-text btn-ci px-2" id="filter_label">
-                                            <i class="fas fa-search" id="filter-icon"></i>
-                                        </label>
-                                    </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in results %}
+                    <tr class="result-row">
+                        <td>
+                            {{ result.quiz.taken|date:"d M Y"|upper }}<br>
+                            <small class="text-muted">{{ result.quiz.taken|date:"H:i A" }}</small>
+                        </td>
+                        {% if user.is_superuser %}
+                            <td>{{ result.quiz.user }}</td>
+                            <td>{{ result.duration }}</td>
+                            <td>{{ result.quiz }}</td>
+                        {% endif %}
+                        <td>
+                            {{ result.correct }}<br>
+                            <small class="text-muted">out of {{ result.questions }}</small>
+                        </td>
+                        <td>
+                            <span class="fw-bold {% if result.percentage >= 90 %}text-success{% elif result.percentage >= 80 %}text-primary{% elif result.percentage >= 70 %}text-warning{% else %}text-danger{% endif %}">
+                                {{ result.percentage }}%<br>
+                            </span>
+                            <small class="text-muted">
+                                {% if result.percentage >= 90 %}
+                                    distinction
+                                {% elif result.percentage >= 80 %}
+                                    merit
+                                {% elif result.percentage >= 70 %}
+                                    pass
+                                {% else %}
+                                    fail
                                 {% endif %}
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for result in results %}
-                        <tr class="result-row">
-                            <td>
-                                {{ result.quiz.taken|date:"d M Y"|upper }}<br>
-                                <small class="text-muted">{{ result.quiz.taken|date:"H:i A" }}</small>
-                            </td>
-                            {% if user.is_superuser %}
-                                <td>{{ result.quiz.user }}</td>
-                                <td>{{ result.duration }}</td>
-                                <td>{{ result.quiz }}</td>
-                            {% endif %}
-                            <td>
-                                {{ result.correct }}<br>
-                                <small class="text-muted">out of {{ result.questions }}</small>
-                            </td>
-                            <td>
-                                <span class="fw-bold {% if result.percentage >= 90 %}text-success{% elif result.percentage >= 80 %}text-primary{% elif result.percentage >= 70 %}text-warning{% else %}text-danger{% endif %}">
-                                    {{ result.percentage }}%<br>
-                                </span>
-                                <small class="text-muted">
-                                    {% if result.percentage >= 90 %}
-                                        distinction
-                                    {% elif result.percentage >= 80 %}
-                                        merit
-                                    {% elif result.percentage >= 70 %}
-                                        pass
-                                    {% else %}
-                                        fail
-                                    {% endif %}
-                                </small>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-ci" data-bs-toggle="modal" data-bs-target="#modal-results-{{ forloop.counter }}">
-                                    Results
-                                </button>
-                            </td>
-                        </tr>
-                        <!-- results modals (must be inside of forloop) -->
-                        <aside class="modal fade" id="modal-results-{{ forloop.counter }}" tabindex="-1" aria-labelledby="modal-results-label-{{ forloop.counter }}" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="modal-results-label-{{ forloop.counter }}">
-                                            {{ result.quiz.user }} |
-                                            <small class="text-muted">
-                                                {{ result.quiz.taken|date:"dMY"|upper }}
-                                                {% if result.percentage >= 90 %}
-                                                    <span class="text-success">(distinction)</span>
-                                                {% elif result.percentage >= 80 %}
-                                                    <span class="text-primary">(merit)</span>
-                                                {% elif result.percentage >= 70 %}
-                                                    <span class="text-warning">(pass)</span>
-                                                {% else %}
-                                                    <span class="text-danger">(fail)</span>
-                                                {% endif %}
-                                            </small>
-                                        </h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <!-- start collapsible body content -->
-                                        {% for answer in result.answers %}
-                                            <!-- TODO: convert this to a table perhaps? -->
-                                            <div class="list-group">
-                                                <div class="list-group-item list-group-item-{% if answer.is_correct %}success{% else %}danger{% endif %}">
-                                                    <div class="d-flex w-100 justify-content-between">
-                                                        <h6 class="mb-1 pr-3">Q: {{ answer.question }}</h6>
-                                                        <small class="text-muted">{{ answer.question.subject }}</small>
-                                                    </div>
-                                                    <!-- custom django templatetag: |replace"foo|bar" -->
-                                                    <p class="mb-1">User Answer:<br>
-                                                        <!-- TODO: fix \r and \n to actually display a proper linebreak -->
-                                                        {{ answer.user_answer|safe|linebreaksbr|replace:"['|"|replace:"']|"|replace:"', '|, " }}
-                                                        <!-- {{ answer.user_answer|safe|linebreaksbr|cut:"['"|cut:"']" }} -->
-                                                    </p>
-                                                    {% if user.is_superuser %}
-                                                        <small class="text-muted">Time Taken: {{ answer.time_taken }} second{{ answer.time_taken|pluralize }} / </small>
-                                                    {% endif %}
-                                                    <small class="text-muted">Result: {% if answer.is_correct == True %}Correct{% else %}Incorrect{% endif %}</small>
+                            </small>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-ci" data-bs-toggle="modal" data-bs-target="#modal-results-{{ forloop.counter }}">
+                                Results
+                            </button>
+                        </td>
+                    </tr>
+                    <!-- results modals (must be inside of forloop) -->
+                    <aside class="modal fade" id="modal-results-{{ forloop.counter }}" tabindex="-1" aria-labelledby="modal-results-label-{{ forloop.counter }}" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modal-results-label-{{ forloop.counter }}">
+                                        {{ result.quiz.user }} |
+                                        <small class="text-muted">
+                                            {{ result.quiz.taken|date:"dMY"|upper }}
+                                            {% if result.percentage >= 90 %}
+                                                <span class="text-success">(distinction)</span>
+                                            {% elif result.percentage >= 80 %}
+                                                <span class="text-primary">(merit)</span>
+                                            {% elif result.percentage >= 70 %}
+                                                <span class="text-warning">(pass)</span>
+                                            {% else %}
+                                                <span class="text-danger">(fail)</span>
+                                            {% endif %}
+                                        </small>
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- start collapsible body content -->
+                                    {% for answer in result.answers %}
+                                        <!-- TODO: convert this to a table perhaps? -->
+                                        <div class="list-group">
+                                            <div class="list-group-item list-group-item-{% if answer.is_correct %}success{% else %}danger{% endif %}">
+                                                <div class="d-flex w-100 justify-content-between">
+                                                    <h6 class="mb-1 pr-3">Q: {{ answer.question }}</h6>
+                                                    <small class="text-muted">{{ answer.question.subject }}</small>
                                                 </div>
+                                                <!-- custom django templatetag: |replace"foo|bar" -->
+                                                <p class="mb-1">User Answer:<br>
+                                                    <!-- TODO: fix \r and \n to actually display a proper linebreak -->
+                                                    {{ answer.user_answer|safe|linebreaksbr|replace:"['|"|replace:"']|"|replace:"', '|, " }}
+                                                    <!-- {{ answer.user_answer|safe|linebreaksbr|cut:"['"|cut:"']" }} -->
+                                                </p>
+                                                {% if user.is_superuser %}
+                                                    <small class="text-muted">Time Taken: {{ answer.time_taken }} second{{ answer.time_taken|pluralize }} / </small>
+                                                {% endif %}
+                                                <small class="text-muted">Result: {% if answer.is_correct == True %}Correct{% else %}Incorrect{% endif %}</small>
                                             </div>
-                                        {% endfor %}
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 </div>
                             </div>
-                        </aside>
-                        {% empty %}
-                        <!-- only display if no quiz results are found -->
-                        <tr>
-                            <td colspan="7"><h3>No Quiz Results Found</h3></td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            {% endif %}
+                        </div>
+                    </aside>
+                    {% empty %}
+                    <!-- only display if no quiz results are found -->
+                    <tr>
+                        <td colspan="7"><h3>No Quiz Results Found</h3></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
+    {% endif %}
 </div>
 {% endblock %}
 
