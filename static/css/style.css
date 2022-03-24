@@ -72,7 +72,7 @@ a, a:hover {
 
 /* CI BUTTON */
 .btn-ci {
-    background: linear-gradient(48deg,#e54725 50%,#ff3186);
+    background: linear-gradient(48deg, #e54725 50%, #ff3186);
     background-size: 200%;
     background-position: 5% 50%;
     color: rgba(var(--s-grey), 1);
@@ -173,6 +173,12 @@ nav .nav-item {
     top: 98%;
 }
 
+.dropdown-item.active,
+.dropdown-item:active {
+    background-color: rgba(var(--p-orange), 1);    
+    background: linear-gradient(48deg, #e54725 50%, #ff3186);
+}
+
 .ci-logo {
     display: none;
 }
@@ -236,9 +242,9 @@ a.white-link::after {
 
 a.white-link:hover::after,
 a.white-link:focus::after {
-  opacity: 1;
-  transform: scale(1.25);
-  color: rgba(var(--t-grey), 1);
+    opacity: 1;
+    transform: scale(1.25);
+    color: rgba(var(--t-grey), 1);
 }
 
 /* FORM FIELDS */
@@ -255,7 +261,8 @@ ul#id_mentor_type {
     margin-left: -1px;
     padding-top: 6px;
     padding-bottom: 5px;
-    color: #636c72; /* bootstrap ::placeholder color */
+    color: #636c72;
+    /* bootstrap ::placeholder color */
     border: 1px solid #ced4da;
     border-radius: 0.25rem;
     border-top-left-radius: 0;
@@ -292,6 +299,75 @@ ul#id_mentor_type li {
 
 #bg-profile i {
     font-size: 200%;
+}
+
+/* QUIZ RESULTS */
+
+/* from imported DataTables library */
+table.dataTable>thead .sorting::before,
+table.dataTable>thead .sorting_asc::before,
+table.dataTable>thead .sorting_desc::before,
+table.dataTable>thead .sorting_asc_disabled::before,
+table.dataTable>thead .sorting_desc_disabled::before {
+    color: rgba(var(--p-orange), 1);
+    line-height: 1 !important;
+    top: 1em !important;
+    right: 5px !important;
+}
+
+/* from imported DataTables library */
+table.dataTable>thead .sorting::after,
+table.dataTable>thead .sorting_asc::after,
+table.dataTable>thead .sorting_desc::after,
+table.dataTable>thead .sorting_asc_disabled::after,
+table.dataTable>thead .sorting_desc_disabled::after {
+    color: rgba(var(--white), 1);
+    line-height: 1 !important;
+    bottom: 1em !important;
+    right: 5px !important;
+}
+
+/* from imported DataTables library */
+th.sorting:last-child::before,
+th.sorting:last-child::after {
+    display: none !important;
+}
+
+/* from imported DataTables library */
+th.sorting:last-child {
+    pointer-events: none !important;
+    cursor: default !important;
+}
+
+/* from imported DataTables library */
+.page-link,
+.page-link:hover,
+.page-link:focus,
+.page-link:active {
+    font-weight: bolder;
+    color: rgba(var(--p-orange), 1);
+    box-shadow: unset;
+}
+
+/* from imported DataTables library */
+.page-item.active .page-link {
+    background-color: rgba(var(--p-orange), 1);
+    border-color: rgba(var(--p-orange), 1);
+}
+
+/* from imported DataTables library */
+textarea:focus,
+input:focus,
+button:focus,
+select:focus {
+    outline: none !important;
+    box-shadow: unset !important;
+}
+
+/* from imported DataTables library */
+table.dataTable>thead>tr>th:not(.sorting_disabled),
+table.dataTable>thead>tr>td:not(.sorting_disabled) {
+    padding-right: unset !important;
 }
 
 /* FOOTER */
