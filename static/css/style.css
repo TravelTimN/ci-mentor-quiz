@@ -278,6 +278,22 @@ ul#id_mentor_type li {
     margin: 1em auto;
 }
 
+/* PROFILE PAGE */
+#profile-card {
+    border-radius: 8px;
+}
+
+#bg-profile {
+    text-shadow: 2px 2px 2px rgba(var(--black), 0.5);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    background: linear-gradient(to right, #ee5a6f, #f29263);
+}
+
+#bg-profile i {
+    font-size: 200%;
+}
+
 /* FOOTER */
 footer {
     text-align: center;
@@ -351,6 +367,12 @@ footer .fas:hover {
         opacity: 1;
         transform: scale(1.25);
         color: rgba(var(--t-grey), 1);
+    }
+
+    #bg-profile {
+        border-top-right-radius: unset;
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
     }
 }
 
