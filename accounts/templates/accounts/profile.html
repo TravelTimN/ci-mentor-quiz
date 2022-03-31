@@ -17,7 +17,7 @@
     </div>
 
     <!-- display table of quiz attempts if user has taken quiz, and if not prospective mentor -->
-    {% if user.profile.taken_quiz and user.profile.mentor_type != "is_not_mentor" %}
+    {% if user.profile.taken_quiz and user.profile.mentor_type != "is_not_mentor" or user.is_superuser %}
         <!-- loop over all quiz results -->
         {% include "accounts/partials/quiz_results.html" %}
     {% endif %}
@@ -32,10 +32,12 @@
         crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.js"></script>
 
-    <script>
-        // initialize DataTable
-        let table = new DataTable("#quiz-results-table");
-    </script>
+    {% if results|length > 10 %}
+        <script>
+            // initialize DataTable, only if there are more than 10 results
+            let table = new DataTable("#quiz-results-table");
+        </script>
+    {% endif %}
 
     <!-- scripts only for the button to take the quiz -->
     <script src="{% static 'js/profile.js' %}"></script>
