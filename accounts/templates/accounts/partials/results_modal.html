@@ -1,0 +1,77 @@
+{% load custom_filters %}
+
+<aside class="modal fade" id="modal-results-{{ forloop.counter }}" tabindex="-1" aria-labelledby="modal-results-label-{{ forloop.counter }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-results-label-{{ forloop.counter }}">
+                    <!-- modal header details about the user and the quiz result as a whole -->
+                    {{ result.quiz.user }} |
+                    <small class="text-muted">
+                        {{ result.quiz.taken|date:"dMY"|upper }} |
+                        {% if user.is_superuser %}
+                            <span class="badge rounded-pill bg-warning text-dark">
+                                {{ result.duration }}
+                            </span>
+                        {% endif %}
+                        {% if result.quiz|safe == "is_mentor" %}
+                            {% if result.percentage >= 90 %}
+                                <span class="badge bg-success">distinction</span>
+                            {% elif result.percentage >= 80 %}
+                                <span class="badge bg-primary">merit</span>
+                            {% elif result.percentage >= 70 %}
+                                <span class="badge bg-warning">pass</span>
+                            {% else %}
+                                <span class="badge bg-danger">fail</span>
+                            {% endif %}
+                        {% endif %}
+                    </small>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- modal body content / loop over each response answer -->
+                {% for answer in result.answers %}
+                    <div class="card mb-4 border border-{% if result.quiz|safe == 'is_not_mentor' %}primary{% elif answer.is_correct == True %}success{% else %}danger{% endif %}">
+                        <div class="card-header bg-{% if result.quiz|safe == 'is_not_mentor' %}primary{% elif answer.is_correct == True %}success{% else %}danger{% endif %} text-white">
+                            <!-- the question -->
+                            <small>Q{{ forloop.counter }} : </small>
+                            <strong>{{ answer.question }}</strong>
+                        </div>
+                        <div class="card-body">
+                            <!-- the result, only if user is currently a mentor -->
+                            {% if result.quiz|safe == "is_mentor" %}
+                                <h6 class="card-title fw-bold">
+                                    {% if answer.is_correct == True %}
+                                        <small class="text-success">CORRECT</small>
+                                    {% else %}
+                                        <small class="text-danger">INCORRECT</small>
+                                    {% endif %}
+                                </h6>
+                            {% endif %}
+                            <p class="card-text">
+                                <!-- custom django templatetag: |replace"foo|bar" -->
+                                <span class="user-answer">
+                                    {{ answer.user_answer|safe|linebreaksbr|replace:"['|"|replace:"']|"|replace:"', '|, " }}
+                                </span>
+                            </p>
+                        </div>
+                        <!-- superusers can view the question module and duration taken for each question -->
+                        {% if user.is_superuser %}
+                            <div class="card-footer d-inline-flex justify-content-between">
+                                <span class="badge bg-secondary">{{ answer.question.module }}</span>
+                                <span class="badge rounded-pill bg-warning text-dark">
+                                    <!-- converts with JS on quiz_results.html page -->
+                                    <span class="time-convert">{{ answer.time_taken }}</span>
+                                </span>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-ci" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</aside>
