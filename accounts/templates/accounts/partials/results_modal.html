@@ -50,9 +50,19 @@
                                 </h6>
                             {% endif %}
                             <p class="card-text">
-                                <!-- custom django templatetag: |replace"foo|bar" -->
                                 <span class="user-answer">
-                                    {{ answer.user_answer|safe|linebreaksbr|replace:"['|"|replace:"']|"|replace:"', '|, " }}
+                                    <!-- custom django templatetag: |replace"foo|bar" -->
+                                    <!-- user_answer declared once, and used as new 'user_answer' variable -->
+                                    {% with user_answer=answer.user_answer|safe|linebreaksbr|replace:"['|"|replace:"']|"|replace:"', '|, " %}
+                                        <!-- custom django templatetag: |startswith"foobar" -->
+                                        {% if user_answer|startswith:"http://" or user_answer|startswith:"https://" %}
+                                            <a href="{{ user_answer }}" target="_blank" rel="noopener">
+                                                {{ user_answer }}
+                                            </a>
+                                        {% else %}
+                                            {{ user_answer }}
+                                        {% endif %}
+                                    {% endwith %}
                                 </span>
                             </p>
                         </div>
