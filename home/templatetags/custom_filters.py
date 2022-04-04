@@ -16,3 +16,11 @@ def replace(string, replace="*|*"):
     # https://stackoverflow.com/a/35477957
     find, replace = replace.split("|")
     return string.replace(find, replace)
+
+
+@register.filter
+def startswith(text, starter):
+    # https://simpleisbetterthancomplex.com/snippets/startswith/
+    if isinstance(text, str):
+        return text.startswith(starter)
+    return False
