@@ -8,8 +8,27 @@
 
     <!-- quiz start button -->
     <div class="row" id="quiz-start-row">
-        <div class="col d-flex justify-content-center">
-            <button id="quiz-start-btn" class="btn-ci mt-5">Start Quiz</button>
+        <div class="col col-md-8 offset-md-2 col-lg-6 offset-lg-3">
+            <div class="card text-center shadow">
+                <div class="card-body">
+                    <h5 class="card-title my-4 fw-bold text-p-orange">
+                        {% if quiz|safe == "is_mentor" %}
+                            Mentor Quiz
+                        {% elif quiz|safe == "is_not_mentor" %}
+                            New Mentor Quiz
+                        {% endif %}
+                    </h5>
+                    <p class="card-text">
+                        You will be presented with <strong>{{ questions|length }}</strong>
+                        questions{% if quiz|safe == "is_mentor" %} at random{% endif %}.
+                        <br>
+                        Please answer the questions as completely as possible.
+                        <br><br>
+                        When you're ready, click the <strong>Start Quiz</strong> button.
+                    </p>
+                    <button id="quiz-start-btn" class="btn btn-ci my-4">Start Quiz</button>
+                </div>
+            </div>
         </div>
     </div>
 
