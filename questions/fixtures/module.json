@@ -1,234 +1,233 @@
 [
-    {
+   {
+       "model": "questions.module",
        "pk": 1,
-       "model": "questions.module",
        "fields": {
-          "name": "programme_preliminaries"
+           "name": "programme_preliminaries"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 2,
-       "model": "questions.module",
        "fields": {
-          "name": "programming_paradigms"
+           "name": "programming_paradigms"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 3,
-       "model": "questions.module",
        "fields": {
-          "name": "html_essentials"
+           "name": "html_essentials"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 4,
-       "model": "questions.module",
        "fields": {
-          "name": "css_essentials"
+           "name": "css_essentials"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 5,
-       "model": "questions.module",
        "fields": {
-          "name": "ide_and_deployment_essentials"
+           "name": "ide_and_deployment_essentials"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 6,
-       "model": "questions.module",
        "fields": {
-          "name": "user_experience_essentials"
+           "name": "user_experience_essentials"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 7,
-       "model": "questions.module",
        "fields": {
-          "name": "love_running"
+           "name": "love_running"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 8,
-       "model": "questions.module",
        "fields": {
-          "name": "comparative_programming_language_essentials"
+           "name": "comparative_programming_language_essentials"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 9,
-       "model": "questions.module",
        "fields": {
-          "name": "javascript_essentials"
+           "name": "javascript_essentials"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 10,
-       "model": "questions.module",
        "fields": {
-          "name": "love_maths"
+           "name": "love_maths"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 11,
-       "model": "questions.module",
        "fields": {
-          "name": "python_essentials"
+           "name": "python_essentials"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 12,
-       "model": "questions.module",
        "fields": {
-          "name": "introduction_to_automation"
+           "name": "introduction_to_automation"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 13,
-       "model": "questions.module",
        "fields": {
-          "name": "love_sandwiches"
+           "name": "love_sandwiches"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 14,
-       "model": "questions.module",
        "fields": {
-          "name": "introduction_to_design_thinking"
+           "name": "introduction_to_design_thinking"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 15,
-       "model": "questions.module",
        "fields": {
-          "name": "principles_of_agile_development"
+           "name": "principles_of_agile_development"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 16,
-       "model": "questions.module",
        "fields": {
-          "name": "building_with_bootstrap"
+           "name": "building_with_bootstrap"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 17,
-       "model": "questions.module",
        "fields": {
-          "name": "bootstrap_resume_part_1"
+           "name": "bootstrap_resume_part_1"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 18,
-       "model": "questions.module",
        "fields": {
-          "name": "advanced_javascript_concepts"
+           "name": "advanced_javascript_concepts"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 19,
-       "model": "questions.module",
        "fields": {
-          "name": "introduction_to_jquery"
+           "name": "introduction_to_jquery"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 20,
-       "model": "questions.module",
        "fields": {
-          "name": "introduction_to_apis"
+           "name": "introduction_to_apis"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 21,
-       "model": "questions.module",
        "fields": {
-          "name": "javascript_testing_with_jest"
+           "name": "javascript_testing_with_jest"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 22,
-       "model": "questions.module",
        "fields": {
-          "name": "bootstrap_resume_part_2"
+           "name": "bootstrap_resume_part_2"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 23,
-       "model": "questions.module",
        "fields": {
-          "name": "introduction_to_flask"
+           "name": "introduction_to_flask"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 24,
-       "model": "questions.module",
        "fields": {
-          "name": "database_management_systems"
+           "name": "database_management_systems"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 25,
-       "model": "questions.module",
        "fields": {
-          "name": "python_testing"
+           "name": "python_testing"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 26,
-       "model": "questions.module",
        "fields": {
-          "name": "full_stack_frameworks"
+           "name": "full_stack_frameworks"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 27,
-       "model": "questions.module",
        "fields": {
-          "name": "ecommerce_application_types"
+           "name": "ecommerce_application_types"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 28,
-       "model": "questions.module",
        "fields": {
-          "name": "building_an_ecommerce_platform"
+           "name": "building_an_ecommerce_platform"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 29,
-       "model": "questions.module",
        "fields": {
-          "name": "introduction_to_search_engine_optimization"
+           "name": "introduction_to_search_engine_optimization"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 30,
-       "model": "questions.module",
        "fields": {
-          "name": "web_marketing"
+           "name": "web_marketing"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 31,
-       "model": "questions.module",
        "fields": {
-          "name": "careers"
+           "name": "careers"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 32,
-       "model": "questions.module",
        "fields": {
-          "name": "general_mentoring"
+           "name": "general_mentoring"
        }
-    },
-    {
+   },
+   {
+       "model": "questions.module",
        "pk": 33,
-       "model": "questions.module",
        "fields": {
-          "name": "not_applicable"
+           "name": "not_applicable"
        }
-    }
- ]
- 
+   }
+]
