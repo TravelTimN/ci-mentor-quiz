@@ -1,19 +1,18 @@
 [
-    {
-       "pk": 1,
-       "model": "quizzes.quiz",
-       "fields": {
-          "name": "is_mentor",
-          "max_count": 20
-       }
-    },
-    {
-       "pk": 2,
-       "model": "quizzes.quiz",
-       "fields": {
-          "name": "is_not_mentor",
-          "max_count": 50
-       }
-    }
- ]
- 
+   {
+      "model": "quizzes.quiz",
+      "pk": 1,
+      "fields": {
+         "name": "is_mentor",
+         "max_count": 20
+      }
+   },
+   {
+      "model": "quizzes.quiz",
+      "pk": 2,
+      "fields": {
+         "name": "is_not_mentor",
+         "max_count": 50
+      }
+   }
+]
