@@ -89,6 +89,18 @@
     // fixes Issue #8 (https://github.com/TravelTimN/ci-mentor-quiz/issues/8)
     let userAnswers = document.querySelectorAll(".user-answer");
     userAnswers.forEach(answer => {
+        // // slice the start and end to remove the list declarations
+        // answer.innerText = answer.innerText.trim();
+        // if (answer.innerText.slice(0,2) == `["` || answer.innerText.slice(0,2) == `['`) {
+        //     answer.innerText = answer.innerText.slice(2);
+        // }
+        // if (answer.innerText.slice(-2) == `']` || answer.innerText.slice(-2) == `"]`) {
+        //     answer.innerText = answer.innerText.slice(0,-2);
+        // }
+        // // remove extra quotes from list declaration
+        // if (answer.innerText.includes(`", "`) || answer.innerText.includes(`', '`)) {
+        //     answer.innerText = answer.innerText.replace(`", "`, ", ").replace(`', '`, ", ");
+        // }
         // use RegEx to replace \r and \n with a line break
         answer.innerHTML = answer.innerHTML.replace(/\\r\\n/g, "<br>");
     });
