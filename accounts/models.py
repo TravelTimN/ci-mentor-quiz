@@ -1,3 +1,4 @@
+import uuid
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import pre_save, post_save
@@ -27,7 +28,7 @@ class Profile(models.Model):
         ordering = ["user__username"]
 
     def __str__(self):
-        return self.user.username
+        return self.user.username[:-6]
 
 
 @receiver(pre_save, sender=User)
@@ -37,8 +38,12 @@ def update_username_from_name(sender, instance, **kwargs):
     Strips-out any non-alphanumeric characters in names (\'\s\- etc)
     This happens "pre_save".
     """
-    username = instance.first_name + instance.last_name
-    instance.username = "".join(x for x in username if x.isalnum()).lower()
+    uid = uuid.uuid4().hex[-5:]
+    first = "".join(x for x in instance.first_name if x.isalnum()).lower()
+    last = "".join(x for x in instance.last_name if x.isalnum()).lower()
+    username = first + last
+    instance.username = f"{first}{last}-{uid}"
+    # instance.username = "".join(x for x in username if x.isalnum()).lower()
 
 
 @receiver(post_save, sender=User)
