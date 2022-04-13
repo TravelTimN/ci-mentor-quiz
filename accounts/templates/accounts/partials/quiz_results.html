@@ -24,7 +24,7 @@
                     <tr class="result-row">
                         <!-- superusers can view the username, quiz-type, and total duration -->
                         {% if user.is_superuser %}
-                            <td>{{ result.quiz.user }}</td>
+                            <td>{{ result.quiz.user.profile.display_name }}</td>
                             <td>{{ result.quiz }}</td>
                             <td>{{ result.duration }}</td>
                         {% endif %}
