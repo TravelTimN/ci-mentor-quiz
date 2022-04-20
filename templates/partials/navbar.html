@@ -24,13 +24,14 @@
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-profile">
                             {% if request.user.is_authenticated %}
                                 <!-- user is logged-in -->
-                                <li><a class="dropdown-item" href="{% url 'profile' %}">My Profile</a></li>
-                                <li><a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a></li>
+                                <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
                                 {% if request.user.is_superuser %}
                                     <!-- user is also a superuser -->
-                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="{% url 'questions' %}">Questions</a></li>
                                     <li><a class="dropdown-item" href="{% url 'admin:index' %}" target="_blank" rel="noopener">Django Admin</a></li>
                                 {% endif %}
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a></li>
                             {% else %}
                                 <!-- user is not logged-in -->
                                 <li><a class="dropdown-item" href="{% url 'account_signup' %}">Register</a></li>
