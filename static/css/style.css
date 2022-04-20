@@ -301,7 +301,11 @@ ul#id_mentor_type li {
     font-size: 200%;
 }
 
-/* QUIZ RESULTS */
+/* QUIZ RESULTS & QUESTIONS TABLES */
+
+table thead tr th:not(:last-child) {
+    border-right: 1px solid rgba(var(--white), 0.5);
+}
 
 /* from imported DataTables library */
 table.dataTable>thead .sorting::before,
@@ -310,8 +314,7 @@ table.dataTable>thead .sorting_desc::before,
 table.dataTable>thead .sorting_asc_disabled::before,
 table.dataTable>thead .sorting_desc_disabled::before {
     color: rgba(var(--p-orange), 1);
-    line-height: 1 !important;
-    top: 1em !important;
+    top: 0 !important;
     right: 5px !important;
 }
 
@@ -322,8 +325,7 @@ table.dataTable>thead .sorting_desc::after,
 table.dataTable>thead .sorting_asc_disabled::after,
 table.dataTable>thead .sorting_desc_disabled::after {
     color: rgba(var(--white), 1);
-    line-height: 1 !important;
-    bottom: 1em !important;
+    bottom: 0 !important;
     right: 5px !important;
 }
 
