@@ -8,6 +8,6 @@ urlpatterns = [
     path("", include("home.urls")),
     path("profile/", include("accounts.urls")),
     path("auth/", include("allauth.urls")),
-    path("question/", include("questions.urls")),
+    path("questions/", include("questions.urls")),
     path("quiz/", include("quizzes.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
