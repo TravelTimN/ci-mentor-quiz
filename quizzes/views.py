@@ -42,6 +42,7 @@ def take_quiz(request, pk):
                     "type": question.type,
                     "question": str(question),
                     "choices": choices,
+                    "text": question.optional_text
                 })
 
     template = "quizzes/quiz.html"
