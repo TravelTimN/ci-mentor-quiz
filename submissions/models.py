@@ -15,7 +15,12 @@ class Submission(models.Model):
     percent_correct = models.IntegerField(null=False, blank=False, default="0")
 
     def __str__(self):
-        return self.quiz.name
+        return (
+            f"Submission ID#{self.id} by "
+            f"{self.user.profile.display_name} on "
+            f"{self.taken.strftime('%d%b%y').upper()} @"
+            f"{self.taken.strftime('%H:%M')}"
+        )
 
 
 class Response(models.Model):
@@ -27,4 +32,7 @@ class Response(models.Model):
     time_taken = models.IntegerField(null=False, blank=False, default="0")
 
     def __str__(self):
-        return f"User: {self.submission.user} | QID: {self.question} | Correct: {self.is_correct}"
+        return (
+            f"User: {self.submission.user.profile.display_name} "
+            f"| QID: {self.question.id} | Correct: {self.is_correct}"
+        )
