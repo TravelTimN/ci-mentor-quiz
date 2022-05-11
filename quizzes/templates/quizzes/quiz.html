@@ -71,6 +71,11 @@
 
                         <!-- error handling -->
                         <span id="error-handler-{{ forloop.counter }}" class="text-danger d-flex justify-content-center"></span>
+
+                        <!-- optional text, where applicable -->
+                        {% if question.text %}
+                            <small class="fs-6 text-center">{{ question.text|safe|linebreaksbr }}</small>
+                        {% endif %}
                     </div>
 
                     <!-- next && submit buttons -->
