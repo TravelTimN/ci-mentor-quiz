@@ -46,6 +46,7 @@ class Question(models.Model):
     module = models.ForeignKey(Module, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     type = models.CharField(choices=QUESTION_TYPE, max_length=10)
+    optional_text = models.TextField(null=True, blank=True)
 
     class Meta:
         """
