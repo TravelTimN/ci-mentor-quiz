@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section id="quiz-container" class="container my-5">
+    <div class="row">
+        <div class="col-sm-12 col-md-10 offset-md-1">
+            <form method="POST" action="{% url 'add_question' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <fieldset id="card-set" class="card shadow">
+
+                    <legend class="card-header bg-p-grey text-t-grey">
+                        <span class="text-danger">*</span>
+                        <span class="text-white">Add New Question</span>
+                        <!-- question -->
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-s-grey"><i class="fas fa-question-circle fa-fw fa-lg"></i></span>
+                            {{ question_form.question }}
+                        </div>
+                        <!-- quiz type -->
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-s-grey"><i class="fas fa-user-graduate fa-fw fa-lg"></i></span>
+                            {{ question_form.quiz }}
+                        </div>
+                        <!-- module type -->
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-s-grey"><i class="fas fa-book fa-fw fa-lg"></i></span>
+                            {{ question_form.module }}
+                        </div>
+                        <!-- subject type -->
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-s-grey"><i class="fas fa-code fa-fw fa-lg"></i></span>
+                            {{ question_form.subject }}
+                        </div>
+                        <!-- quiz type -->
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-s-grey"><i class="fas fa-list-alt fa-fw fa-lg"></i></span>
+                            {{ question_form.type }}
+                        </div>
+                        <!-- optional text -->
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-s-grey"><i class="fas fa-info-circle fa-fw fa-lg"></i></span>
+                            {{ question_form.optional_text }}
+                        </div>
+                    </legend>
+
+                    <!-- TODO: FINISH REST OF FORM -->
+                    <!-- TODO: FINISH REST OF FORM -->
+                    <!-- TODO: FINISH REST OF FORM -->
+                    <!-- TODO: FINISH REST OF FORM -->
+                    <!-- cycle through each of the question's choices -->
+                    <div class="card-body">
+
+                        <!-- error handling -->
+                        <span id="error-handler" class="text-danger d-flex justify-content-center"></span>
+                    </div>
+
+                    
+                    <!-- {{ choice_form_set.management_form }} -->
+                    {{ choice_form_set.as_p }} <!-- this one works with code below/jquery-->
+                    <!-- {% for choice in choice_form_set %}
+                            {{ choice }}<br>
+                        {% endfor %} -->
+                    <div id="form_template" class="d-none">
+                        {{ choice_form_set.empty_form }}
+                    </div>
+                    <div id="forms"></div>
+
+                    <br>
+                    <span id="add_choice" class="btn btn-small btn-outline-success"><i class="fas fa-plus"></i></span>
+
+
+                    <!-- submit button -->
+                    <div class="card-footer bg-p-grey text-t-grey">
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" id="quiz-submit-btn" class="btn-ci">Submit</button>
+                        </div>
+                    </div>
+
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}
+
+{% block js %}
+<script>
+    // https://stackoverflow.com/a/5479472
+    $(function () {
+        $("#add_choice").click(function () {
+            // update total form count
+            formCount = $("[name=form-TOTAL_FORMS]").val();
+            // quantity = $("[name=quantity]").val();
+            $("[name=form-TOTAL_FORMS]").val(parseInt(formCount) + 1);
+
+            // copy the template and replace prefixes with the correct index
+            html = $("#form_template").clone().html().replace(/__prefix__/g, formCount);
+            $("#forms").append(html);
+        });
+    });
+</script>
+{% endblock %}
