@@ -34,6 +34,7 @@ class Subject(models.Model):
 class Question(models.Model):
     # multi-choice, input, integer, true/false, short answer, url
     QUESTION_TYPE = [
+        (None, "Quiz Type"),
         ("checkbox", "Checkbox"),
         ("text", "Input"),
         ("number", "Number"),
