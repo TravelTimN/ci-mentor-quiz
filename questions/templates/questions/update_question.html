@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+    <!-- TODO: WORK IN PROGRESS -->
+
+    <h1>{{ question }}</h1>
+    {% for choice in choices %}
+        {{ choice }}<br>
+    {% endfor %}
+
+{% endblock %}
