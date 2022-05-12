@@ -11,6 +11,17 @@
 
 <div class="container-lg my-5">
     <div class="row">
+        <div class="col text-center">
+            <h1>Manage Questions</h1>
+            <!-- add a new question to the database -->
+            <a href="{% url 'add_question' %}" class="btn btn-ci my-3">Add Question</a>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- displaying all existing questions from the database -->
+    <div class="row">
         <div class="col-12 table-responsive">
             <table id="questions-table" class="table table-striped text-center align-middle">
                 <thead class="bg-p-grey text-t-grey align-middle">
@@ -24,6 +35,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- loop through all questions -->
                     {% for question in questions|dictsort:"quiz" %}
                         <tr>
                             <td>{{ question.quiz }}</td>
@@ -32,14 +44,10 @@
                             <td>{{ question.subject }}</td>
                             <td>{{ question.type }}</td>
                             <td>
-                                <!-- opens modal for individual quiz results -->
-                                <button type="button" class="btn btn-ci" data-bs-toggle="modal" data-bs-target="#modal-choices-{{ forloop.counter }}">
-                                    Manage
-                                </button>
+                                <!-- updating each individual question/choices -->
+                                <a href="{% url 'update_question' question.id %}" class="btn btn-ci">Manage</a>
                             </td>
                         </tr>
-                        <!-- results modals (must be inside of forloop) -->
-                        {% include "accounts/partials/results_modal.html" %}
                     {% empty %}
                         <!-- only display if no questions are found -->
                         <tr>
@@ -58,8 +66,6 @@
 {% block js %}
     <!-- import DataTables CDN for Bootstrap Tables Pagination (requires jQuery) -->
     <!-- https://datatables.net/examples/styling/bootstrap5.html -->
-    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-        crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.js"></script>
 
     <script>
