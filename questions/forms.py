@@ -47,7 +47,7 @@ class QuestionForm(forms.ModelForm):
         }),
     )
     optional_text = forms.CharField(
-        required=True,
+        required=False,
         widget=forms.Textarea(attrs={
             "class": "form-control",
             "placeholder": "Optional Helper Text",
@@ -63,8 +63,6 @@ class QuestionForm(forms.ModelForm):
 class ChoiceForm(forms.ModelForm):
     class Meta:
         model = Choice
-        # choice, correct_answer, question
-        # fields = "__all__"
         fields = ("choice", "correct_answer",)
 
 
