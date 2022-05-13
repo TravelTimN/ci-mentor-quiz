@@ -372,6 +372,11 @@ table.dataTable>thead>tr>td:not(.sorting_disabled) {
     padding-right: unset !important;
 }
 
+/* QUESTIONS CRUD */
+input[id^=id_form-][id$=-choice] {
+    width: 95%;
+}
+
 /* FOOTER */
 footer {
     text-align: center;
