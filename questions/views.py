@@ -44,20 +44,23 @@ def add_question(request):
         messages.error(request, "Access denied. Invalid permissions.")
         return redirect(reverse("profile"))
     # is superuser
-    # TODO: ------------------
-    # TODO: WORK IN PROGRESS
-    # TODO: ------------------
     question_form = QuestionForm(request.POST or None)
-    # print(f"question_form = {question_form.as_table()}")
     choice_form_set = ChoiceFormSet(request.POST or None)
-    # print(f"choice_form_set = {choice_form_set.as_table()}")
 
     if request.method == "POST":
         if question_form.is_valid and choice_form_set.is_valid:
-            messages.success(request, "Woohoo!!!")
+            # save the Question model
+            qform = question_form.save()
+            # loop each instance of the FormSet and save each "Choice"
+            for choice in choice_form_set:
+                choice.instance.question = qform  # set FK to Question above
+                choice.save()
+            messages.success(request, "Question/Choices successfully added!")
+            return redirect(update_question, qform.pk)
         else:
-            messages.error(request, "Whoopsies!")
+            messages.error(request, "An error has occurred. Please try again.")
 
+    # non-POST (GET) method, or if form is not valid, it will retain form data
     question_form = QuestionForm()
     choice_form_set = ChoiceFormSet()
 
