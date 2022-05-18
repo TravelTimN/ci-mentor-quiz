@@ -63,7 +63,7 @@ class Question(models.Model):
 
 
 class Choice(models.Model):
-    choice = models.CharField(max_length=100, null=True)
+    choice = models.CharField(max_length=100, null=False, blank=False)
     correct_answer = models.BooleanField(default=False)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
 
