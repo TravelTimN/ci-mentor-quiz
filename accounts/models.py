@@ -18,7 +18,7 @@ class Profile(models.Model):
     ]
 
     user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
-    display_name = models.CharField(max_length=75, unique=False)
+    display_name = models.CharField(max_length=75, unique=False, null=False)
     taken_quiz = models.BooleanField(default=False, blank=False)
     mentor_type = models.CharField(choices=MENTOR_TYPE, max_length=40)
 
