@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, render, redirect, reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.forms import modelformset_factory
 from .models import Question, Choice
 from .forms import QuestionForm, ChoiceForm, ChoiceFormSet
 
@@ -56,7 +57,7 @@ def add_question(request):
                 choice.instance.question = qform  # set FK to Question above
                 choice.save()
             messages.success(request, "Question/Choices successfully added!")
-            return redirect(update_question, qform.pk)
+            return redirect(questions)
         else:
             messages.error(request, "An error has occurred. Please try again.")
 
@@ -75,22 +76,44 @@ def add_question(request):
 @login_required
 def update_question(request, id):
     """ Admin management of existing Question/Choices """
-    # TODO: ------------------
-    # TODO: WORK IN PROGRESS
-    # TODO: ------------------
     if not request.user.is_superuser:
         # user is not superuser; take them to their profile
         messages.error(request, "Access denied. Invalid permissions.")
         return redirect(reverse("profile"))
     # is superuser
     question = get_object_or_404(Question, id=id)
-    choices = []
-    for choice in question.get_choices():
-        choices.append(choice.choice)
+    question_form = QuestionForm(request.POST or None, instance=question)
+    ChoiceFormSet = modelformset_factory(
+        Choice, form=ChoiceForm, extra=0, max_num=10)
+    choices = Choice.objects.filter(question=question)
+    choice_form_set = ChoiceFormSet(request.POST or None, queryset=choices)
+
+    if request.method == "POST":
+        if question_form.is_valid and choice_form_set.is_valid:
+            # update the Question model
+            question_form.save()
+
+            # TODO
+            # # if removing previously-existed Choices, they stay in the database
+            # # can_delete=True is not working, so loop choices and delete first
+            # for choice in choices:
+            #     choice.delete()
+            # # causes error on "Update"... cfs below has no choices anymore
+            # TODO (end)
+
+            # loop each instance of the FormSet and save each "Choice"
+            for choice in choice_form_set:
+                choice.instance.question = question  # set FK to Question above
+                choice.save()
+            messages.success(request, "Question/Choices successfully updated!")
+            return redirect(questions)
+        else:
+            messages.error(request, "An error has occurred. Please try again.")
 
     template = "questions/update_question.html"
     context = {
         "question": question,
-        "choices": choices,
+        "question_form": question_form,
+        "choice_form_set": choice_form_set,
     }
     return render(request, template, context)

@@ -84,7 +84,7 @@
                                 {% for form in choice_form_set.forms %}
                                     {% if forloop.first %}
                                         <thead>
-                                            <th class="w-75">Choices</th>
+                                            <th class="w-75">Choices (max 10)</th>
                                             <th>Correct?</th>
                                             <th>
                                                 <!-- add a new instance of Choice formset model -->
@@ -113,8 +113,14 @@
                                                 {{ field }}
                                             </td>
                                             {% if forloop.last %}
-                                                <!-- empty td for "remove_choice" button -->
-                                                <td></td>
+                                                <td>
+                                                    <!-- delete button only if outer loop last-item, and more than one option -->
+                                                    {% if forloop.parentloop.last and not forloop.parentloop.first %}
+                                                        <span id="remove_choice" class="btn btn-small btn-danger lh-1">
+                                                            <i class="fas fa-trash-alt fs-6"></i>
+                                                        </span>
+                                                    {% endif %}
+                                                </td>
                                             {% endif %}
                                         {% endfor %}
                                     </tr>
@@ -128,8 +134,11 @@
 
                     <!-- submit button -->
                     <div class="card-footer bg-p-grey text-t-grey">
-                        <div id="submit-btn" class="d-flex justify-content-center hide">
-                            <button type="submit" id="question-submit-btn" class="btn-ci">Add Question</button>
+                        <div id="submit-btn" class="d-flex justify-content-center">
+                            <button type="submit" id="question-submit-btn" class="btn-ci hide full">Add Question</button>
+                            <a href="{% url 'questions' %}" class="btn btn-danger mx-3 fw-bold">
+                                Cancel <i class="far fa-times-circle"></i>
+                            </a>
                         </div>
                     </div>
 
@@ -148,10 +157,20 @@
         $(this).children("option:first").prop("disabled", true);
     });
 
-    // unhide the formset Choices once quiz-type is selected
+    // force-require first Choice, since this cannot be set in FormSet due to 'empty_form'
+    // https://docs.djangoproject.com/en/3.2/topics/forms/formsets/#empty-form-1
+    $("tbody input[type=text]").each(function() {
+        $(this).prop("required", true);
+    });
+
+    // unhide the formset Choices once quiz-type is selected, or if editing an existing Question
     $("#id_type").on("change", function() {
         $("#card-body").removeClass("hide", "full");
     });
+    if ($("#id_question").val()) {
+        $("#card-body").removeClass("hide", "full");
+        $("#submit-btn").removeClass("hide");
+    }
 
     // click event for add_choice button
     $("#add_choice").on("click", function() {
@@ -166,7 +185,8 @@
         // https://stackoverflow.com/a/5479472
         // increment formset total Choices for DB-submission
         let formCount = $("[name=form-TOTAL_FORMS]").val();
-        $("[name=form-TOTAL_FORMS]").val(parseInt(formCount) + 1);
+        let formCountNext = parseInt(formCount) + 1;
+        $("[name=form-TOTAL_FORMS]").val(formCountNext);
 
         // add new row to table with next formset incremented number
         // cloning doesn't work when formset is in table/tr; must create manually
@@ -174,7 +194,7 @@
             <tr id="tr-${formCount}">
                 <td>
                     <span class="text-danger">*</span>
-                    <input type="text" name="form-${formCount}-choice" maxlength="100" id="id_form-${formCount}-choice" required>
+                    <input type="text" name="form-${formCount}-choice" maxlength="100" id="id_form-${formCount}-choice" placeholder="Choice #${formCountNext}" required>
                 </td>
                 <td>
                     <input type="checkbox" name="form-${formCount}-correct_answer" id="id_form-${formCount}-correct_answer">
@@ -233,12 +253,15 @@
         $("#add_choice").removeClass("hide");
     }
 
-    // enable "Submit" button if the first formset Choice has data/value
+    // enable "Submit" button if the first formset Choice has data/value, or updating existing question
+    if ($("input#id_form-0-choice").val() != "") {
+        $("#question-submit-btn").removeClass("hide", "full");
+    }
     $("input#id_form-0-choice").on("input", function() {
         if ($(this).val() != "") {
-            $("#submit-btn").removeClass("hide");
+            $("#question-submit-btn").removeClass("hide", "full");
         } else {
-            $("#submit-btn").addClass("hide");
+            $("#question-submit-btn").addClass("hide", "full");
         }
     });
 </script>

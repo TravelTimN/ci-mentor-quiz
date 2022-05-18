@@ -3,11 +3,266 @@
 
 {% block content %}
 
-    <!-- TODO: WORK IN PROGRESS -->
+<section id="quiz-container" class="container my-5">
+    <div class="row">
+        <div class="col text-center">
+            <h2>Update Question</h2>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-12 col-md-10 offset-md-1">
+            <!-- form to submit a new question -->
+            <form method="POST" action="{% url 'update_question' question.id %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <fieldset id="card-set" class="card shadow">
 
-    <h1>{{ question }}</h1>
-    {% for choice in choices %}
-        {{ choice }}<br>
-    {% endfor %}
+                    <legend class="card-header bg-p-grey text-t-grey">
+                        <span class="text-danger">*</span>
+                        <small class="text-white">required</small>
+                        <!-- question -->
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-s-grey">
+                                <span class="text-danger">*</span>
+                                <i class="fas fa-question-circle fa-fw fa-lg"></i>
+                            </span>
+                            {{ question_form.question }}
+                        </div>
+                        <!-- quiz type -->
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-s-grey">
+                                <span class="text-danger">*</span>
+                                <i class="fas fa-user-graduate fa-fw fa-lg"></i>
+                            </span>
+                            {{ question_form.quiz }}
+                        </div>
+                        <!-- module type -->
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-s-grey">
+                                <span class="text-danger">*</span>
+                                <i class="fas fa-book fa-fw fa-lg"></i>
+                            </span>
+                            {{ question_form.module }}
+                        </div>
+                        <!-- subject type -->
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-s-grey">
+                                <span class="text-danger">*</span>
+                                <i class="fas fa-code fa-fw fa-lg"></i>
+                            </span>
+                            {{ question_form.subject }}
+                        </div>
+                        <!-- quiz type -->
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-s-grey">
+                                <span class="text-danger">*</span>
+                                <i class="fas fa-list-alt fa-fw fa-lg"></i>
+                            </span>
+                            {{ question_form.type }}
+                        </div>
+                        <!-- optional text -->
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-s-grey">
+                                <i class="fas fa-info-circle fa-fw fa-lg"></i>
+                            </span>
+                            {{ question_form.optional_text }}
+                        </div>
+                    </legend>
 
+                    <!-- using Django's formset for the Question's dynamic Choices -->
+                    <div class="card-body hide full" id="card-body">
+
+                        <span class="d-none">
+                            <!-- hidden, but must be on DOM for hidden formset fields to work -->
+                            {{ choice_form_set.as_p }}
+                        </span>
+
+                        <!-- https://stackoverflow.com/a/25426509 -->
+                        <div class="table-responsive">
+                            <table class="table table-striped text-center align-middle">
+                                <!-- loop the formset, each row is new instance of Choice model added to DB -->
+                                {% for form in choice_form_set.forms %}
+                                    {% if forloop.first %}
+                                        <thead>
+                                            <th class="w-75">Choices (max 10)</th>
+                                            <th>Correct?</th>
+                                            <th>
+                                                <!-- add a new instance of Choice formset model -->
+                                                <span id="add_choice" class="btn btn-small btn-success lh-1">
+                                                    <i class="fas fa-plus fs-6"></i>
+                                                </span>
+                                            </th>
+                                        </thead>
+                                        <tbody id="tbody">
+                                    {% endif %}
+
+                                    <!-- the formset input fields -->
+                                    <tr>
+                                        {% for field in form.visible_fields %}
+                                            <td>
+                                                {% if forloop.first %}
+                                                    {% for hidden in form.hidden_fields %}
+                                                        {{ hidden }}
+                                                    {% endfor %}
+                                                {% endif %}
+
+                                                {{ field.errors.as_ul }}
+                                                {% if forloop.first %}
+                                                    <span class="text-danger">*</span>
+                                                {% endif %}
+                                                {{ field }}
+                                            </td>
+                                            {% if forloop.last %}
+                                                <td>
+                                                    <!-- delete button only if outer loop last-item, and more than one option -->
+                                                    {% if forloop.parentloop.last and not forloop.parentloop.first %}
+                                                        <span id="remove_choice" class="btn btn-small btn-danger lh-1">
+                                                            <i class="fas fa-trash-alt fs-6"></i>
+                                                        </span>
+                                                    {% endif %}
+                                                </td>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tr>
+                                    {% if forloop.last %}
+                                        </tbody>
+                                    {% endif %}
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- submit button -->
+                    <div class="card-footer bg-p-grey text-t-grey">
+                        <div id="submit-btn" class="d-flex justify-content-center">
+                            <button type="submit" id="question-submit-btn" class="btn-ci hide full">Update Question</button>
+                            <a href="{% url 'questions' %}" class="btn btn-danger mx-3 fw-bold">
+                                Cancel <i class="far fa-times-circle"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+</section>
+{% endblock %}
+
+{% block js %}
+<script>
+    // disable first option of each <select> element
+    $("select").each(function() {
+        $(this).children("option:first").prop("disabled", true);
+    });
+
+    // force-require first Choice, since this cannot be set in FormSet due to 'empty_form'
+    // https://docs.djangoproject.com/en/3.2/topics/forms/formsets/#empty-form-1
+    $("tbody input[type=text]").each(function() {
+        $(this).prop("required", true);
+    });
+
+    // unhide the formset Choices once quiz-type is selected, or if editing an existing Question
+    $("#id_type").on("change", function() {
+        $("#card-body").removeClass("hide", "full");
+    });
+    if ($("#id_question").val()) {
+        $("#card-body").removeClass("hide", "full");
+        $("#submit-btn").removeClass("hide");
+    }
+
+    // click event for add_choice button
+    $("#add_choice").on("click", function() {
+        // remove any instance of "remove_choice" button to avoid duplicates
+        $("#remove_choice").remove();
+        // increment formset total count and add new instance of row
+        addChoice();
+    });
+    
+    // add new row to the formset Choice model
+    function addChoice() {
+        // https://stackoverflow.com/a/5479472
+        // increment formset total Choices for DB-submission
+        let formCount = $("[name=form-TOTAL_FORMS]").val();
+        let formCountNext = parseInt(formCount) + 1;
+        $("[name=form-TOTAL_FORMS]").val(formCountNext);
+
+        // add new row to table with next formset incremented number
+        // cloning doesn't work when formset is in table/tr; must create manually
+        newRow = `
+            <tr id="tr-${formCount}">
+                <td>
+                    <span class="text-danger">*</span>
+                    <input type="text" name="form-${formCount}-choice" maxlength="100" id="id_form-${formCount}-choice" placeholder="Choice #${formCountNext}" required>
+                </td>
+                <td>
+                    <input type="checkbox" name="form-${formCount}-correct_answer" id="id_form-${formCount}-correct_answer">
+                </td>
+                <td id="td-${formCount}">
+                    <span id="remove_choice" class="btn btn-small btn-danger lh-1">
+                        <i class="fas fa-trash-alt fs-6"></i>
+                    </span>
+                </td>
+            </tr>
+        `;
+        $("#tbody").append(newRow);
+        // disable add_choice button if maximum formset choices reached
+        let maxFormCount = $("[name=form-MAX_NUM_FORMS]").val();
+        let totalRows = $("#tbody").children("tr").length;
+        if (totalRows >= maxFormCount) {
+            disableAddBtn();
+        }
+    }
+
+    // clicking the remove_choice button triggers a few events
+    $("body").on("click", "#remove_choice", function () {
+        removeChoice();
+    });
+
+    // remove_choice button clicked
+    function removeChoice() {
+        // remove last row from the formset Choice model
+        $("#tbody").children("tr:last").remove();
+        let totalRows = $("#tbody").children("tr").length;
+        if (totalRows > 1) {
+            // add another "remove_choice" button to last row, unless only 1 row remains
+            $("#tbody").children("tr:last").children("td:last").html(
+                `<span id="remove_choice" class="btn btn-small btn-danger lh-1">
+                    <i class="fas fa-trash-alt fs-6"></i>
+                </span>`
+            );
+        }
+        // decrement formset total Choices for DB-submission
+        let formCount = $("[name=form-TOTAL_FORMS]").val();
+        $("[name=form-TOTAL_FORMS]").val(parseInt(formCount) - 1);
+        // enable add_choice button if maximum formset choices is not reached
+        let maxFormCount = $("[name=form-MAX_NUM_FORMS]").val();
+        if (totalRows < maxFormCount) {
+            enableAddBtn();
+        }
+    }
+
+    // disable add_choice if greater than permitted formset Choices
+    function disableAddBtn() {
+        $("#add_choice").addClass("hide");
+    }
+
+    // enable add_choice if fewer than permitted formset Choices
+    function enableAddBtn() {
+        $("#add_choice").removeClass("hide");
+    }
+
+    // enable "Submit" button if the first formset Choice has data/value, or updating existing question
+    if ($("input#id_form-0-choice").val() != "") {
+        $("#question-submit-btn").removeClass("hide", "full");
+    }
+    $("input#id_form-0-choice").on("input", function() {
+        if ($(this).val() != "") {
+            $("#question-submit-btn").removeClass("hide", "full");
+        } else {
+            $("#question-submit-btn").addClass("hide", "full");
+        }
+    });
+</script>
 {% endblock %}
