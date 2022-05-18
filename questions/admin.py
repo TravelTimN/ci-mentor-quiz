@@ -16,6 +16,7 @@ class QuestionAdmin(admin.ModelAdmin):
 @admin.register(Choice)
 class ChoiceAdmin(admin.ModelAdmin):
     list_display = ("question", "choice", "correct_answer")  # table view
+    list_filter = ("question__quiz",)  # sidebar filter
 
 
 admin.site.register(Question, QuestionAdmin)
