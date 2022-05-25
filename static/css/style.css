@@ -120,7 +120,7 @@ a, a:hover {
 }
 
 .alert {
-    height: 76px;
+    min-height: 76px;
     width: 100%;
     z-index: 999;
     margin-bottom: 2px;
