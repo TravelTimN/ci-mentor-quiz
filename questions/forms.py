@@ -64,7 +64,7 @@ class QuestionForm(forms.ModelForm):
 class ChoiceForm(forms.ModelForm):
     choice = forms.CharField(
         widget=forms.TextInput(attrs={
-            "placeholder": "Choice #1",
+            "placeholder": "Original Choice",
         })
     )
 
@@ -76,4 +76,5 @@ class ChoiceForm(forms.ModelForm):
 # https://docs.djangoproject.com/en/3.2/topics/forms/formsets/
 # https://stackoverflow.com/a/5479472
 # allow dynamic addition of new Question Choices
-ChoiceFormSet = formset_factory(ChoiceForm, extra=1, max_num=10)
+ChoiceFormSet = formset_factory(
+    ChoiceForm, extra=1, min_num=1, max_num=10, can_delete=True)
