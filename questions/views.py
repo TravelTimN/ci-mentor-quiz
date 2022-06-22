@@ -84,7 +84,8 @@ def update_question(request, id):
     question = get_object_or_404(Question, id=id)
     question_form = QuestionForm(request.POST or None, instance=question)
     ChoiceFormSet = modelformset_factory(
-        Choice, form=ChoiceForm, extra=0, max_num=10)
+        Choice, form=ChoiceForm, extra=0,
+        min_num=1, max_num=10, can_delete=True)
     choices = Choice.objects.filter(question=question)
     choice_form_set = ChoiceFormSet(request.POST or None, queryset=choices)
 
@@ -93,18 +94,18 @@ def update_question(request, id):
             # update the Question model
             question_form.save()
 
-            # TODO
-            # # if removing previously-existed Choices, they stay in the database
-            # # can_delete=True is not working, so loop choices and delete first
-            # for choice in choices:
-            #     choice.delete()
-            # # causes error on "Update"... cfs below has no choices anymore
-            # TODO (end)
-
-            # loop each instance of the FormSet and save each "Choice"
-            for choice in choice_form_set:
-                choice.instance.question = question  # set FK to Question above
-                choice.save()
+            # loop each instance of the FormSet forms
+            for choice in choice_form_set.forms:
+                # if marked for deletion, then delete from DB
+                if choice in choice_form_set.deleted_forms:
+                    choice_id = choice.instance.id
+                    choice_to_be_deleted = get_object_or_404(
+                        Choice, id=choice_id)
+                    choice_to_be_deleted.delete()
+                else:
+                    # otherwise, set FK to "Question" from above
+                    choice.instance.question = question
+                    choice.save()
             messages.success(request, "Question/Choices successfully updated!")
             return redirect(questions)
         else:
