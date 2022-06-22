@@ -77,4 +77,4 @@ class ChoiceForm(forms.ModelForm):
 # https://stackoverflow.com/a/5479472
 # allow dynamic addition of new Question Choices
 ChoiceFormSet = formset_factory(
-    ChoiceForm, extra=1, min_num=1, max_num=10, can_delete=True)
+    ChoiceForm, extra=0, min_num=1, max_num=10, can_delete=True)
