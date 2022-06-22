@@ -115,11 +115,9 @@
                                             {% if forloop.last %}
                                                 <td>
                                                     <!-- delete button only if outer loop last-item, and more than one option -->
-                                                    {% if forloop.parentloop.last and not forloop.parentloop.first %}
-                                                        <span id="remove_choice" class="btn btn-small btn-danger lh-1">
-                                                            <i class="fas fa-trash-alt fs-6"></i>
-                                                        </span>
-                                                    {% endif %}
+                                                    <span class="btn btn-small btn-secondary lh-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Cannot Delete">
+                                                        <i class="fas fa-trash-alt fs-6"></i>
+                                                    </span>
                                                 </td>
                                             {% endif %}
                                         {% endfor %}
@@ -161,6 +159,11 @@
     // https://docs.djangoproject.com/en/3.2/topics/forms/formsets/#empty-form-1
     $("tbody input[type=text]").each(function() {
         $(this).prop("required", true);
+    });
+
+    // this is for new questions, so placeholder should NOT be "Original Choice"
+    $("input[type='text'][id$='-choice'").each(function() {
+        $(this).prop("placeholder", "New Choice");
     });
 
     // unhide the formset Choices once quiz-type is selected, or if editing an existing Question
