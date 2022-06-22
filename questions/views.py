@@ -118,3 +118,17 @@ def update_question(request, id):
         "choice_form_set": choice_form_set,
     }
     return render(request, template, context)
+
+
+@login_required
+def delete_question(request, id):
+    """ Admin management of deleting Questions """
+    if not request.user.is_superuser:
+        # user is not superuser; take them to their profile
+        messages.error(request, "Access denied. Invalid permissions.")
+        return redirect(reverse("profile"))
+    # is superuser
+    question = get_object_or_404(Question, id=id)
+    question.delete()
+    messages.success(request, "Question successfully deleted")
+    return redirect(reverse("questions"))
