@@ -86,6 +86,7 @@
                                         <thead>
                                             <th class="w-75">Choices (max 10)</th>
                                             <th>Correct?</th>
+                                            <th class="hide full">Delete?</th>
                                             <th>
                                                 <!-- add a new instance of Choice formset model -->
                                                 <span id="add_choice" class="btn btn-small btn-success lh-1">
@@ -198,10 +199,10 @@
 
     // unhide the formset Choices once quiz-type is selected, or if editing an existing Question
     $("#id_type").on("change", function() {
-        $("#card-body").removeClass("hide", "full");
+        $("#card-body").removeClass("hide full");
     });
     if ($("#id_question").val()) {
-        $("#card-body").removeClass("hide", "full");
+        $("#card-body").removeClass("hide full");
         $("#submit-btn").removeClass("hide");
     }
 
@@ -317,13 +318,13 @@
     // enable "Submit" button if the first formset Choice has data/value, or updating existing question
     let getFirstTR = $("#tbody").children("tr:not(.hide)").first();
     if ($(getFirstTR).next("input[id$='-choice']").val() != "") {
-        $("#question-submit-btn").removeClass("hide", "full");
+        $("#question-submit-btn").removeClass("hide full");
     }
     $("body").on("input", "input[id$='-choice']", function() {
         if ($(this).val() != "") {
-            $("#question-submit-btn").removeClass("hide", "full");
+            $("#question-submit-btn").removeClass("hide full");
         } else {
-            $("#question-submit-btn").addClass("hide", "full");
+            $("#question-submit-btn").addClass("hide full");
         }
         validateCorrectAnswerCheckboxes();
     });
@@ -337,9 +338,9 @@
     function validateCorrectAnswerCheckboxes() {
         let validChoices = $("#tbody").children("tr:not(.hide)").children("td:not(.hide)").children("input[id$='-correct_answer'][type=checkbox]:checked");
         if (validChoices.length == 0) {
-            $("#question-submit-btn").addClass("hide", "full");
+            $("#question-submit-btn").addClass("hide full");
         } else {
-            $("#question-submit-btn").removeClass("hide", "full");
+            $("#question-submit-btn").removeClass("hide full");
         }
     }
 </script>
