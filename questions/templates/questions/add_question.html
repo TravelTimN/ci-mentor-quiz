@@ -11,7 +11,7 @@
     </div>
     <hr>
     <div class="row">
-        <div class="col-sm-12 col-md-10 offset-md-1">
+        <div class="col-sm-12 col-lg-10 offset-lg-1">
             <!-- form to submit a new question -->
             <form method="POST" action="{% url 'add_question' %}" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -86,6 +86,7 @@
                                         <thead>
                                             <th class="w-75">Choices (max 10)</th>
                                             <th>Correct?</th>
+                                            <th class="hide full">Delete?</th>
                                             <th>
                                                 <!-- add a new instance of Choice formset model -->
                                                 <span id="add_choice" class="btn btn-small btn-success lh-1">
@@ -115,9 +116,11 @@
                                             {% if forloop.last %}
                                                 <td>
                                                     <!-- delete button only if outer loop last-item, and more than one option -->
-                                                    <span class="btn btn-small btn-secondary lh-1" data-bs-toggle="tooltip" data-bs-placement="left" title="Cannot Delete">
-                                                        <i class="fas fa-trash-alt fs-6"></i>
-                                                    </span>
+                                                    {% if forloop.parentloop.last and not forloop.parentloop.first %}
+                                                        <span id="remove_choice" class="btn btn-small btn-danger lh-1">
+                                                            <i class="fas fa-trash-alt fs-6"></i>
+                                                        </span>
+                                                    {% endif %}
                                                 </td>
                                             {% endif %}
                                         {% endfor %}
@@ -168,10 +171,10 @@
 
     // unhide the formset Choices once quiz-type is selected, or if editing an existing Question
     $("#id_type").on("change", function() {
-        $("#card-body").removeClass("hide", "full");
+        $("#card-body").removeClass("hide full");
     });
     if ($("#id_question").val()) {
-        $("#card-body").removeClass("hide", "full");
+        $("#card-body").removeClass("hide full");
         $("#submit-btn").removeClass("hide");
     }
 
@@ -183,6 +186,8 @@
 
     // click event for add_choice button
     $("#add_choice").on("click", function() {
+        // remove any instance of "remove_choice" button to avoid duplicates
+        $("#remove_choice").remove();
         // increment formset total count and add new instance of row
         addChoice();
         validateCorrectAnswerCheckboxes();
@@ -211,7 +216,7 @@
                     <input type="checkbox" name="form-${formCount}-DELETE" id="id_form-${formCount}-DELETE">
                 </td>
                 <td id="td-${formCount}">
-                    <span class="btn btn-small btn-danger lh-1 remove_choice">
+                    <span id="remove_choice" class="btn btn-small btn-danger lh-1">
                         <i class="fas fa-trash-alt fs-6"></i>
                     </span>
                 </td>
@@ -224,53 +229,35 @@
         if (totalRows >= absoluteMaxFormCount) {
             disableAddBtn();
         }
-        // disable "delete" btns if only 1 choice remains
-        if (totalRows <= 1) {
-            $(".remove_choice").hide();
-        } else {
-            $(".remove_choice").show();
-        }
     }
 
     // clicking the remove_choice button triggers a few events
-    $("body").on("click", ".remove_choice", function(e) {
+    $("body").on("click", "#remove_choice", function(e) {
         removeChoice(e);
         validateCorrectAnswerCheckboxes();
     });
 
     // remove_choice button clicked
     function removeChoice(e) {
+        // remove last row from the formset Choice model
+        $("#tbody").children("tr:last").remove();
+        let totalRows = $("#tbody").children("tr:not(.hide)").length;
+        if (totalRows > 1) {
+            // add another "remove_choice" button to last row, unless only 1 row remains
+            $("#tbody").children("tr:last").children("td:last").html(
+                `<span id="remove_choice" class="btn btn-small btn-danger lh-1">
+                    <i class="fas fa-trash-alt fs-6"></i>
+                </span>`
+            );
+        }
+        // decrement formset total Choices for DB-submission
         let formCount = $("[name=form-TOTAL_FORMS]").val();
         let maxFormCount = $("[name=form-MAX_NUM_FORMS]").val();
-        let parentTR = $(e.target).closest("tr");
-        let deleteTD = $(parentTR).children("td.hide.full");
-        let getChoiceID = $(parentTR).find("input[name^='form-'][name$='-id']");
-        let checkPlaceholder = $(parentTR).find("input[id$='-choice']");
-        let checkName = $(checkPlaceholder).prop("name");
-        let checkChoiceNumber = checkName.split("-")[1];
-        if ($(checkPlaceholder).prop("placeholder") == "Original Choice") {
-            // original choice found - must use 'form-#-DELETE'
-            // https://docs.djangoproject.com/en/3.2/topics/forms/formsets/#understanding-the-managementform
-            $(deleteTD).children("input[id$='-DELETE']").prop("checked", true);
-            $(parentTR).addClass("hide full");
-            // increment formset total Choices for DB-submission
-            $("[name=form-MAX_NUM_FORMS]").val(parseInt(maxFormCount) + 1)
-        } else {
-            // not from original choices - can simply just remove
-            $(parentTR).remove();
-            // decrement formset total Choices for DB-submission
-            $("[name=form-TOTAL_FORMS]").val(parseInt(formCount) - 1);
-        }
-        let totalRows = $("#tbody").children("tr:not(.hide)").length;
+        // decrement formset total Choices for DB-submission
+        $("[name=form-TOTAL_FORMS]").val(parseInt(formCount) - 1);
         // re-enable "add" btn if max choices not hit
         if (totalRows < maxFormCount) {
             enableAddBtn();
-        }
-        // disable "delete" btns if only 1 choice remains
-        if (totalRows <= 1) {
-            $(".remove_choice").hide();
-        } else {
-            $(".remove_choice").show();
         }
     }
 
@@ -286,14 +273,15 @@
 
     // enable "Submit" button if the first formset Choice has data/value, or updating existing question
     let getFirstTR = $("#tbody").children("tr:not(.hide)").first();
-    if ($(getFirstTR).next("input[id$='-choice']").val() != "") {
-        $("#question-submit-btn").removeClass("hide", "full");
+    let firstTRchoiceInput = $(getFirstTR).next("input[id$='-choice']").val();
+    if (firstTRchoiceInput != "" && firstTRchoiceInput != undefined) {
+        $("#question-submit-btn").removeClass("hide full");
     }
     $("body").on("input", "input[id$='-choice']", function() {
         if ($(this).val() != "") {
-            $("#question-submit-btn").removeClass("hide", "full");
+            $("#question-submit-btn").removeClass("hide full");
         } else {
-            $("#question-submit-btn").addClass("hide", "full");
+            $("#question-submit-btn").addClass("hide full");
         }
         validateCorrectAnswerCheckboxes();
     });
@@ -307,9 +295,9 @@
     function validateCorrectAnswerCheckboxes() {
         let validChoices = $("#tbody").children("tr:not(.hide)").children("td:not(.hide)").children("input[id$='-correct_answer'][type=checkbox]:checked");
         if (validChoices.length == 0) {
-            $("#question-submit-btn").addClass("hide", "full");
+            $("#question-submit-btn").addClass("hide full");
         } else {
-            $("#question-submit-btn").removeClass("hide", "full");
+            $("#question-submit-btn").removeClass("hide full");
         }
     }
 </script>
