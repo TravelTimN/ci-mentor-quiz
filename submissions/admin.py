@@ -1,6 +1,5 @@
 from django.contrib import admin
-from .models import Submission, Response
-# from accounts.models import Profile
+from .models import Submission, Response, Attempt
 
 
 class ResponseInline(admin.TabularInline):
@@ -25,6 +24,7 @@ class SubmissionAdmin(admin.ModelAdmin):
 @admin.register(Response)
 class ResponseAdmin(admin.ModelAdmin):
     list_display = ("id", "user", "taken", "quiz", "correct")  # table view
+    list_filter = ("submission__user__profile__display_name", )  # sidebar filter
 
     @admin.display()
     # @admin.display() decorator allow list_display to use FKs
@@ -42,6 +42,18 @@ class ResponseAdmin(admin.ModelAdmin):
 
     def correct(self, response):
         return response.is_correct
+
+
+@admin.register(Attempt)
+class AttemptAdmin(admin.ModelAdmin):
+    list_display = ("display_name", "started")  # table view
+    list_filter = ("user__profile__display_name", )  # sidebar filter
+    search_fields = ["user__email", "user__username", "user__first_name", "user__last_name"]  # search box
+
+    @admin.display()
+    # @admin.display() decorator allow list_display to use FKs
+    def display_name(self, response):
+        return response.user.profile.display_name
 
 
 admin.site.register(Submission, SubmissionAdmin)
