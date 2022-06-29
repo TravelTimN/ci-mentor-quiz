@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from quizzes.models import Quiz
-from submissions.models import Submission, Response
+from submissions.models import Submission, Response, Attempt
 
 
 @login_required
@@ -21,6 +21,7 @@ def profile(request):
         user_submissions = Submission.objects.filter(user=request.user)
     results = []
     for submission in user_submissions:
+        attempts = Attempt.objects.filter(user=submission.user).count()
         responses = Response.objects.filter(submission=submission.id)
         correct = responses.filter(is_correct="True").count()
         duration = str(datetime.timedelta(seconds=submission.duration))
@@ -30,7 +31,8 @@ def profile(request):
             "correct": correct,
             "questions": responses.count(),
             "percentage": submission.percent_correct,
-            "duration": duration
+            "duration": duration,
+            "attempts": attempts,
         })
 
     template = "accounts/profile.html"
