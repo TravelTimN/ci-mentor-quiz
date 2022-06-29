@@ -6,26 +6,24 @@
             <div class="modal-header">
                 <h5 class="modal-title" id="modal-results-label-{{ forloop.counter }}">
                     <!-- modal header details about the user and the quiz result as a whole -->
-                    {{ result.quiz.user.profile.display_name }} |
+                    {{ result.quiz.user.first_name }} {{ result.quiz.user.last_name }} |
                     <small class="text-muted">
-                        {{ result.quiz.taken|date:"dMY"|upper }} |
-                        {% if user.is_superuser %}
-                            <span class="badge rounded-pill bg-warning text-dark">
-                                {{ result.duration }}
-                            </span>
-                        {% endif %}
-                        {% if result.quiz.quiz|safe == "is_mentor" %}
-                            {% if result.percentage >= 90 %}
-                                <span class="badge bg-success">distinction</span>
-                            {% elif result.percentage >= 80 %}
-                                <span class="badge bg-primary">merit</span>
-                            {% elif result.percentage >= 70 %}
-                                <span class="badge bg-warning text-dark">pass</span>
-                            {% else %}
-                                <span class="badge bg-danger">fail</span>
-                            {% endif %}
-                        {% endif %}
+                        Submitted: {{ result.quiz.taken|date:"dMY"|upper }} @ {{ result.quiz.taken|date:"H:i e"|upper }}
                     </small>
+                    <!-- quiz results (compared to student assessments) -->
+                    {% if result.quiz.quiz|safe == "is_mentor" %} |
+                        {% if result.percentage >= 90 %}
+                            <span class="badge bg-success">distinction</span>
+                        {% elif result.percentage >= 80 %}
+                            <span class="badge bg-primary">merit</span>
+                        {% elif result.percentage >= 70 %}
+                            <span class="badge bg-warning text-dark">pass</span>
+                        {% else %}
+                            <span class="badge bg-danger">fail</span>
+                        {% endif %}
+                    {% endif %}
+                    <br>
+                    <small class="text-muted">{{ result.quiz.user.email }}</small>
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -70,16 +68,44 @@
                         {% if user.is_superuser %}
                             <div class="card-footer d-inline-flex justify-content-between">
                                 <span class="badge bg-secondary">{{ answer.question.module }}</span>
-                                <span class="badge rounded-pill bg-warning text-dark">
-                                    <!-- converts with JS on quiz_results.html page -->
-                                    <span class="time-convert">{{ answer.time_taken }}</span>
+                                <span>
+                                    duration:
+                                    <span class="badge rounded-pill bg-warning text-dark">
+                                        <!-- converts with JS on quiz_results.html page -->
+                                        <span class="time-convert">{{ answer.time_taken }}</span>
+                                    </span>
                                 </span>
                             </div>
                         {% endif %}
                     </div>
                 {% endfor %}
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer d-inline-flex justify-content-between align-items-center">
+                <p class="d-inline-flex justify-content-between align-items-center">
+                    <!-- admin-only features: quiz duration and number of times accessing the quiz -->
+                    {% if user.is_superuser %}
+                        <span class="badge bg-danger text-light">
+                            admin-only
+                        </span>
+                        <span class="fw-bold"> &nbsp; | &nbsp; </span>
+                        <span class="text-muted">
+                            <!-- total quiz duration -->
+                            total duration:
+                            <span class="badge rounded-pill bg-warning text-dark">
+                                {{ result.duration }}
+                            </span>
+                        </span>
+                        <span class="fw-bold"> &nbsp; | &nbsp; </span>
+                        <span class="text-muted">
+                            <!-- number of times quiz loaded by user -->
+                            quiz loaded
+                            <span class="badge rounded-pill bg-warning text-dark">
+                                {{ result.attempts }}
+                            </span>
+                            time{{ result.attempts|pluralize }}
+                        </span>
+                    {% endif %}
+                </p>
                 <button type="button" class="btn btn-ci" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
