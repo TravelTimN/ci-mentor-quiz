@@ -1,4 +1,4 @@
-/* jshint esversion: 8 */
+/* jshint esversion: 11, jquery: true */
 
 const quizStartBtn = document.getElementById("quiz-start-btn");
 const quizSubmitBtn = document.getElementById("quiz-submit-btn");
@@ -8,6 +8,27 @@ let durationTime = 0;
 let durationInterval;
 let timeTaken = 0;
 let timeTakenInterval;
+
+
+function ajaxQuizStart() {
+    url = "/submissions/ajax_quiz_start/";
+    csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: {
+            "csrfmiddlewaretoken": csrfToken,
+        },
+        success: function(data) {console.log(data);},
+        error: function(data) {
+            let errText = data.responseText;
+            // specific error is between `<pre></pre>` elements
+            let errMsg = errText.match(/<pre>[\s\S]*?<\/pre>/g)[0];
+            // remove `<pre></pre>` tags and trim excess whitespace
+            console.log(errMsg.replace("<pre>", "").replace("</pre>", "").trim());
+        }
+    });
+}
 
 
 function setDurationTime() {
@@ -27,6 +48,7 @@ function setTimeTaken(qID) {
 
 // start the quiz and the timers
 quizStartBtn.addEventListener("click", function() {
+    ajaxQuizStart();
     document.getElementById("quiz-start-row").classList.add("hide", "full");
     quizForm.classList.remove("hide", "full");
 
