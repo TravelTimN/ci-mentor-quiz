@@ -36,3 +36,12 @@ class Response(models.Model):
             f"User: {self.submission.user.profile.display_name} "
             f"| QID: {self.question.id} | Correct: {self.is_correct}"
         )
+
+
+class Attempt(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, null=False, blank=False)
+    started = models.DateTimeField(auto_now_add=True, null=False, blank=False)
+
+    def __str__(self):
+        return f"User: {self.user} | Clicked Start: {self.started}"
