@@ -29,7 +29,7 @@
             </div>
             <div class="modal-body">
                 <!-- modal body content / loop over each response answer -->
-                {% for answer in result.answers %}
+                {% for answer in result.answers|dictsort:"id" %}
                     <div class="card mb-4 border border-{% if result.quiz.quiz|safe == 'is_not_mentor' %}primary{% elif answer.is_correct == True %}success{% else %}danger{% endif %}">
                         <div class="card-header bg-{% if result.quiz.quiz|safe == 'is_not_mentor' %}primary{% elif answer.is_correct == True %}success{% else %}danger{% endif %} text-white">
                             <!-- the question -->
