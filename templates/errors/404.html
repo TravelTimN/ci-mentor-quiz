@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block meta %}
+    <meta http-equiv="refresh" content="10; url={% url 'home' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid h-100">
+	<div class="row h-100">
+		<!-- left-side error content -->
+		<div class="col-12 col-md-6 d-flex flex-column align-items-center justify-content-center text-center">
+            <h1 class="text-p-orange">404</h1>
+            <p class="fs-5 fw-bold">
+                The page you are looking for does not exist.
+            </p>
+            <p class="text-muted">
+                You will be redirected to
+                {% if request.user.is_authenticated %}
+                    your <a href="{% url 'profile' %}" class="text-p-orange fw-bold">Profile</a> page
+                {% else %}
+                    the <a href="{% url 'home' %}" class="text-p-orange fw-bold">Home</a> page
+                {% endif %}
+                within 10 seconds.
+            </p>
+		</div>
+
+		<!-- right-side background image -->
+		<div class="col-12 col-md-6  d-none d-md-flex" id="img-home-page"></div>
+	</div>
+</div>
+
+{% endblock %}
