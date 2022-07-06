@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block meta %}
+    <meta http-equiv="refresh" content="10; url={% url 'home' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid h-100">
+	<div class="row h-100">
+		<!-- left-side error content -->
+		<div class="col-12 col-md-6 d-flex flex-column align-items-center justify-content-center text-center">
+            <h1 class="text-p-orange">500</h1>
+            <p class="fs-5 fw-bold">
+                Oops, something went wrong!
+            </p>
+            <p class="text-muted">
+                You will be redirected to back to the
+                <a href="{{ request.META.HTTP_REFERER }}" class="text-p-orange fw-bold">previous page</a>
+                within 10 seconds.
+            </p>
+		</div>
+
+		<!-- right-side background image -->
+		<div class="col-12 col-md-6  d-none d-md-flex" id="img-home-page"></div>
+	</div>
+</div>
+
+{% endblock %}
