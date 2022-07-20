@@ -12,18 +12,22 @@
             <div class="card text-center shadow">
                 <div class="card-body">
                     <h5 class="card-title my-4 fw-bold text-p-orange">
-                        {% if quiz|safe == "is_mentor" %}
-                            Mentor Quiz
-                        {% elif quiz|safe == "is_not_mentor" %}
-                            New Mentor Quiz
-                        {% endif %}
+                        {% if quiz|safe == "is_not_mentor" %}New{% endif %}
+                        Mentor Quiz
                     </h5>
                     <p class="card-text">
                         You will be presented with <strong>{{ questions|length }}</strong>
                         questions{% if quiz|safe == "is_mentor" %} at random{% endif %}.
-                        <br>
+                    </p>
+                    <p>
                         Please answer the questions as completely as possible.
-                        <br><br>
+                    </p>
+                    {% if quiz|safe == "is_not_mentor" %}
+                        <p class="text-danger">
+                            Please make sure to have your Django repository URL ready prior to proceeding.
+                        </p>
+                    {% endif %}
+                    <p>
                         When you're ready, click the <strong>Start Quiz</strong> button.
                     </p>
                     <button id="quiz-start-btn" class="btn btn-ci my-4">Start Quiz</button>
