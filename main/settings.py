@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "django.contrib.staticfiles",
+    "django_countries",
     "accounts",
     "home",
     "questions",
