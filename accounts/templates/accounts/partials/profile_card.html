@@ -20,6 +20,12 @@
                     Prospective Mentor
                 {% endif %}
             </h6>
+            <p class="mx-auto my-3">
+                <img src="{{ user.profile.resident_country.flag }}"
+                    class="flag-icon" alt="Flag Icon of {{ user.profile.resident_country.name }}">
+                <br>
+                {{ user.profile.resident_country.name }}
+            </p>
         </div>
         <div class="col-md-8">
             <div class="card-body p-4">

@@ -24,6 +24,12 @@
                     {% endif %}
                     <br>
                     <small class="text-muted">{{ result.quiz.user.email }}</small>
+                    <br>
+                    <small class="text-muted">
+                        <img src="{{ result.quiz.user.profile.resident_country.flag }}"
+                            class="flag-icon" alt="Flag Icon of {{ result.quiz.user.profile.resident_country.name }}">
+                        {{ result.quiz.user.profile.resident_country.name }}
+                    </small>
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
