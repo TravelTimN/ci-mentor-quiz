@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
+from django_countries.fields import CountryField
 
 
 class Profile(models.Model):
@@ -21,6 +22,8 @@ class Profile(models.Model):
     display_name = models.CharField(max_length=75, unique=False, null=False)
     taken_quiz = models.BooleanField(default=False, blank=False)
     mentor_type = models.CharField(choices=MENTOR_TYPE, max_length=40)
+    resident_country = CountryField(
+        blank_label="Country of Residence", null=False, blank=False)
 
     class Meta:
         """
