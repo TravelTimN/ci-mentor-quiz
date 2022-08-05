@@ -301,6 +301,11 @@ ul#id_mentor_type li {
     font-size: 200%;
 }
 
+img.flag-icon {
+    width: 25px;
+    max-width: 25px;
+}
+
 /* QUIZ RESULTS & QUESTIONS TABLES */
 
 table thead tr th:not(:last-child) {
