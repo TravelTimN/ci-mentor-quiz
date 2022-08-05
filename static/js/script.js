@@ -60,3 +60,8 @@ let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggl
 let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
     return new bootstrap.Tooltip(tooltipTriggerEl);
 });
+
+// disable first item from all <select> elements
+$("select").each(function() {
+    $(this).children("option:first").prop("disabled", true);
+});
