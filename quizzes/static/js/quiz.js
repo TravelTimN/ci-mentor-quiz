@@ -120,6 +120,10 @@ quizSubmitBtn.addEventListener("click", function (e) {
     let btnNum = this.dataset.submit;
     // only proceed if validated properly
     if (validateQuestion(btnNum)) {
+        // disable the submit button in case a user takes longer than 30mins to do the quiz,
+        // due to Heroku's dynos timing out, this can cause the app to spin-up slowly
+        // and users to submit multiple quiz results.
+        quizSubmitBtn.disabled = true;
         quizForm.submit();
     }
 });
