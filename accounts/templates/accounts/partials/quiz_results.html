@@ -7,13 +7,13 @@
         <table id="quiz-results-table" class="table table-striped text-center align-middle">
             <thead class="bg-p-grey text-t-grey align-middle">
                 <tr>
+                    <th scope="col">Date<br><small>Time</small></th>
                     <!-- superusers can view the username, quiz-type, and total duration -->
                     {% if user.is_superuser %}
                         <th scope="col">User</th>
                         <th scope="col">Type</th>
                         <th scope="col">Duration<br><small>(h:m:s)</small></th>
                     {% endif %}
-                    <th scope="col">Date<br><small>Time</small></th>
                     <th scope="col">Correct<br>Answers</th>
                     <th scope="col">Accuracy</th>
                     <th scope="col"></th>
@@ -22,17 +22,19 @@
             <tbody>
                 {% for result in results %}
                     <tr class="result-row">
+                        <td>
+                            <!-- quiz date taken -->
+                            <!-- using 'time since Unix Epoch' hidden for dataTables to sort by date properly -->
+                            <span class="d-none">{{ result.quiz.taken|date:"U" }}</span>
+                            {{ result.quiz.taken|date:"d M Y"|upper }}<br>
+                            <small class="text-muted">{{ result.quiz.taken|date:"H:i A" }}</small>
+                        </td>
                         <!-- superusers can view the username, quiz-type, and total duration -->
                         {% if user.is_superuser %}
                             <td>{{ result.quiz.user.profile.display_name }}</td>
                             <td>{{ result.quiz.quiz }}</td>
                             <td>{{ result.duration }}</td>
                         {% endif %}
-                        <td>
-                            <!-- quiz date taken -->
-                            {{ result.quiz.taken|date:"d M Y"|upper }}<br>
-                            <small class="text-muted">{{ result.quiz.taken|date:"H:i A" }}</small>
-                        </td>
                         <td>
                             <!-- quiz results for current mentors only -->
                             {% if result.quiz.quiz|safe == "is_mentor" %}
