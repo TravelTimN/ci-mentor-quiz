@@ -33,7 +33,9 @@
     {% if results|length > 10 %}
         <script>
             // initialize DataTable, only if there are more than 10 results
-            let table = new DataTable("#quiz-results-table");
+            let table = new DataTable("#quiz-results-table", {
+                order: [[0, "desc"]], // reverse-sort by first column (ie: date/time)
+            });
         </script>
     {% endif %}
 
