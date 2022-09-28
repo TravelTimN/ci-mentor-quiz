@@ -16,7 +16,7 @@ def profile(request):
         name=user.profile.mentor_type).values_list("id", flat=True)[:1][0]
     # filter previous quiz submissions by user
     if request.user.is_superuser:
-        user_submissions = Submission.objects.all().order_by("user__username")
+        user_submissions = Submission.objects.all().order_by("-taken")
     else:
         user_submissions = Submission.objects.filter(user=request.user)
     results = []
