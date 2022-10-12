@@ -59,11 +59,12 @@
                 <br>
                 {% if user.is_superuser %}
                     <!-- superuser status - can take quiz if desired -->
-                    You have superuser access, but can take the quiz if you'd like.
+                    You have superuser access, but can take the quizzes if you'd like.
                     All previous user submissions are visible below.
                     <div class="row mt-3">
                         <div class="col text-center">
-                            <button id="btn-take-quiz" class="btn-ci" data-quiz="{{ quiz_id }}">Take Quiz</button>
+                            <a href="{% url 'take_quiz' 1 %}" class="btn btn-ci">Mentor Quiz</a>
+                            <a href="{% url 'take_quiz' 2 %}" class="btn btn-ci">Non-Mentor Quiz</a>
                         </div>
                     </div>
                 {% elif user.profile.taken_quiz %}

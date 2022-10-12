@@ -18,15 +18,19 @@ def quiz(request):
 def take_quiz(request, pk):
     user = get_object_or_404(User, username=request.user)
     # check if non-mentor trying to take quiz again, and redirect if so
-    if user.profile.mentor_type == "is_not_mentor" and user.profile.taken_quiz:
+    if user.profile.mentor_type == "is_not_mentor" and user.profile.taken_quiz and not request.user.is_superuser:  # noqa
         messages.success(request, "You have already submitted your responses.")
         return redirect(reverse("profile"))
 
-    # user is mentor and can take the quiz again
-    get_quiz = Quiz.objects.filter(
-        name=user.profile.mentor_type).values_list("id", flat=True)[:1]
+    if request.user.is_superuser:
+        # superuser can take any test type
+        get_quiz = Quiz.objects.filter(id=pk)
+    else:
+        # is mentor (unlimited quizzes) || new mentor (hasn't taken quiz yet)
+        get_quiz = Quiz.objects.filter(
+            name=user.profile.mentor_type).values_list("id", flat=True)[:1]
     for quiz_id in get_quiz:
-        if quiz_id != pk:
+        if quiz_id != pk and not request.user.is_superuser:
             # user trying to brute-force to another quiz URL
             return redirect(take_quiz, quiz_id)
         else:
