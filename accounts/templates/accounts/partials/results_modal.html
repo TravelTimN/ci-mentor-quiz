@@ -57,7 +57,7 @@
                                 <span class="user-answer">
                                     <!-- custom django templatetag: |replace"foo|bar" -->
                                     <!-- user_answer declared once, and used as new 'user_answer' variable -->
-                                    {% with user_answer=answer.user_answer|safe|linebreaksbr|replace:"['|"|replace:"']|"|replace:"', '|, "|replace:'["|'|replace:'"]|' %}
+                                    {% with user_answer=answer.user_answer|safe|linebreaksbr|replace:"\'|'"|replace:"\"|'"|replace:"['|"|replace:"']|"|replace:"', '|, "|replace:'["|'|replace:'"]|' %}
                                         <!-- custom django templatetag: |startswith"foobar" -->
                                         {% if user_answer|startswith:"http://" or user_answer|startswith:"https://" %}
                                             <a href="{{ user_answer }}" target="_blank" rel="noopener">
