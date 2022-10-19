@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+    <!-- https://datatables.net/examples/styling/bootstrap5.html -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.css">
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container-lg my-5">
+    <div class="row">
+        <div class="col text-center">
+            <h1>Manage Quizzes</h1>
+            <!-- add a new quiz to the database -->
+            <a href="{% url 'add_quiz' %}" class="btn btn-ci my-3">Add Quiz</a>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- displaying all existing quizzes from the database -->
+    <div class="row">
+        <div class="col-12 table-responsive">
+            <table id="quizzes-table" class="table table-striped text-center align-middle">
+                <thead class="bg-p-grey text-t-grey align-middle">
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Max Count</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- loop through all quizzes -->
+                    {% for quiz in quizzes|dictsort:"quiz_type" %}
+                        <tr>
+                            <td>{{ quiz.name }}</td>
+                            <td>{{ quiz.quiz_type }}</td>
+                            <td>{{ quiz.max_count }}</td>
+                            <td>
+                                <!-- updating each individual quiz -->
+                                <a href="" class="btn btn-ci">Manage</a>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <!-- only display if no quizzes are found -->
+                        <tr>
+                            <td colspan="6"><h3>No matching records found</h3></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block js %}
+    <!-- import DataTables CDN for Bootstrap Tables Pagination (requires jQuery) -->
+    <!-- https://datatables.net/examples/styling/bootstrap5.html -->
+    <script src="https://cdn.datatables.net/v/bs5/dt-1.11.5/datatables.js"></script>
+
+    {% if quizzes|length > 10 %}
+        <script>
+            // initialize DataTable, only if there are more than 10 results
+            let table = new DataTable("#quizzes-table");
+        </script>
+    {% endif %}
+
+{% endblock %}
