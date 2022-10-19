@@ -3,16 +3,27 @@
       "model": "quizzes.quiz",
       "pk": 1,
       "fields": {
-         "name": "is_mentor",
-         "max_count": 20
+         "name": "Quiz for Mentors",
+         "quiz_type": "is_mentor",
+         "max_count": 30
       }
    },
    {
       "model": "quizzes.quiz",
       "pk": 2,
       "fields": {
-         "name": "is_not_mentor",
+         "name": "Quiz for Potential Mentors",
+         "quiz_type": "is_not_mentor",
          "max_count": 50
+      }
+   },
+   {
+      "model": "quizzes.quiz",
+      "pk": 3,
+      "fields": {
+         "name": "Gateway Updates Q4:2022",
+         "quiz_type": "is_mentor",
+         "max_count": 30
       }
    }
 ]
