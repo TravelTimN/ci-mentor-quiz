@@ -63,20 +63,25 @@
                     All previous user submissions are visible below.
                     <div class="row mt-3">
                         <div class="col text-center">
-                            <a href="{% url 'take_quiz' 1 %}" class="btn btn-ci">Mentor Quiz</a>
-                            <a href="{% url 'take_quiz' 2 %}" class="btn btn-ci">Non-Mentor Quiz</a>
+                            <!-- TODO: re-enable this button once the Mentor Quiz is active!!! -->
+                            <!-- <a href="{% url 'take_quiz' 1 %}" class="btn btn-ci m-2">Mentor Quiz</a> -->
+                            <a href="{% url 'take_quiz' 2 %}" class="btn btn-ci m-2">Non-Mentor Quiz</a>
+                            <a href="{% url 'take_quiz' 3 %}" class="btn btn-ci m-2">Gateway Quiz</a>
                         </div>
                     </div>
                 {% elif user.profile.taken_quiz %}
                     <!-- user has already taken quiz -->
                     {% if user.profile.mentor_type != "is_not_mentor" %}
                         <!-- mentor-type is current mentor / can take quiz again -->
-                        You have already taken this quiz.
+                        You have already taken a quiz.
                         Check your results below!
-                        You can take the quiz as many times as you'd like.
+                        You can take the quizzes as many times as you'd like.
                         <div class="row mt-3">
                             <div class="col text-center">
-                                <button id="btn-take-quiz" class="btn-ci" data-quiz="{{ quiz_id }}">Retake Quiz</button>
+                                <!-- TODO: re-enable this button once the Mentor Quiz is active!!! -->
+                                <!-- <button id="btn-take-quiz" class="btn btn-ci m-2" data-quiz="{{ quiz_id }}">Mentor Quiz</button> -->
+                                <!-- user is mentor, and can take the Gateway quiz -->
+                                <a href="{% url 'take_quiz' 3 %}" class="btn btn-ci m-2">Gateway Quiz</a>
                             </div>
                         </div>
                     {% else %}
@@ -87,10 +92,21 @@
                 {% else %}
                     <!-- user has not taken quiz yet -->
                     Welcome!
-                    When you're ready to begin, click the button to proceed to the quiz.
+                    When you're ready to begin, click a button to proceed to that quiz.
                     <div class="row mt-3">
                         <div class="col text-center">
-                            <button id="btn-take-quiz" class="btn-ci" data-quiz="{{ quiz_id }}">Take Quiz</button>
+                            <!-- TODO: re-enable this button once the Mentor Quiz is active!!! -->
+                            <!-- TODO: delete the entire 'if' condition lines 100 and 105, but keep the content inside -->
+                            {% if user.profile.mentor_type != "is_mentor" %}
+                                <button id="btn-take-quiz" class="btn btn-ci m-2" data-quiz="{{ quiz_id }}">
+                                    {% if user.profile.mentor_type == "is_not_mentor" %}New{% endif %}
+                                    Mentor Quiz
+                                </button>
+                            {% endif %}
+                            {% if user.profile.mentor_type != "is_not_mentor" %}
+                                <!-- user is mentor, and can take the Gateway quiz -->
+                                <a href="{% url 'take_quiz' 3 %}" class="btn btn-ci m-2">Gateway Quiz</a>
+                            {% endif %}
                         </div>
                     </div>
                 {% endif %}
