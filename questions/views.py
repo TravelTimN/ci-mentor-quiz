@@ -49,7 +49,7 @@ def add_question(request):
     choice_form_set = ChoiceFormSet(request.POST or None)
 
     if request.method == "POST":
-        if question_form.is_valid and choice_form_set.is_valid:
+        if question_form.is_valid() and choice_form_set.is_valid():
             # save the Question model
             qform = question_form.save()
             # loop each instance of the FormSet and save each "Choice"
