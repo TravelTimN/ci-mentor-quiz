@@ -11,9 +11,9 @@
                     <!-- superusers can view the username, quiz-type, and total duration -->
                     {% if user.is_superuser %}
                         <th scope="col">User</th>
-                        <th scope="col">Type</th>
                         <th scope="col">Duration<br><small>(h:m:s)</small></th>
-                    {% endif %}
+                        {% endif %}
+                    <th scope="col">Quiz</th>
                     <th scope="col">Correct<br>Answers</th>
                     <th scope="col">Accuracy</th>
                     <th scope="col"></th>
@@ -36,12 +36,12 @@
                                 <br>
                                 <small class="text-muted">{{ result.quiz.user.email }}</small>
                             </td>
-                            <td>{{ result.quiz.quiz }}</td>
                             <td>{{ result.duration }}</td>
                         {% endif %}
+                        <td>{{ result.quiz.quiz }}</td>
                         <td>
                             <!-- quiz results for current mentors only -->
-                            {% if result.quiz.quiz|safe == "is_mentor" %}
+                            {% if result.quiz.quiz.quiz_type|safe == "is_mentor" %}
                                 {{ result.correct }}<br>
                                 <small class="text-muted">out of {{ result.questions }}</small>
                             {% else %}
@@ -50,7 +50,7 @@
                         </td>
                         <td>
                             <!-- percentage of questions correct for current mentors only -->
-                            {% if result.quiz.quiz|safe == "is_mentor" %}
+                            {% if result.quiz.quiz.quiz_type|safe == "is_mentor" %}
                                 <span class="fw-bold {% if result.percentage >= 90 %}text-success{% elif result.percentage >= 80 %}text-primary{% elif result.percentage >= 70 %}text-warning{% else %}text-danger{% endif %}">
                                     {{ result.percentage }}%<br>
                                 </span>
@@ -73,7 +73,7 @@
                             {% if user.is_superuser %}
                             <!-- opens modal for superuser to delete quiz submission from database -->
                             <a href="#" class="text-danger mx-3" data-bs-toggle="modal" data-bs-target="#modal-delete-result-{{ forloop.counter }}">
-                                <i class="fas fa-trash-alt fa-lg"></i>
+                                <i class="fas fa-trash-alt fa-lg my-3"></i>
                             </a>
                             <aside class="modal fade" id="modal-delete-result-{{ forloop.counter }}" tabindex="-1" aria-labelledby="modal-delete-result-label-{{ forloop.counter }}" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
