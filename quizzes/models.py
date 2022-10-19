@@ -8,14 +8,17 @@ class Quiz(models.Model):
         ("is_mentor", "Quiz for Mentors"),
         ("is_not_mentor", "Quiz for Potential Mentors"),
     ]
-    name = models.CharField(choices=QUIZ_TYPE, max_length=20)
+    name = models.CharField(max_length=50, null=False, blank=False)
+    quiz_type = models.CharField(
+        choices=QUIZ_TYPE, max_length=20, null=False, blank=False)
     max_count = models.IntegerField(null=True)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return str(self.name)
 
     def get_questions(self):
-        if self.name != "is_not_mentor":
+        if self.quiz_type != "is_not_mentor":
             # shuffle quiz unless it's is_not_mentor quiz
             questions = list(self.question_set.all())
             random.shuffle(questions)
