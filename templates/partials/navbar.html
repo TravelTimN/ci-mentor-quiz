@@ -27,6 +27,7 @@
                                 <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
                                 {% if request.user.is_superuser %}
                                     <!-- user is also a superuser -->
+                                    <li><a class="dropdown-item" href="{% url 'quizzes' %}">Quizzes</a></li>
                                     <li><a class="dropdown-item" href="{% url 'questions' %}">Questions</a></li>
                                     <li><a class="dropdown-item" href="{% url 'admin:index' %}" target="_blank" rel="noopener">Django Admin</a></li>
                                 {% endif %}
