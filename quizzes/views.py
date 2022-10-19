@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .models import Quiz
+from .forms import QuizForm
 from questions.models import Question, Choice
 from submissions.models import Submission, Response
 
@@ -12,6 +13,48 @@ from submissions.models import Submission, Response
 def quiz(request):
     """ Redirect user from /quiz/ to their profile """
     return redirect(reverse("profile"))
+
+
+@login_required
+def quizzes(request):
+    """ Grab all quizzes for Admin management """
+    if not request.user.is_superuser:
+        # user is not superuser; take them to their profile
+        messages.error(request, "Access denied. Invalid permissions.")
+        return redirect(reverse("profile"))
+    # is superuser
+    quizzes = Quiz.objects.all()
+    template = "quizzes/quizzes.html"
+    context = {
+        "quizzes": quizzes,
+    }
+    return render(request, template, context)
+
+
+@login_required
+def add_quiz(request):
+    """ Allow admins to create new Quizzes on the DB """
+    if not request.user.is_superuser:
+        # user is not superuser; take them to their profile
+        messages.error(request, "Access denied. Invalid permissions.")
+        return redirect(reverse("profile"))
+    # is superuser
+    quiz_form = QuizForm(request.POST or None)
+
+    if request.method == "POST":
+        if quiz_form.is_valid:
+            # save the Quiz model
+            quiz_form.save()
+            messages.success(request, "Quiz successfully added!")
+            return redirect(quizzes)
+        else:
+            messages.error(request, "An error has occurred. Please try again.")
+
+    template = "quizzes/add_quiz.html"
+    context = {
+        "quiz_form": quiz_form,
+    }
+    return render(request, template, context)
 
 
 @login_required
@@ -28,26 +71,29 @@ def take_quiz(request, pk):
     else:
         # is mentor (unlimited quizzes) || new mentor (hasn't taken quiz yet)
         get_quiz = Quiz.objects.filter(
-            name=user.profile.mentor_type).values_list("id", flat=True)[:1]
+            quiz_type=user.profile.mentor_type).values_list("id", flat=True)[:1]  # noqa
     for quiz_id in get_quiz:
         if quiz_id != pk and not request.user.is_superuser:
-            # user trying to brute-force to another quiz URL
-            return redirect(take_quiz, quiz_id)
-        else:
-            # user accessing correct quiz URL
-            quiz = Quiz.objects.get(pk=pk)
-            questions = []
-            for question in quiz.get_questions():
-                choices = []
-                for choice in question.get_choices():
-                    choices.append(choice.choice)
-                questions.append({
-                    "id": question.pk,
-                    "type": question.type,
-                    "question": str(question),
-                    "choices": choices,
-                    "text": question.optional_text
-                })
+            if user.profile.mentor_type == "is_mentor" and pk == 3:
+                pass
+            else:
+                # user trying to brute-force to another quiz URL
+                return redirect(take_quiz, quiz_id)
+
+        # user accessing correct quiz URL
+        quiz = Quiz.objects.get(pk=pk)
+        questions = []
+        for question in quiz.get_questions():
+            choices = []
+            for choice in question.get_choices():
+                choices.append(choice.choice)
+            questions.append({
+                "id": question.pk,
+                "type": question.type,
+                "question": str(question),
+                "choices": choices,
+                "text": question.optional_text
+            })
 
     template = "quizzes/quiz.html"
     context = {
@@ -110,7 +156,7 @@ def submit_quiz_results(request, pk):
             if sorted(q.user_answer) == sorted(choices):
                 is_correct = "True"
                 total_correct += 1
-            elif quiz.name == "is_not_mentor":
+            elif quiz.quiz_type == "is_not_mentor":
                 # handle 'is_not_mentor' as always True
                 is_correct = "True"
                 total_correct += 1
