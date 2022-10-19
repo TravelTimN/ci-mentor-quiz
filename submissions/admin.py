@@ -38,7 +38,7 @@ class ResponseAdmin(admin.ModelAdmin):
         return response.submission.taken
 
     def quiz(self, response):
-        return response.submission.quiz.name
+        return response.submission.quiz.quiz_type
 
     def correct(self, response):
         return response.is_correct

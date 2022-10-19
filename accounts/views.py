@@ -13,7 +13,7 @@ def profile(request):
     user = get_object_or_404(User, username=request.user)
     # get the ID of this user's specific quiz-type
     quiz_id = Quiz.objects.filter(
-        name=user.profile.mentor_type).values_list("id", flat=True)[:1][0]
+        quiz_type=user.profile.mentor_type).values_list("id", flat=True)[:1][0]
     # filter previous quiz submissions by user
     if request.user.is_superuser:
         user_submissions = Submission.objects.all().order_by("-taken")
