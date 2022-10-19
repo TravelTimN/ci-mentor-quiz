@@ -11,7 +11,7 @@
                         Submitted: {{ result.quiz.taken|date:"dMY"|upper }} @ {{ result.quiz.taken|date:"H:i e"|upper }}
                     </small>
                     <!-- quiz results (compared to student assessments) -->
-                    {% if result.quiz.quiz|safe == "is_mentor" %} |
+                    {% if result.quiz.quiz.quiz_type|safe == "is_mentor" %} |
                         {% if result.percentage >= 90 %}
                             <span class="badge bg-success">distinction</span>
                         {% elif result.percentage >= 80 %}
@@ -36,15 +36,15 @@
             <div class="modal-body">
                 <!-- modal body content / loop over each response answer -->
                 {% for answer in result.answers|dictsort:"id" %}
-                    <div class="card mb-4 border border-{% if result.quiz.quiz|safe == 'is_not_mentor' %}primary{% elif answer.is_correct == True %}success{% else %}danger{% endif %}">
-                        <div class="card-header bg-{% if result.quiz.quiz|safe == 'is_not_mentor' %}primary{% elif answer.is_correct == True %}success{% else %}danger{% endif %} text-white">
+                    <div class="card mb-4 border border-{% if result.quiz.quiz.quiz_type|safe == 'is_not_mentor' %}primary{% elif answer.is_correct == True %}success{% else %}danger{% endif %}">
+                        <div class="card-header bg-{% if result.quiz.quiz.quiz_type|safe == 'is_not_mentor' %}primary{% elif answer.is_correct == True %}success{% else %}danger{% endif %} text-white">
                             <!-- the question -->
                             <small>Q{{ forloop.counter }} : </small>
                             <strong>{{ answer.question }}</strong>
                         </div>
                         <div class="card-body">
                             <!-- the result, only if user is currently a mentor -->
-                            {% if result.quiz.quiz|safe == "is_mentor" %}
+                            {% if result.quiz.quiz.quiz_type|safe == "is_mentor" %}
                                 <h6 class="card-title fw-bold">
                                     {% if answer.is_correct == True %}
                                         <small class="text-success">CORRECT</small>
