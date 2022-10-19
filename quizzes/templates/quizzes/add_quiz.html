@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section id="quiz-container" class="container my-5">
+    <div class="row">
+        <div class="col text-center">
+            <h2>Add New Quiz</h2>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-sm-12 col-lg-10 offset-lg-1">
+            <!-- form to submit a new quiz -->
+            <form method="POST" action="{% url 'add_quiz' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <fieldset id="card-set" class="card shadow">
+
+                    <legend class="card-header bg-p-grey text-t-grey">
+                        <span class="text-danger">*</span>
+                        <small class="text-white">required</small>
+                        <!-- quiz name -->
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-s-grey">
+                                <span class="text-danger">*</span>
+                                <i class="fas fa-question-circle fa-fw fa-lg"></i>
+                            </span>
+                            {{ quiz_form.name }}
+                        </div>
+                        <!-- quiz type -->
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-s-grey">
+                                <span class="text-danger">*</span>
+                                <i class="fas fa-user-graduate fa-fw fa-lg"></i>
+                            </span>
+                            {{ quiz_form.quiz_type }}
+                        </div>
+                        <!-- max question count -->
+                        <div class="input-group mb-3">
+                            <span class="input-group-text bg-s-grey">
+                                <span class="text-danger">*</span>
+                                <i class="fas fa-list-ol fa-fw fa-lg"></i>
+                            </span>
+                            {{ quiz_form.max_count }}
+                        </div>
+                        <!-- is_active -->
+                        <!-- <div class="input-group mb-3">
+                            <span class="input-group-text bg-s-grey">
+                                <span class="text-danger">*</span>
+                                <i class="fas fa-list-ol fa-fw fa-lg"></i>
+                            </span>
+                            {{ quiz_form.is_active }}
+                        </div> -->
+                        <div class="input-group mb-3">
+                            <div class="input-group-text bg-s-grey">
+                                <span class="text-danger">*</span>
+                                {{ quiz_form.is_active }}
+                            </div>
+                            <span class="form-control">Is the quiz currently active?</span>
+                        </div>
+                    </legend>
+
+                    <!-- submit button -->
+                    <div class="card-footer bg-p-grey text-t-grey">
+                        <div id="submit-btn" class="d-flex justify-content-center">
+                            <button type="submit" id="question-submit-btn" class="btn-ci">Add Quiz</button>
+                            <a href="{% url 'quizzes' %}" class="btn btn-danger mx-3 fw-bold">
+                                Cancel <i class="far fa-times-circle"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+</section>
+{% endblock %}
