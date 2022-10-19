@@ -1,4 +1,4 @@
-/* jshint esversion: 8 */
+/* jshint esversion: 11 */
 
 document.addEventListener("DOMContentLoaded", function () {
     // on page load, hide the preloader animation
