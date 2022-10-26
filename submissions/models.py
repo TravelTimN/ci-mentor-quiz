@@ -41,6 +41,8 @@ class Response(models.Model):
 class Attempt(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, null=False, blank=False)
+    quiz = models.ForeignKey(
+        Quiz, on_delete=models.CASCADE, null=False, blank=False)
     started = models.DateTimeField(auto_now_add=True, null=False, blank=False)
 
     def __str__(self):
