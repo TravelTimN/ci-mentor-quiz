@@ -21,7 +21,8 @@ def profile(request):
         user_submissions = Submission.objects.filter(user=request.user)
     results = []
     for submission in user_submissions:
-        attempts = Attempt.objects.filter(user=submission.user).count()
+        attempts = Attempt.objects.filter(
+            user=submission.user, quiz=submission.quiz).count()
         responses = Response.objects.filter(submission=submission.id)
         correct = responses.filter(is_correct="True").count()
         duration = str(datetime.timedelta(seconds=submission.duration))
