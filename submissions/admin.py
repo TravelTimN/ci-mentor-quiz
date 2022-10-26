@@ -46,7 +46,7 @@ class ResponseAdmin(admin.ModelAdmin):
 
 @admin.register(Attempt)
 class AttemptAdmin(admin.ModelAdmin):
-    list_display = ("display_name", "started")  # table view
+    list_display = ("display_name", "quiz", "started")  # table view
     list_filter = ("user__profile__display_name", )  # sidebar filter
     search_fields = ["user__email", "user__username", "user__first_name", "user__last_name"]  # search box
 
