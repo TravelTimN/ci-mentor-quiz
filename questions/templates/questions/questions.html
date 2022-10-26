@@ -36,7 +36,7 @@
                 </thead>
                 <tbody>
                     <!-- loop through all questions -->
-                    {% for question in questions|dictsort:"quiz" %}
+                    {% for question in questions|dictsort:"quiz" reversed %}
                         <tr>
                             <td>{{ question.quiz }}</td>
                             <td class="text-start">{{ question.question }}</td>
