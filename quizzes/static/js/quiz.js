@@ -10,7 +10,7 @@ let timeTaken = 0;
 let timeTakenInterval;
 
 
-function ajaxQuizStart() {
+function ajaxQuizStart(quizID) {
     url = "/submissions/ajax_quiz_start/";
     csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
     $.ajax({
@@ -18,6 +18,7 @@ function ajaxQuizStart() {
         type: "POST",
         data: {
             "csrfmiddlewaretoken": csrfToken,
+            "quizID": quizID,
         },
         success: function(data) {console.log(data);},
         error: function(data) {
@@ -48,7 +49,11 @@ function setTimeTaken(qID) {
 
 // start the quiz and the timers
 quizStartBtn.addEventListener("click", function() {
-    ajaxQuizStart();
+    let quizID = window.location.pathname.split("/")[2];
+    // attempt to parse quizID to integer, and confirm it is indeed an integer
+    if (!isNaN(parseInt(quizID))) {
+        ajaxQuizStart(quizID);
+    }
     document.getElementById("quiz-start-row").classList.add("hide", "full");
     quizForm.classList.remove("hide", "full");
 
