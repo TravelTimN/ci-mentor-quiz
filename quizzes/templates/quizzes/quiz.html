@@ -61,6 +61,13 @@
                     <legend class="card-header bg-p-grey text-t-grey">
                         <span class="text-danger">*</span>
                         {{ question.question }}
+
+                        <!-- optional text, where applicable -->
+                        {% if question.text %}
+                            <p class="bg-s-grey text-black text-center my-3 p-3 rounded">
+                                <small class="fs-6">{{ question.text|safe|linebreaksbr }}</small>
+                            </p>
+                        {% endif %}
                     </legend>
 
                     <!-- cycle through each of the question's choices -->
@@ -79,11 +86,6 @@
 
                         <!-- error handling -->
                         <span id="error-handler-{{ forloop.counter }}" class="text-danger d-flex justify-content-center"></span>
-
-                        <!-- optional text, where applicable -->
-                        {% if question.text %}
-                            <small class="fs-6 text-center">{{ question.text|safe|linebreaksbr }}</small>
-                        {% endif %}
                     </div>
 
                     <!-- next && submit buttons -->
