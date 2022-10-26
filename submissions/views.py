@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from quizzes.models import Quiz
 from .models import Attempt, Submission
 
 
@@ -17,7 +18,8 @@ def ajax_quiz_start(request):
     """
     user = get_object_or_404(User, username=request.user)
     if request.is_ajax():
-        attempt = Attempt.objects.create(user=user)
+        quiz = get_object_or_404(Quiz, id=request.POST.get("quizID"))
+        attempt = Attempt.objects.create(user=user, quiz=quiz)
         return HttpResponse("AJAX Success")
     else:
         return redirect("profile")
