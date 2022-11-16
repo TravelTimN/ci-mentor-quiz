@@ -1,0 +1,11 @@
+[id^=progress_] {
+    height: 32px;
+    background-color: rgba(var(--black), 1);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+[id^=progress-bar-] {
+    font-size: 150%;
+    font-weight: bolder;
+}
