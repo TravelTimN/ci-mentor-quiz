@@ -9,6 +9,7 @@ class Quiz(models.Model):
         ("is_not_mentor", "Quiz for Potential Mentors"),
     ]
     name = models.CharField(max_length=50, null=False, blank=False)
+    description = models.CharField(max_length=100, null=False, blank=False)
     quiz_type = models.CharField(
         choices=QUIZ_TYPE, max_length=20, null=False, blank=False)
     max_count = models.IntegerField(null=True)
