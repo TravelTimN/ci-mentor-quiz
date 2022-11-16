@@ -58,6 +58,48 @@ def add_quiz(request):
 
 
 @login_required
+def update_quiz(request, pk):
+    """ Allow admins to update existing Quizzes on the DB """
+    if not request.user.is_superuser:
+        # user is not superuser; take them to their profile
+        messages.error(request, "Access denied. Invalid permissions.")
+        return redirect(reverse("profile"))
+    # is superuser
+    quiz = get_object_or_404(Quiz, id=pk)
+    quiz_form = QuizForm(request.POST or None, instance=quiz)
+
+    if request.method == "POST":
+        if quiz_form.is_valid:
+            # save the Quiz model
+            quiz_form.save()
+            messages.success(request, "Quiz successfully updated!")
+            return redirect(quizzes)
+        else:
+            messages.error(request, "An error has occurred. Please try again.")
+
+    template = "quizzes/update_quiz.html"
+    context = {
+        "quiz": quiz,
+        "quiz_form": quiz_form,
+    }
+    return render(request, template, context)
+
+
+@login_required
+def delete_quiz(request, pk):
+    """ Allow admins to delete existing Quizzes from the DB """
+    if not request.user.is_superuser:
+        # user is not superuser; take them to their profile
+        messages.error(request, "Access denied. Invalid permissions.")
+        return redirect(reverse("profile"))
+    # is superuser
+    quiz = get_object_or_404(Quiz, id=pk)
+    quiz.delete()
+    messages.success(request, "Quiz successfully deleted!")
+    return redirect(quizzes)
+
+
+@login_required
 def take_quiz(request, pk):
     user = get_object_or_404(User, username=request.user)
     # check if non-mentor trying to take quiz again, and redirect if so
