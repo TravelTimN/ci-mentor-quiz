@@ -29,8 +29,7 @@ class QuizForm(forms.ModelForm):
     )
     is_active = forms.BooleanField(
         widget=forms.CheckboxInput(attrs={
-            "required": True,
-            "checked": True,
+            "required": False,
             "class": "form-check-input mt-0 mx-2",
         }),
     )
@@ -41,6 +40,9 @@ class QuizForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        # is_active isn't a required field
+        self.fields["is_active"].required = False
 
         # generate list of available Quiz Types
         self.fields["quiz_type"].choices = [["", "Select Quiz Type"]]
