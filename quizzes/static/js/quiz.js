@@ -4,10 +4,21 @@ const quizStartBtn = document.getElementById("quiz-start-btn");
 const quizSubmitBtn = document.getElementById("quiz-submit-btn");
 const quizForm = document.getElementById("quiz-form");
 const duration = document.getElementById("duration");
+let progressBar = document.getElementById("progress-bar-first");
+let qPercent, durationInterval, timeTakenInterval;
 let durationTime = 0;
-let durationInterval;
 let timeTaken = 0;
-let timeTakenInterval;
+let qIndex = progressBar.dataset.questionindex;
+let qCount = progressBar.dataset.questioncounter;
+
+
+// update the progress bar value and width
+window.addEventListener("load", updateProgress);
+function updateProgress() {
+    qPercent = Math.ceil((qIndex / qCount) * 100) + "%";
+    progressBar.style.width = qPercent;
+    progressBar.innerText = `${qIndex} of ${qCount}`;
+}
 
 
 function ajaxQuizStart(quizID) {
@@ -114,6 +125,10 @@ nextBtns.forEach(btn => {
         // only proceed if validated properly
         if (validateQuestion(btnNum)) {
             getNextBtn(btnNum);
+            // update progress bar
+            qIndex++;
+            progressBar = document.getElementById(`progress-bar-${qIndex}`);
+            updateProgress();
         }
     });
 });
