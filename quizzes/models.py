@@ -12,7 +12,7 @@ class Quiz(models.Model):
     quiz_type = models.CharField(
         choices=QUIZ_TYPE, max_length=20, null=False, blank=False)
     max_count = models.IntegerField(null=True)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True, null=True, blank=True)
 
     def __str__(self):
         return str(self.name)
