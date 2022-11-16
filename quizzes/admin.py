@@ -4,4 +4,7 @@ from .models import Quiz
 
 @admin.register(Quiz)
 class QuizAdmin(admin.ModelAdmin):
-    list_display = ("name", "quiz_type", "max_count", "is_active")  # table view
+    list_display = (
+        "name", "quiz_type", "description",
+        "max_count", "is_active"
+    )  # table view
