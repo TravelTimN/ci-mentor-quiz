@@ -51,6 +51,10 @@
                         <td>
                             <!-- percentage of questions correct for current mentors only -->
                             {% if result.quiz.quiz.quiz_type|safe == "is_mentor" %}
+
+                                <!-- using 'stringformat:04d' hidden for dataTables to sort by percentage properly -->
+                                <span class="d-none">{{ result.percentage|stringformat:"04d" }}</span>
+
                                 <span class="fw-bold {% if result.percentage >= 90 %}text-success{% elif result.percentage >= 80 %}text-primary{% elif result.percentage >= 70 %}text-warning{% else %}text-danger{% endif %}">
                                     {{ result.percentage }}%<br>
                                 </span>
