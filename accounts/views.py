@@ -11,14 +11,17 @@ from submissions.models import Submission, Response, Attempt
 def profile(request):
     """ Display the user's profile. """
     user = get_object_or_404(User, username=request.user)
-    # get the ID of this user's specific quiz-type
-    quiz_id = Quiz.objects.filter(
-        quiz_type=user.profile.mentor_type).values_list("id", flat=True)[:1][0]
     # filter previous quiz submissions by user
     if request.user.is_superuser:
         user_submissions = Submission.objects.all().order_by("-taken")
+        # get all quizzes for superuser, regardless of user-type or is_active
+        quizzes = Quiz.objects.all()
     else:
         user_submissions = Submission.objects.filter(user=request.user)
+        # get 'active' quiz(zes) for user-type
+        quizzes = Quiz.objects.filter(
+            quiz_type=user.profile.mentor_type, is_active=True
+        )
     results = []
     for submission in user_submissions:
         attempts = Attempt.objects.filter(
@@ -39,7 +42,7 @@ def profile(request):
     template = "accounts/profile.html"
     context = {
         "user": user,
-        "quiz_id": quiz_id,
+        "quizzes": quizzes,
         "results": results
     }
 
