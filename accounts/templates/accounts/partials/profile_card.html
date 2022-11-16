@@ -58,15 +58,14 @@
                 <strong>Quiz Attempt</strong>
                 <br>
                 {% if user.is_superuser %}
-                    <!-- superuser status - can take quiz if desired -->
+                    <!-- superuser status - can take any quiz if desired -->
                     You have superuser access, but can take the quizzes if you'd like.
                     All previous user submissions are visible below.
                     <div class="row mt-3">
                         <div class="col text-center">
-                            <!-- TODO: re-enable this button once the Mentor Quiz is active!!! -->
-                            <!-- <a href="{% url 'take_quiz' 1 %}" class="btn btn-ci m-2">Mentor Quiz</a> -->
-                            <a href="{% url 'take_quiz' 2 %}" class="btn btn-ci m-2">Non-Mentor Quiz</a>
-                            <a href="{% url 'take_quiz' 3 %}" class="btn btn-ci m-2">Gateway Quiz</a>
+                            {% for quiz in quizzes %}
+                                <a href="{% url 'take_quiz' quiz.id %}" class="btn btn-ci m-2">{{ quiz.name }}</a>
+                            {% endfor %}
                         </div>
                     </div>
                 {% elif user.profile.taken_quiz %}
@@ -78,10 +77,9 @@
                         You can take the quizzes as many times as you'd like.
                         <div class="row mt-3">
                             <div class="col text-center">
-                                <!-- TODO: re-enable this button once the Mentor Quiz is active!!! -->
-                                <!-- <button id="btn-take-quiz" class="btn btn-ci m-2" data-quiz="{{ quiz_id }}">Mentor Quiz</button> -->
-                                <!-- user is mentor, and can take the Gateway quiz -->
-                                <a href="{% url 'take_quiz' 3 %}" class="btn btn-ci m-2">Gateway Quiz</a>
+                                {% for quiz in quizzes %}
+                                    <a href="{% url 'take_quiz' quiz.id %}" class="btn btn-ci m-2">{{ quiz.name }}</a>
+                                {% endfor %}
                             </div>
                         </div>
                     {% else %}
@@ -95,18 +93,9 @@
                     When you're ready to begin, click a button to proceed to that quiz.
                     <div class="row mt-3">
                         <div class="col text-center">
-                            <!-- TODO: re-enable this button once the Mentor Quiz is active!!! -->
-                            <!-- TODO: delete the entire 'if' condition lines 100 and 105, but keep the content inside -->
-                            {% if user.profile.mentor_type != "is_mentor" %}
-                                <button id="btn-take-quiz" class="btn btn-ci m-2" data-quiz="{{ quiz_id }}">
-                                    {% if user.profile.mentor_type == "is_not_mentor" %}New{% endif %}
-                                    Mentor Quiz
-                                </button>
-                            {% endif %}
-                            {% if user.profile.mentor_type != "is_not_mentor" %}
-                                <!-- user is mentor, and can take the Gateway quiz -->
-                                <a href="{% url 'take_quiz' 3 %}" class="btn btn-ci m-2">Gateway Quiz</a>
-                            {% endif %}
+                            {% for quiz in quizzes %}
+                                <a href="{% url 'take_quiz' quiz.id %}" class="btn btn-ci m-2">{{ quiz.name }}</a>
+                            {% endfor %}
                         </div>
                     </div>
                 {% endif %}
