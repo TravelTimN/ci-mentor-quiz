@@ -103,39 +103,40 @@ def delete_quiz(request, pk):
 def take_quiz(request, pk):
     user = get_object_or_404(User, username=request.user)
     # check if non-mentor trying to take quiz again, and redirect if so
-    if user.profile.mentor_type == "is_not_mentor" and user.profile.taken_quiz and not request.user.is_superuser:  # noqa
-        messages.success(request, "You have already submitted your responses.")
+    if user.profile.mentor_type == "is_not_mentor" and user.profile.taken_quiz and not user.is_superuser:  # noqa
+        messages.info(request, "You have already submitted your responses.")
         return redirect(reverse("profile"))
 
-    if request.user.is_superuser:
+    if user.is_superuser:
         # superuser can take any test type
-        get_quiz = Quiz.objects.filter(id=pk)
+        quiz = get_object_or_404(Quiz, id=pk)
+    elif user.profile.mentor_type == "is_not_mentor":
+        # new mentor (hasn't taken quiz yet)
+        quiz = get_object_or_404(Quiz, quiz_type=user.profile.mentor_type)
+        if quiz.id != pk:
+            # force back to correct quiz, if trying to brute-force
+            return redirect(take_quiz, quiz.id)
     else:
-        # is mentor (unlimited quizzes) || new mentor (hasn't taken quiz yet)
-        get_quiz = Quiz.objects.filter(
-            quiz_type=user.profile.mentor_type).values_list("id", flat=True)[:1]  # noqa
-    for quiz_id in get_quiz:
-        if quiz_id != pk and not request.user.is_superuser:
-            if user.profile.mentor_type == "is_mentor" and pk == 3:
-                pass
-            else:
-                # user trying to brute-force to another quiz URL
-                return redirect(take_quiz, quiz_id)
+        # is mentor (unlimited quizzes)
+        quiz = get_object_or_404(Quiz, id=pk)
+        # mentors can only access 'active' quizzes meant for mentors
+        if quiz.quiz_type != user.profile.mentor_type or not quiz.is_active:  # noqa
+            messages.error(request, "Invalid Quiz Selected")
+            return redirect(reverse("profile"))
 
-        # user accessing correct quiz URL
-        quiz = Quiz.objects.get(pk=pk)
-        questions = []
-        for question in quiz.get_questions():
-            choices = []
-            for choice in question.get_choices():
-                choices.append(choice.choice)
-            questions.append({
-                "id": question.pk,
-                "type": question.type,
-                "question": str(question),
-                "choices": choices,
-                "text": question.optional_text
-            })
+    # user accessing correct quiz URL
+    questions = []
+    for question in quiz.get_questions():
+        choices = []
+        for choice in question.get_choices():
+            choices.append(choice.choice)
+        questions.append({
+            "id": question.pk,
+            "type": question.type,
+            "question": str(question),
+            "choices": choices,
+            "text": question.optional_text
+        })
 
     template = "quizzes/quiz.html"
     context = {
