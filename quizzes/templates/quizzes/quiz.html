@@ -18,14 +18,12 @@
                     <h5 class="card-title my-4 fw-bold text-p-orange">
                         {% if quiz.quiz_type|safe == "is_not_mentor" %}New{% endif %}
                         Mentor Quiz
-                        {% if quiz.id != 1 and quiz.id != 2 %}
                         <br>
-                        <small class="text-muted">{{ quiz.name }}</small>
-                        {% endif %}
+                        <small class="text-muted">{{ quiz.description }}</small>
                     </h5>
                     <p class="card-text">
                         You will be presented with <strong>{{ questions|length }}</strong>
-                        questions{% if quiz.quiz_type|safe == "is_mentor" %} at random{% endif %}.
+                        question{{ questions|length|pluralize }}{% if quiz.quiz_type|safe == "is_mentor" %} at random{% endif %}.
                     </p>
                     <p>
                         Please answer the questions as completely as possible.
@@ -85,7 +83,7 @@
 
                     <!-- cycle through each of the question's choices -->
                     <div class="card-body">
-                        {% if quiz.name == "is_not_mentor" %}
+                        {% if quiz.quiz_type|safe == "is_not_mentor" %}
                             <!-- do NOT shuffle the choices (primarily for mentor availability question) -->
                             {% for choice in question.choices %}
                                 {% include "quizzes/partials/choices.html" %}
@@ -102,7 +100,7 @@
                     </div>
 
                     <!-- next && submit buttons -->
-                    {% if not forloop.last %}
+                    {% if not forloop.last and questions|length > 1 %}
                         <!-- "next" button for each question, except the final question -->
                         <div class="card-footer bg-p-grey text-t-grey {% if not forloop.first %}hide full{% endif %}" id="card-next-btn-{{ forloop.counter }}">
                             <div class="d-flex justify-content-center">
@@ -111,7 +109,7 @@
                         </div>
                     {% else %}
                         <!-- replace "next" button with the "submit" button -->
-                        <div class="card-footer bg-p-grey text-t-grey hide full" id="card-next-btn-{{ forloop.counter }}">
+                        <div class="card-footer bg-p-grey text-t-grey {% if questions|length > 1 %}hide full{% endif %}" id="card-next-btn-{{ forloop.counter }}">
                             <div class="d-flex justify-content-center">
                                 <button type="submit" id="quiz-submit-btn" data-submit="{{ forloop.counter }}" class="btn-ci">Submit</button>
                             </div>

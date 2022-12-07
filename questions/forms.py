@@ -16,7 +16,7 @@ class QuestionForm(forms.ModelForm):
         })
     )
     quiz = forms.ModelChoiceField(
-        queryset=Quiz.objects.all(),
+        queryset=Quiz.objects.filter(is_active=True),
         empty_label="Select Quiz",
         widget=forms.Select(attrs={
             "required": True,
