@@ -20,6 +20,13 @@ class QuizForm(forms.ModelForm):
             "class": "form-control",
         }),
     )
+    description = forms.CharField(
+        widget=forms.TextInput(attrs={
+            "required": True,
+            "class": "form-control",
+            "placeholder": "Description of the quiz"
+        })
+    )
     max_count = forms.CharField(
         widget=forms.TextInput(attrs={
             "required": True,
