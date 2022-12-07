@@ -144,7 +144,7 @@ function enableAddBtn() {
 
 // enable "Submit" button if the first formset Choice has data/value, or updating existing question
 let getFirstTR = $("#tbody").children("tr:not(.hide)").first();
-if ($(getFirstTR).next("input[id$='-choice']").val() != "") {
+if ($(getFirstTR).next("input[id$='-choice']").val() != "" && $(getFirstTR).next("input[id$='-choice']").val() != undefined) {
     $("#question-submit-btn").removeClass("hide full");
 }
 $("body").on("input", "input[id$='-choice']", function() {
@@ -161,12 +161,21 @@ $("body").on("change", "input[id$='-correct_answer'][type=checkbox]", function()
     validateCorrectAnswerCheckboxes();
 });
 
-// ensure at least one checkbox is always checked
+// ensure at least one checkbox is always checked (unless it's "non-mentor quiz")
 function validateCorrectAnswerCheckboxes() {
     let validChoices = $("#tbody").children("tr:not(.hide)").children("td:not(.hide)").children("input[id$='-correct_answer'][type=checkbox]:checked");
-    if (validChoices.length == 0) {
+    if (validChoices.length == 0 && $("#id_quiz option:selected").text() != "Non-Mentor Quiz") {
         $("#question-submit-btn").addClass("hide full");
     } else {
         $("#question-submit-btn").removeClass("hide full");
     }
 }
+
+// enable "Submit" button if the quiz_type is "Not Mentor"
+$("#id_quiz").on("change", function() {
+    if ($("#id_quiz option:selected").text() == "Non-Mentor Quiz") {
+        $("#question-submit-btn").removeClass("hide full");
+    } else {
+        $("#question-submit-btn").addClass("hide full");
+    }
+});
