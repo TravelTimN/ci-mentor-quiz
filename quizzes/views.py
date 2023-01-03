@@ -112,7 +112,7 @@ def take_quiz(request, pk):
         quiz = get_object_or_404(Quiz, id=pk)
     elif user.profile.mentor_type == "is_not_mentor":
         # new mentor (hasn't taken quiz yet)
-        quiz = get_object_or_404(Quiz, quiz_type=user.profile.mentor_type)
+        quiz = get_object_or_404(Quiz, quiz_type=user.profile.mentor_type, is_active=True)  # noqa
         if quiz.id != pk:
             # force back to correct quiz, if trying to brute-force
             return redirect(take_quiz, quiz.id)
