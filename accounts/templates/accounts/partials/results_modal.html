@@ -63,6 +63,10 @@
                                             <a href="{{ user_answer }}" target="_blank" rel="noopener">
                                                 {{ user_answer }}
                                             </a>
+                                        {% elif user_answer|startswith:"www." %}
+                                            <a href="https://{{ user_answer }}" target="_blank" rel="noopener">
+                                                {{ user_answer }}
+                                            </a>
                                         {% else %}
                                             {{ user_answer }}
                                         {% endif %}
